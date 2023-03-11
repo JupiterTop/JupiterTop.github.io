@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>flask+vue+mysql前后分离项目每日记录 | wBlog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  
+  
+    <link rel="alternate" href="/atom.xml" title="wBlog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">wBlog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Home</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> Archive</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> About</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> RSS</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="search"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-flask-vue-mysql前后分离项目每日记录" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      flask+vue+mysql前后分离项目每日记录
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-02-23T08:50:00.000Z" itemprop="datePublished">2023年02月23日</time>
+</span>
+      
+      
+        <span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+
+      
+      
+<a href="/2023/02/23/flask-vue-mysql%E5%89%8D%E5%90%8E%E5%88%86%E7%A6%BB%E9%A1%B9%E7%9B%AE%E6%AF%8F%E6%97%A5%E8%AE%B0%E5%BD%95/#comments" class="article-comment-link">
+  
+    
+    
+    
+    
+    
+  
+  <i class="fa fa-commt"></i>
+  Guestbook
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="flask-vue-mysql前后分离项目每日记录"><a href="#flask-vue-mysql前后分离项目每日记录" class="headerlink" title="flask+vue+mysql前后分离项目每日记录"></a>flask+vue+mysql前后分离项目每日记录</h1><h2 id="Day1"><a href="#Day1" class="headerlink" title="Day1"></a>Day1</h2><h3 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h3><ul>
+<li>conda创建虚拟环境：flask-vue 安装第三方库：requirement.txt</li>
+<li>前端用的vue-admin-template-master，在此基础上改造开发</li>
+<li>新建mysql数据库movies</li>
+</ul>
+<h3 id="flask配置数据库"><a href="#flask配置数据库" class="headerlink" title="flask配置数据库"></a>flask配置数据库</h3><p>创建config.py 文件，配置数据库</p>
+<pre><code>SQLALCHEMY_DATABASE_URI = &quot;mysql://root:123456@localhost:3306/movies&quot;
+SQLALCHEMY_COMMIT_ON_TEARDOWN = True
+SQLALCHEMY_TRACK_MODIFICATIONS = False    
+</code></pre>
+<p>设计user表和movie表（以user表为例）  </p>
+<pre><code>class Users(db.Model):
+    __tablename__ = &#39;user&#39;
+    userid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(
+        db.String(255),
+        nullable=False,
+    )
+    ...
+    created_on = db.Column(
+        db.DateTime,
+        nullable=False,
+    )
+    enable = db.Column(
+        db.Boolean,
+        default=True,
+        nullable=False,
+    )
+
+    def set_password(self, password: str):
+        self.password = generate_password_hash(password, method=&#39;sha512&#39;)
+
+    def check_password(self, password: str):
+        return check_password_hash(self.password, password)
+
+    def __repr__(self):
+        return &#39;&lt;User &#123;&#125;&gt;&#39;.format(self.name)
+
+    @classmethod
+    def add(cls, user):
+        db.session.add(user)
+        db.session.commit()
+</code></pre>
+<p>命令行一次性创建所有表</p>
+<pre><code>python run.py create_db   //注意切换到项目的conda环境
+</code></pre>
+<h3 id="movie数据"><a href="#movie数据" class="headerlink" title="movie数据"></a>movie数据</h3><ul>
+<li>MovieLens Latest Datasets</li>
+<li>ml-latest-small.zip</li>
+<li>Small: 100,000 ratings and 3,600 tag applications applied to 9,000 movies by 600 users. Last updated 9&#x2F;2018.<br>通过爬虫从IMBD网站中获取电影的详细信息和封面图片。<a target="_blank" rel="noopener" href="https://blog.csdn.net/hhmy77/article/details/106389370">参考链接</a>  这里直接使用其爬好的最终csv文件，info.csv<br>mysql中导入csv，注意字段的长度！longtext &gt; text &gt; varchar(255)</li>
+</ul>
+<h2 id="Day2"><a href="#Day2" class="headerlink" title="Day2"></a>Day2</h2><h3 id="用户登录"><a href="#用户登录" class="headerlink" title="用户登录"></a>用户登录</h3><pre><code>    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument(&#39;username&#39;,
+                            required=True,
+                            nullable=False,
+                            type=str,
+                            location=&#39;json&#39;,
+                            help=&quot;username is required&quot;)
+        parser.add_argument(&#39;password&#39;,
+                            required=True,
+                            nullable=False,
+                            type=str,
+                            location=&#39;json&#39;,
+                            help=&quot;password is required&quot;)
+        args = parser.parse_args()
+        username = args.get(&#39;username&#39;)
+        password = args.get(&#39;password&#39;)
+        user = Users.query.filter_by(name=username).first()
+        if user is None:
+            error = &#39;User not exists&#39;
+        elif user.check_password(password=password):
+            access_token = create_access_token(
+                identity=user.userid, expires_delta=datetime.timedelta(days=1))
+            return jsonify(&#123;&#39;access_token&#39;: access_token&#125;)
+        else:
+            error = &#39;user and password not match&#39;
+        return error, 401  
+</code></pre>
+<p>username与password匹配则返回jwt_token;前端发送请求需携带jwt_token，例如获取用户信息显示在页面头部位置。  </p>
+<pre><code>    @jwt_required()
+    def get(self):
+        userid = get_jwt_identity()
+        user = Users.query.filter_by(userid=userid).first()
+        return jsonify(&#123;
+            &#39;username&#39;:
+                user.name,
+            &#39;email&#39;:
+                user.email
+            &#125;)  
+</code></pre>
+<h3 id="postman测试"><a href="#postman测试" class="headerlink" title="postman测试"></a>postman测试</h3><p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/%407D8H2CVW%29%60%5D%7E5K%60%7EHXAN9H.png"><br>如果post请求参数是json需在boby里写。  </p>
+<h3 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h3><p>我把它定义为Flask和Vue在使用JWT过程中的跨域问题。因为使用了flask_cros中间件，其他的方法都是不存在跨域问题的，单单在前端携带token发送请求时报了错。如图：<br><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/9JJ%40LE%28BHQ5N8%5BJ%24Y4UJJ%5BG.png"><br>后端控制台显示丢失head信息。<br><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/QVI03B5I4H9H8M%5BCVWVEUB5.png"><br>但postman测试，如果’Authorization’字段为’Bearer ‘ + token,则可以请求成功。于是把前端的request拦截器中携带token发送请求时也加上’Bearer ‘的头部信息，则成功解决。<br>查阅资料：在token前面加上Bearer是一种规范， W3C 的 HTTP 1.0 规范，Authorization 的格式是：<br><code> Authorization: &lt;type&gt; &lt;authorization-parameters&gt;</code><br>Bearer 常见于 OAuth 和 JWT 授权。</p>
+<h3 id="明天目标"><a href="#明天目标" class="headerlink" title="明天目标"></a>明天目标</h3><ol>
+<li>用户注册</li>
+<li>用户首页设计</li>
+<li>系统整体功能模块设计</li>
+</ol>
+
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> Contents</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#flask-vue-mysql%E5%89%8D%E5%90%8E%E5%88%86%E7%A6%BB%E9%A1%B9%E7%9B%AE%E6%AF%8F%E6%97%A5%E8%AE%B0%E5%BD%95"><span class="toc-text">flask+vue+mysql前后分离项目每日记录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Day1"><span class="toc-text">Day1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="toc-text">创建项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#flask%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">flask配置数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#movie%E6%95%B0%E6%8D%AE"><span class="toc-text">movie数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Day2"><span class="toc-text">Day2</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95"><span class="toc-text">用户登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#postman%E6%B5%8B%E8%AF%95"><span class="toc-text">postman测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">遇到的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%8E%E5%A4%A9%E7%9B%AE%E6%A0%87"><span class="toc-text">明天目标</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+          <blockquote id="copyright">
+              <p>Original link: <a href="http://example.com/2023/02/23/flask-vue-mysql前后分离项目每日记录/">http://example.com/2023/02/23/flask-vue-mysql前后分离项目每日记录/</a></p>
+              <p>Copyright Notice: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flask-vue-mysql/" rel="tag">flask,vue,mysql</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Share:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+    <a href="/2023/02/22/About-ChatGPT/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">
+        
+          About ChatGPT
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/02/24/Knowledge-Enhanced-Prompt-Learning/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">newer</strong>
+      <div class="article-nav-title">
+        
+          Knowledge-Enhanced Prompt Learning
+        
+      </div>
+    </a>
+  
+</nav>
+
+      
+      
+        
+
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> Recent</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/03/09/some-ideas/">some ideas</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/28/prompt-learning/">prompt learning</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/28/pytorch-study/">pytorch study</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/24/Knowledge-Enhanced-Prompt-Learning/">Knowledge-Enhanced Prompt Learning</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/23/flask-vue-mysql%E5%89%8D%E5%90%8E%E5%88%86%E7%A6%BB%E9%A1%B9%E7%9B%AE%E6%AF%8F%E6%97%A5%E8%AE%B0%E5%BD%95/">flask+vue+mysql前后分离项目每日记录</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CRS/" style="font-size: 10px;">CRS</a> <a href="/tags/ChatGPT/" style="font-size: 20px;">ChatGPT</a> <a href="/tags/PyTorch/" style="font-size: 10px;">PyTorch</a> <a href="/tags/flask-vue-mysql/" style="font-size: 10px;">flask,vue,mysql</a>
+    </div>
+  </div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> Archive</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CRS/" rel="tag">CRS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PyTorch/" rel="tag">PyTorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flask-vue-mysql/" rel="tag">flask,vue,mysql</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-link"></i> Blogroll</h3>
+    <div class="widget">
+      <ul>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example1.com/">site-name1</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example2.com/">site-name2</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example3.com/">site-name3</a>
+        </li>
+      
+      </ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">Site Map</a>
+        <span> | </span><a href="/atom.xml">Subscribe to this site</a>
+        <span> | </span><a href="/about/">Contact the blogger</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2023 JupiterTop.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+    </div>
+  </div>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+    
+<script src="/localshare/js/social-share.js"></script>
+
+    
+<script src="/localshare/js/qrcode.js"></script>
+
+  
+  
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+
+
+
+
+</body>
+</html>

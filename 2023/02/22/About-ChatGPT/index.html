@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>About ChatGPT | wBlog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  
+  
+    <link rel="alternate" href="/atom.xml" title="wBlog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">wBlog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Home</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> Archive</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> About</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> RSS</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="search"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-About-ChatGPT" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      About ChatGPT
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-02-22T01:29:19.000Z" itemprop="datePublished">2023年02月22日</time>
+</span>
+      
+      
+        <span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+
+      
+      
+<a href="/2023/02/22/About-ChatGPT/#comments" class="article-comment-link">
+  
+    
+    
+    
+    
+    
+  
+  <i class="fa fa-commt"></i>
+  Guestbook
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="ChatGPT背后的工作原理"><a href="#ChatGPT背后的工作原理" class="headerlink" title="ChatGPT背后的工作原理"></a>ChatGPT背后的工作原理</h1><p><a target="_blank" rel="noopener" href="https://www.assemblyai.com/blog/how-chatgpt-actually-works/?continueFlag=1bafdcd5c034def869fecb4f3bdaed70">原文链接</a>  </p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><ul>
+<li>ChatGPT是OpenAI发布的最新语言模型，能以不同样式、不同目的生成文本，并且在准确度、叙述细节和上下文连贯性上具有更优的表现。</li>
+<li>OpenAI使用监督学习和强化学习的组合来调优ChatGPT，其中的强化学习组件使ChatGPT独一无二。OpenAI使用了「人类反馈强化学习」（RLHF）的训练方法，该方法在训练中使用人类反馈，以最小化无益、失真或偏见的输出。</li>
+</ul>
+<h2 id="GPT-3"><a href="#GPT-3" class="headerlink" title="GPT-3"></a>GPT-3</h2><p>非一致模型，基于来自互联网的大量文本数据进行训练，能够生成类似人类的文本，但它们可能并不总是产生符合人类期望的输出。它们的目标函数是词序列上的概率分布，用来预测序列中的下一个单词是什么。一致性问题表现为:</p>
+<ul>
+<li>提供无效帮助：没有遵循用户的明确指示。</li>
+<li>内容胡编乱造：虚构不存在或错误事实的模型。</li>
+<li>缺乏可解释性：人们很难理解模型是如何得出特定决策或预测的。</li>
+<li>内容偏见有害：一个基于有偏见、有害数据训练的语言模型可能会在其输出中出现这种情况，即使它没有明确指示这样做。</li>
+</ul>
+<h2 id="语言模型训练策略"><a href="#语言模型训练策略" class="headerlink" title="语言模型训练策略"></a>语言模型训练策略</h2><ol>
+<li>Next-token-prediction</li>
+<li>masked-language-modeling<br>一般来说，这些训练策略可能会导致语言模型在一些更复杂的任务中出现不一致，因为一个仅被训练来预测文本序列中的下一个词的模型可能不一定会学习其含义的某些更高级表征。因此，该模型很难推广到需要对语言更深入理解的任务。</li>
+</ol>
+<h2 id="RLHF"><a href="#RLHF" class="headerlink" title="RLHF"></a>RLHF</h2><p>ChatGPT 基于最初的 GPT-3 模型，但为了解决模型的不一致问题，使用了人类反馈来指导学习过程，对其进行了进一步训练。方法总体上包括三个不同步骤：  </p>
+<ol>
+<li>有监督的调优：预训练的语言模型在少量已标注的数据上进行调优，以学习从给定的 prompt 列表生成输出的有监督的策略（即 SFT 模型）；</li>
+<li>模拟人类偏好：标注者们对相对大量的 SFT 模型输出进行投票，这就创建了一个由比较数据组成的新数据集。在此数据集上训练新模型，被称为训练回报模型（Reward Model，RM）；</li>
+<li>近端策略优化（PPO）：RM 模型用于进一步调优和改进 SFT 模型，PPO 输出结果是策略模式。<br>步骤 1 只进行一次，而步骤 2 和步骤 3 可以持续重复进行：在当前最佳策略模型上收集更多的比较数据，用于训练新的 RM 模型，然后训练新的策略。</li>
+</ol>
+<h3 id="监督调优模型"><a href="#监督调优模型" class="headerlink" title="监督调优模型"></a>监督调优模型</h3><ul>
+<li>数据收集：选择一个提示列表，标注人员按要求写下预期的输出。对于 ChatGPT，使用了两种不同的 prompt 来源：一些是直接使用标注人员或研究人员准备的，另一些是从 OpenAI 的 API 请求（即从 GPT-3 用户那里）获取的。虽然整个过程缓慢且昂贵，但最终得到的结果是一个相对较小、高质量的数据集（大概有 12-15k 个数据点），可用于调优预训练的语言模型。  </li>
+<li>模型选择：GPT-3.5 系列中的预训练模型，text-davinci-003<br>这里的问题是监督学习步骤具有高可扩展性成本。<br>为了克服这个问题，使用的策略是让人工标注者对 SFT 模型的不同输出进行排序以创建 RM 模型，而不是让人工标注者创建一个更大的精选数据集。</li>
+</ul>
+<h3 id="训练回报模型"><a href="#训练回报模型" class="headerlink" title="训练回报模型"></a>训练回报模型</h3><p>这一步的目标是直接从数据中学习目标函数。该函数的目的是为 SFT 模型输出进行打分，这代表这些输出对于人类来说可取程度有多大。这强有力地反映了选定的人类标注者的具体偏好以及他们同意遵循的共同准则。最后，这个过程将从数据中得到模仿人类偏好的系统。  </p>
+<ul>
+<li>选择 prompt 列表，SFT 模型为每个 prompt 生成多个输出（4 到 9 之间的任意值）；</li>
+<li>标注者将输出从最佳到最差排序。结果是一个新的标签数据集，该数据集的大小大约是用于 SFT 模型的精确数据集的 10 倍；</li>
+<li>此新数据用于训练 RM 模型 。该模型将 SFT 模型输出作为输入，并按优先顺序对它们进行排序。<br>对于标注者来说，对输出进行排序比从头开始打标要容易得多，这一过程可以更有效地扩展。</li>
+</ul>
+<h3 id="PPO模型微调SFT模型"><a href="#PPO模型微调SFT模型" class="headerlink" title="PPO模型微调SFT模型"></a>PPO模型微调SFT模型</h3><p>强化学习被应用于通过优化 RM 模型来调优 SFT 模型。近端策略优化（PPO），近端策略优化模型。 PPO 可以根据所采取行动的估计价值对策略进行更明智的更新。PPO 模型由 SFT 模型初始化，价值函数由 RM 模型初始化。该环境是一个「bandit environment」，它会产生随机 prompt 并期望对 prompt 做出响应。对于给定的 prompt 和响应，它会产生相应的回报（由 RM 模型决定）。SFT 模型会对每个 token 添加 KL 惩罚因子，以尽量避免 RM 模型的过度优化。  </p>
+<h2 id="局限性"><a href="#局限性" class="headerlink" title="局限性"></a>局限性</h2><ol>
+<li>会受到各种错综复杂的主观因素的影响 </li>
+<li>缺乏对照研究</li>
+</ol>
+<h2 id="相关论文"><a href="#相关论文" class="headerlink" title="相关论文"></a>相关论文</h2><ul>
+<li>Training language models to follow instructions with human feedback（<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2203.02155.pdf%EF%BC%89">https://arxiv.org/pdf/2203.02155.pdf）</a>  InstructionGPT  </li>
+<li>Learning to summarize from Human Feedback （<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2009.01325.pdf%EF%BC%89">https://arxiv.org/pdf/2009.01325.pdf）</a> RLHF  </li>
+<li>PPO（<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1707.06347.pdf%EF%BC%89">https://arxiv.org/pdf/1707.06347.pdf）</a> PPO </li>
+<li>Deep reinforcement learning from human preferences （<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1706.03741%EF%BC%89">https://arxiv.org/abs/1706.03741）</a></li>
+</ul>
+
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> Contents</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ChatGPT%E8%83%8C%E5%90%8E%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-text">ChatGPT背后的工作原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GPT-3"><span class="toc-text">GPT-3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83%E7%AD%96%E7%95%A5"><span class="toc-text">语言模型训练策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RLHF"><span class="toc-text">RLHF</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%91%E7%9D%A3%E8%B0%83%E4%BC%98%E6%A8%A1%E5%9E%8B"><span class="toc-text">监督调优模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83%E5%9B%9E%E6%8A%A5%E6%A8%A1%E5%9E%8B"><span class="toc-text">训练回报模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PPO%E6%A8%A1%E5%9E%8B%E5%BE%AE%E8%B0%83SFT%E6%A8%A1%E5%9E%8B"><span class="toc-text">PPO模型微调SFT模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%80%E9%99%90%E6%80%A7"><span class="toc-text">局限性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E8%AE%BA%E6%96%87"><span class="toc-text">相关论文</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+          <blockquote id="copyright">
+              <p>Original link: <a href="http://example.com/2023/02/22/About-ChatGPT/">http://example.com/2023/02/22/About-ChatGPT/</a></p>
+              <p>Copyright Notice: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Share:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+    <a href="/2023/02/21/Is-ChatGPT-A-Good-Translator/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">
+        
+          Is ChatGPT A Good Translator?
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/02/23/flask-vue-mysql%E5%89%8D%E5%90%8E%E5%88%86%E7%A6%BB%E9%A1%B9%E7%9B%AE%E6%AF%8F%E6%97%A5%E8%AE%B0%E5%BD%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">newer</strong>
+      <div class="article-nav-title">
+        
+          flask+vue+mysql前后分离项目每日记录
+        
+      </div>
+    </a>
+  
+</nav>
+
+      
+      
+        
+
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> Recent</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/03/09/some-ideas/">some ideas</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/28/prompt-learning/">prompt learning</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/28/pytorch-study/">pytorch study</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/24/Knowledge-Enhanced-Prompt-Learning/">Knowledge-Enhanced Prompt Learning</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/23/flask-vue-mysql%E5%89%8D%E5%90%8E%E5%88%86%E7%A6%BB%E9%A1%B9%E7%9B%AE%E6%AF%8F%E6%97%A5%E8%AE%B0%E5%BD%95/">flask+vue+mysql前后分离项目每日记录</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CRS/" style="font-size: 10px;">CRS</a> <a href="/tags/ChatGPT/" style="font-size: 20px;">ChatGPT</a> <a href="/tags/PyTorch/" style="font-size: 10px;">PyTorch</a> <a href="/tags/flask-vue-mysql/" style="font-size: 10px;">flask,vue,mysql</a>
+    </div>
+  </div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> Archive</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CRS/" rel="tag">CRS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PyTorch/" rel="tag">PyTorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flask-vue-mysql/" rel="tag">flask,vue,mysql</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-link"></i> Blogroll</h3>
+    <div class="widget">
+      <ul>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example1.com/">site-name1</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example2.com/">site-name2</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example3.com/">site-name3</a>
+        </li>
+      
+      </ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">Site Map</a>
+        <span> | </span><a href="/atom.xml">Subscribe to this site</a>
+        <span> | </span><a href="/about/">Contact the blogger</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2023 JupiterTop.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+    </div>
+  </div>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+    
+<script src="/localshare/js/social-share.js"></script>
+
+    
+<script src="/localshare/js/qrcode.js"></script>
+
+  
+  
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+
+
+
+
+</body>
+</html>
