@@ -111,7 +111,6 @@
       <i id="busuanzi_value_page_pv"></i>
   </i>
 </span>
-
       
       
 <a href="/2023/02/28/pytorch-study/#comments" class="article-comment-link">
@@ -127,6 +126,7 @@
 </a>
 
 
+      
     </div>
     <div class="e-content article-entry" itemprop="articleBody">
       
@@ -231,8 +231,81 @@
             torchvision.transforms.ToTensor() 
             ])
     train_set = torchvision.datasets.CIFAR10(root=&quot;./dataset_CIFAR10&quot;，transform=dataset_transform, train=True, download=True)
-    test_set = torchvision.datasets.CIFAR10(root=&quot;./dataset_CIFAR10&quot;, transform=dataset_transform, train=False, download=True)
+    test_set = torchvision.datasets.CIFAR10(root=&quot;./dataset_CIFAR10&quot;, transform=dataset_transform, train=False, download=True)  
 </code></pre>
+<h2 id="5-Neural-Network"><a href="#5-Neural-Network" class="headerlink" title="5 Neural Network"></a>5 Neural Network</h2><h3 id="1-nn-Module"><a href="#1-nn-Module" class="headerlink" title="1 nn.Module"></a>1 nn.Module</h3><p>Base class for all neural network modules<br>example:</p>
+<pre><code>    import torch.nn as nn
+    import torch.nn.functional as F
+
+    class Model(nn.Module):
+    def __init__(self):
+            super().__init__()
+            self.conv1 = nn.Conv2d(1, 20, 5)
+            self.conv2 = nn.Conv2d(20, 20, 5)
+
+    def forward(self, x):
+            x = F.relu(self.conv1(x))
+            return F.relu(self.conv2(x))  
+</code></pre>
+<h3 id="2-nn-Conv2d"><a href="#2-nn-Conv2d" class="headerlink" title="2 nn.Conv2d"></a>2 nn.Conv2d</h3><p>Parameters:   </p>
+<ul>
+<li><p>in_channels (int) – Number of channels in the input image  </p>
+</li>
+<li><p>out_channels (int) – Number of channels produced by the convolution</p>
+</li>
+<li><p>kernel_size (int or tuple) – Size of the convolving kernel</p>
+</li>
+<li><p>stride (int or tuple, optional) – Stride of the convolution. Default: 1</p>
+</li>
+<li><p>padding (int, tuple or str, optional) – Padding added to all four sides of the input. Default: 0</p>
+</li>
+<li><p>padding_mode (str, optional) – ‘zeros’, ‘reflect’, ‘replicate’ or ‘circular’. Default: ‘zeros’</p>
+</li>
+<li><p>dilation (int or tuple, optional) – Spacing between kernel elements. Default: 1  空洞卷积</p>
+</li>
+<li><p>groups (int, optional) – Number of blocked connections from input channels to output channels. Default: 1</p>
+</li>
+<li><p>bias (bool, optional) – If True, adds a learnable bias to the output. Default: True  </p>
+<p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230319164750.png#pic_center"></p>
+</li>
+</ul>
+<h3 id="3-nn-MaxPool2d"><a href="#3-nn-MaxPool2d" class="headerlink" title="3 nn.MaxPool2d"></a>3 nn.MaxPool2d</h3><p>又叫下采样， nn.MaxUnpool2d 为上采样<br>Parameters:</p>
+<ul>
+<li><p>kernel_size (Union[int, Tuple[int, int]]) – the size of the window to take a max over</p>
+</li>
+<li><p>stride (Union[int, Tuple[int, int]]) – the stride of the window. Default <em><strong>value is kernel_size</strong></em></p>
+</li>
+<li><p>padding (Union[int, Tuple[int, int]]) – Implicit negative infinity padding to be added on both sides</p>
+</li>
+<li><p>dilation (Union[int, Tuple[int, int]]) – a parameter that controls the stride of elements in the window</p>
+</li>
+<li><p>return_indices (bool) – if True, will return the max indices along with the outputs. Useful for torch.nn.MaxUnpool2d later</p>
+</li>
+<li><p>ceil_mode (bool) – when True, will use ceil instead of floor to compute the output shape  </p>
+<p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230319164621.png#pic_center"></p>
+</li>
+</ul>
+<h3 id="4-Non-linear-Activations"><a href="#4-Non-linear-Activations" class="headerlink" title="4 Non-linear Activations"></a>4 Non-linear Activations</h3><ul>
+<li><p>nn.ReLU  </p>
+</li>
+<li><p>nn.Sigmoid<br>效果：</p>
+<p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230320092744.png#pic_center"></p>
+</li>
+</ul>
+<h3 id="5-nn-Sequential"><a href="#5-nn-Sequential" class="headerlink" title="5 nn.Sequential"></a>5 nn.Sequential</h3><p>example:  </p>
+<pre><code>    self.model1 = Sequential(
+        Conv2d(3, 32, 5, padding=2),
+        MaxPool2d(2),
+        Conv2d(32, 32, 5, padding=2),
+        MaxPool2d(2),
+        Conv2d(32, 64, 5, padding=2),
+        MaxPool2d(2),
+        Flatten(),
+        Linear(1024, 64),
+        Linear(64, 10)
+    )  
+</code></pre>
+<p>  <img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230320101329.png#pic_center"></p>
 
         
             <div id="toc-article">
@@ -240,7 +313,7 @@
   <div class="widget-wrap" id="toc-wrap">
     <h3 class="widget-title"><i class="fa fa-toc"></i> Contents</h3>
     <div class="widget">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PyTorch%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B5%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95"><span class="toc-text">PyTorch深度学习实践学习记录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83"><span class="toc-text">0 配置环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE"><span class="toc-text">1 加载数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-tensorboard%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">2 tensorboard的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-transform%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">3 transform的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-dataset-%E5%92%8C-transform-%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8"><span class="toc-text">4 dataset 和 transform 一起使用</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PyTorch%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B5%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95"><span class="toc-text">PyTorch深度学习实践学习记录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83"><span class="toc-text">0 配置环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE"><span class="toc-text">1 加载数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-tensorboard%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">2 tensorboard的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-transform%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">3 transform的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-dataset-%E5%92%8C-transform-%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8"><span class="toc-text">4 dataset 和 transform 一起使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Neural-Network"><span class="toc-text">5 Neural Network</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-nn-Module"><span class="toc-text">1 nn.Module</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-nn-Conv2d"><span class="toc-text">2 nn.Conv2d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-nn-MaxPool2d"><span class="toc-text">3 nn.MaxPool2d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Non-linear-Activations"><span class="toc-text">4 Non-linear Activations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-nn-Sequential"><span class="toc-text">5 nn.Sequential</span></a></li></ol></li></ol></li></ol>
     </div>
   </div>
 
@@ -323,6 +396,14 @@
       <ul>
         
           <li>
+            <a href="/2023/03/20/CRS-Adversarial-Examples/">CRS-Adversarial Examples</a>
+          </li>
+        
+          <li>
+            <a href="/2023/03/15/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
             <a href="/2023/03/09/some-ideas/">some ideas</a>
           </li>
         
@@ -332,14 +413,6 @@
         
           <li>
             <a href="/2023/02/28/pytorch-study/">pytorch study</a>
-          </li>
-        
-          <li>
-            <a href="/2023/02/24/Knowledge-Enhanced-Prompt-Learning/">Knowledge-Enhanced Prompt Learning</a>
-          </li>
-        
-          <li>
-            <a href="/2023/02/23/flask-vue-mysql%E5%89%8D%E5%90%8E%E5%88%86%E7%A6%BB%E9%A1%B9%E7%9B%AE%E6%AF%8F%E6%97%A5%E8%AE%B0%E5%BD%95/">flask+vue+mysql前后分离项目每日记录</a>
           </li>
         
       </ul>
@@ -352,7 +425,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CRS/" style="font-size: 10px;">CRS</a> <a href="/tags/ChatGPT/" style="font-size: 20px;">ChatGPT</a> <a href="/tags/PyTorch/" style="font-size: 10px;">PyTorch</a> <a href="/tags/flask-vue-mysql/" style="font-size: 10px;">flask,vue,mysql</a>
+      <a href="/tags/CRS/" style="font-size: 20px;">CRS</a> <a href="/tags/ChatGPT/" style="font-size: 20px;">ChatGPT</a> <a href="/tags/PyTorch/" style="font-size: 10px;">PyTorch</a> <a href="/tags/flask-vue-mysql/" style="font-size: 10px;">flask,vue,mysql</a>
     </div>
   </div>
 
@@ -364,7 +437,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> Archive</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">9</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">10</span></li></ul>
     </div>
   </div>
 
@@ -374,7 +447,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CRS/" rel="tag">CRS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PyTorch/" rel="tag">PyTorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flask-vue-mysql/" rel="tag">flask,vue,mysql</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CRS/" rel="tag">CRS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PyTorch/" rel="tag">PyTorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flask-vue-mysql/" rel="tag">flask,vue,mysql</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -434,6 +507,7 @@
     </div>
   </div>
 </footer>
+
 
     </div>
   </div>
