@@ -306,6 +306,144 @@
     )  
 </code></pre>
 <p>  <img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230320101329.png#pic_center"></p>
+<h2 id="使用已有模型开发"><a href="#使用已有模型开发" class="headerlink" title="使用已有模型开发"></a>使用已有模型开发</h2><pre><code>    vgg16_false = torchvision.models.vgg16(pretrained=False)
+    vgg16_true = torchvision.models.vgg16(pretrained=True)
+</code></pre>
+<p>vgg16预训练是在ImagNet上，但ImagNetl类别是1000个，Cifar10类别是10个<br>方案1：add_module添加一个线性层  </p>
+<pre><code>    vgg16_true.classifier.add_module(&#39;add_linear&#39;, nn.Linear(1000, 10))
+</code></pre>
+<p>方案2：直接修改某一层</p>
+<pre><code>    vgg16_false.classifier[6] = nn.Linear(4096, 10)
+</code></pre>
+<p>模型的保存与导入（两种）    </p>
+<ol>
+<li><p>   torch.save(vgg16_false, “vgg16_method1.pth”)<br>   model &#x3D; torch.load(“vgg16_method1.pth”)</p>
+</li>
+<li><p>(recommend) smaller  通过字典形式存储参数</p>
+<pre><code>torch.save(vgg16_false.state_dict(), &quot;vgg16_method2.pth&quot;)   
+vgg16_false.load_state_dict(torch.load(&quot;vgg16_method2.pth&quot;))
+</code></pre>
+</li>
+</ol>
+<h2 id="完整的训练流程（套路）"><a href="#完整的训练流程（套路）" class="headerlink" title="完整的训练流程（套路）"></a>完整的训练流程（套路）</h2><ol>
+<li><p>准备数据集</p>
+</li>
+<li><p>dataloader加载数据集</p>
+</li>
+<li><p>搭建网络模型</p>
+</li>
+<li><p>创建网络模型实例</p>
+</li>
+<li><p>定义损失函数</p>
+</li>
+<li><p>定义优化器</p>
+</li>
+<li><p>设置网络训练的参数</p>
+</li>
+<li><p>开始训练</p>
+</li>
+<li><p>验证模型</p>
+</li>
+<li><p>最后保存模型</p>
+</li>
+<li><p>tensorboard训练结果展示</p>
+<pre><code># 准备训练数据集
+train_data = torchvision.datasets.CIFAR10(root=&quot;./dataset_CIFAR10&quot;, train=True, transform=torchvision.transforms.ToTensor(),download=True)
+
+# 准备训练数据集
+test_data = torchvision.datasets.CIFAR10(root=&quot;./dataset_CIFAR10&quot;, train=False, transform=torchvision.transforms.ToTensor(),download=True)
+print(&quot;训练数据集的长度为：&#123;&#125;&quot;.format(len(train_data)))
+
+# 利用DataLoader来加载数据集
+train_dataloader = DataLoader(train_data, batch_size=64)
+test_dataloader = DataLoader(train_data, batch_size=64)
+
+# 创建网络模型
+model = Model()
+
+# 损失函数
+loss_fn = nn.CrossEntropyLoss()
+
+# 优化器
+learning_rate = 1e-2
+optimizer =  torch.optim.SGD(model.parameters(), lr=learning_rate)
+
+# 设置训练网络的一些参数
+# 记录训练的次数
+total_train_step = 0
+# 记录测试的次数
+total_test_step = 0
+# 训练的轮数
+epoch = 10
+
+# 添加tensorboard
+writer = SummaryWriter(&quot;train_logs&quot;)
+
+for i in range(epoch):
+print(&quot;--------第 &#123;&#125; 轮训练开始--------&quot;.format(i+1))
+# 训练步骤
+# model.train()  # 适用于有dropout层，Norm层
+for data in train_dataloader:
+        imgs, targets = data
+        outputs = model(imgs)
+        loss = loss_fn(outputs, targets)
+        # 优化器优化模型
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+        total_train_step = total_train_step + 1
+        if total_train_step % 100 == 0:
+        print(&quot;训练次数：&#123;&#125;，loss:&#123;&#125;&quot;.format(total_train_step, loss.item()))
+        writer.add_scalar(&quot;train_loss&quot;, loss.item(), total_train_step)
+
+# 测试步骤
+# model.eval()  # 适用于有dropout层，Norm层
+total_test_loss = 0.0
+with torch.no_grad():
+        for data in test_dataloader:
+        imgs, targets = data
+        outputs = model(imgs)
+        loss = loss_fn(outputs, targets)
+        total_test_loss += loss.item()
+        accuracy = (outputs.argmax(1) == targets).sum()
+        total_accuracy = total_accuracy + accuracy
+print(&quot;整体测试集上的Loss：&#123;&#125;&quot;.format(total_test_loss))
+print(&quot;整体测试集上的accuracy：&#123;&#125;&quot;.format(total_accuracy/len(test_data)))
+writer.add_scalar(&quot;test_loss&quot;, total_test_loss, total_test_step)
+writer.add_scalar(&quot;test_accuracy&quot;, total_accuracy/len(test_data), total_test_step)
+total_train_step += 1
+
+# 保存模型
+# torch.save(model, &quot;model_&#123;&#125;.pth&quot;.format(i))
+# print(&quot;模型已保存&quot;)
+writer.close()
+</code></pre>
+</li>
+</ol>
+<h2 id="使用GPU训练"><a href="#使用GPU训练" class="headerlink" title="使用GPU训练"></a>使用GPU训练</h2><p>对模型、损失函数、要训练和验证数据处理，两种方式：  </p>
+<ol>
+<li>.cuda() </li>
+<li>先定义device &#x3D; torch.device(“cuda”)，然后对模型、损失函数、数据使用.to(device)<br>可使用google.colab使用免费的计算资源</li>
+</ol>
+<h2 id="验证的流程"><a href="#验证的流程" class="headerlink" title="验证的流程"></a>验证的流程</h2><pre><code>    image_path = &quot;&quot;
+    image = Image.open(image_path)
+
+    transform = torchvision.transforms.Compose([torchvision.transforms.Resize((32, 32)),
+                                            torchvision.transforms.ToTensor()])
+
+    image = transform(image)
+
+    # 载入网络模型
+    # 如果是gpu上训练的结果在cpu上载入，要加map_location=torch.device(&#39;cpu&#39;)
+    model = torch.load(&quot;model_29_gpu.pth&quot;, map_location=torch.device(&#39;cpu&#39;))
+
+    image = torch.reshape(image, (1, 3, 32, 32))
+    model.eval()
+    with torch.no_grad():
+    output = model(image)
+    print(output)
+    print(output.argmax(1))
+</code></pre>
 
         
             <div id="toc-article">
@@ -313,7 +451,7 @@
   <div class="widget-wrap" id="toc-wrap">
     <h3 class="widget-title"><i class="fa fa-toc"></i> Contents</h3>
     <div class="widget">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PyTorch%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B5%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95"><span class="toc-text">PyTorch深度学习实践学习记录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83"><span class="toc-text">0 配置环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE"><span class="toc-text">1 加载数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-tensorboard%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">2 tensorboard的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-transform%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">3 transform的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-dataset-%E5%92%8C-transform-%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8"><span class="toc-text">4 dataset 和 transform 一起使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Neural-Network"><span class="toc-text">5 Neural Network</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-nn-Module"><span class="toc-text">1 nn.Module</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-nn-Conv2d"><span class="toc-text">2 nn.Conv2d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-nn-MaxPool2d"><span class="toc-text">3 nn.MaxPool2d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Non-linear-Activations"><span class="toc-text">4 Non-linear Activations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-nn-Sequential"><span class="toc-text">5 nn.Sequential</span></a></li></ol></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PyTorch%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B5%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95"><span class="toc-text">PyTorch深度学习实践学习记录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83"><span class="toc-text">0 配置环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE"><span class="toc-text">1 加载数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-tensorboard%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">2 tensorboard的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-transform%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">3 transform的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-dataset-%E5%92%8C-transform-%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8"><span class="toc-text">4 dataset 和 transform 一起使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Neural-Network"><span class="toc-text">5 Neural Network</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-nn-Module"><span class="toc-text">1 nn.Module</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-nn-Conv2d"><span class="toc-text">2 nn.Conv2d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-nn-MaxPool2d"><span class="toc-text">3 nn.MaxPool2d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Non-linear-Activations"><span class="toc-text">4 Non-linear Activations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-nn-Sequential"><span class="toc-text">5 nn.Sequential</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%B7%B2%E6%9C%89%E6%A8%A1%E5%9E%8B%E5%BC%80%E5%8F%91"><span class="toc-text">使用已有模型开发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E7%9A%84%E8%AE%AD%E7%BB%83%E6%B5%81%E7%A8%8B%EF%BC%88%E5%A5%97%E8%B7%AF%EF%BC%89"><span class="toc-text">完整的训练流程（套路）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8GPU%E8%AE%AD%E7%BB%83"><span class="toc-text">使用GPU训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="toc-text">验证的流程</span></a></li></ol></li></ol>
     </div>
   </div>
 
@@ -396,23 +534,23 @@
       <ul>
         
           <li>
-            <a href="/2023/03/20/CRS-Adversarial-Examples/">CRS-Adversarial Examples</a>
+            <a href="/2024/04/18/Java-gulimall/">Java-gulimall</a>
           </li>
         
           <li>
-            <a href="/2023/03/15/hello-world/">Hello World</a>
+            <a href="/2024/03/11/offer-JVM/">offer-JVM</a>
           </li>
         
           <li>
-            <a href="/2023/03/09/some-ideas/">some ideas</a>
+            <a href="/2023/08/29/offer-SSM/">offer-SSM</a>
           </li>
         
           <li>
-            <a href="/2023/02/28/prompt-learning/">prompt learning</a>
+            <a href="/2023/07/18/Prompt-Engineering/">Prompt Engineering</a>
           </li>
         
           <li>
-            <a href="/2023/02/28/pytorch-study/">pytorch study</a>
+            <a href="/2023/07/10/offer-redis6/">offer-redis6</a>
           </li>
         
       </ul>
@@ -425,7 +563,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CRS/" style="font-size: 20px;">CRS</a> <a href="/tags/ChatGPT/" style="font-size: 20px;">ChatGPT</a> <a href="/tags/PyTorch/" style="font-size: 10px;">PyTorch</a> <a href="/tags/flask-vue-mysql/" style="font-size: 10px;">flask,vue,mysql</a>
+      <a href="/tags/CRS/" style="font-size: 20px;">CRS</a> <a href="/tags/ChatGPT/" style="font-size: 20px;">ChatGPT</a> <a href="/tags/Dialog/" style="font-size: 10px;">Dialog</a> <a href="/tags/JAVA/" style="font-size: 15px;">JAVA</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/LLM/" style="font-size: 10px;">LLM</a> <a href="/tags/PyTorch/" style="font-size: 10px;">PyTorch</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/SSM/" style="font-size: 10px;">SSM</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/flask-vue-mysql/" style="font-size: 10px;">flask,vue,mysql</a>
     </div>
   </div>
 
@@ -437,7 +575,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> Archive</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">10</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">18</span></li></ul>
     </div>
   </div>
 
@@ -447,7 +585,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CRS/" rel="tag">CRS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PyTorch/" rel="tag">PyTorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flask-vue-mysql/" rel="tag">flask,vue,mysql</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CRS/" rel="tag">CRS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dialog/" rel="tag">Dialog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/" rel="tag">JAVA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PyTorch/" rel="tag">PyTorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSM/" rel="tag">SSM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flask-vue-mysql/" rel="tag">flask,vue,mysql</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -500,7 +638,7 @@
         </p>
       
       <p>
-        <span>Copyright &copy; 2023 JupiterTop.</span>
+        <span>Copyright &copy; 2024 JupiterTop.</span>
         <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
         <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
       </p>

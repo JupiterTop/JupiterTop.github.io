@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>offer-javaweb | wBlog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  
+  
+    <link rel="alternate" href="/atom.xml" title="wBlog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">wBlog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Home</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> Archive</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> About</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> RSS</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="search"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-offer-javaweb" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      offer-javaweb
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-07-06T04:29:03.000Z" itemprop="datePublished">2023年07月06日</time>
+</span>
+      
+      
+        <span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+      
+      
+<a href="/2023/07/06/offer-javaweb/#comments" class="article-comment-link">
+  
+    
+    
+    
+    
+    
+  
+  <i class="fa fa-commt"></i>
+  Guestbook
+</a>
+
+
+      
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="JAVAWEB"><a href="#JAVAWEB" class="headerlink" title="JAVAWEB"></a>JAVAWEB</h1><h2 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h2><ol>
+<li>HTML是解释型的文本标记语言，不区分大小写</li>
+<li>html,head,title,meta,body,br,p,hr,div,table,form,u,i,b,sup,sub,&amp;nbsp,span,ul,ol,li,tr,td,th,h1-h6,a,input,select,textarea,img<br> 2-1. html , head , title , meta , body , br , ul , ol , h1-h6 , a , img , &amp;nbsp, p , div , span<br> 2-2. table tr , th , td<br> 2-3. form(action&#x3D;’’ , method&#x3D;’post’) input type&#x3D;’text,pasword,radio,checkbox,submit,button,reset” select , textarea<br> 2-4. frameset表示页面框架、frame表示框架中的具体页面引用；iframe在一个页面嵌入一个子页面。</li>
+</ol>
+<h2 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>层叠式样式表<br>被style标签包围的环境为CSS环境，可以写CSS代码，值 “text&#x2F;css” 指示内容是标准的 CSS。  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;style type=&quot;text/css&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>CSS的分类：标签样式表、类样式表、ID样式表、组合样式表<br>CSS从位置上的分类：嵌入样式表、内部样式表、外部样式表  </p>
+<h3 id="盒子模型"><a href="#盒子模型" class="headerlink" title="盒子模型"></a>盒子模型</h3><ol>
+<li>border(-top&#x2F;-left…)  </li>
+<li>margin 和 padding  注意浏览器的兼容问题！<br>tips：  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">body&#123;</span><br><span class="line">    margin:0;</span><br><span class="line">    padding:0;</span><br><span class="line">&#125;</span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">### CSS布局  </span><br><span class="line">position: absolute -- 绝对定位 , 需要配合使用 left , top</span><br><span class="line">		  relative -- 相对定位 , 一般会和 float , margin , padding .... 一起使用  </span><br><span class="line"></span><br><span class="line">## JavaScript  </span><br><span class="line">Javascript : 客户端的一个脚本语言  </span><br><span class="line">js是一门弱类型的语言 , 变量的数据类型由后面赋的值的类型决定  </span><br></pre></td></tr></table></figure>
+<pre><code> &lt;script language=&quot;javascript&quot;&gt;
+     
+     /*
+     var str = &quot;hello world&quot;;
+     alert(typeof str);
+     str = 9999 ;
+     alert(typeof str);
+     */
+     /*
+     var person = new Object();
+     person.pid = &quot;p001&quot;;
+     person.pname=&quot;鸠摩智&quot;;
+
+     alert(person.pid+&quot;_&quot;+person.pname);
+     */
+     //java 方法
+     public String hello(String name)&#123;
+         return &quot;hello to &quot; + name ;
+     &#125;
+
+     //js 方法
+     function hello(num1 , num2 , name)&#123;
+         if(num1&gt;num2)&#123;
+             return &quot;hello to&quot; + name ;
+         &#125;else&#123;
+             alert(&quot;HELLO&quot;);
+         &#125;
+     &#125;
+ &lt;/script&gt;
+</code></pre>
+</li>
+</ol>
+<pre><code>
+## WEB  
+1. C/S：客户端服务器架构模式  
+    优点：充分利用客户端机器的资源，减轻服务器的负荷（一部分安全要求不高的计算任务存储任务放在客户端执行，不需要把所有的计算和存储都在服务器端执行，从而能够减轻服务器的压力，也能够减轻网络负荷）  
+    缺点：需要安装客户端；升级维护成本较高  
+
+2. B/S：浏览器服务器架构模式  
+    优点：客户端不需要安装；维护成本较低  
+    缺点：所有的计算和存储任务都是放在服务器端，服务器的负荷较重；在服务端计算完成之后把结果再传输给客户端，因此客户端和服务端会进行非常频繁的数据通信，从而网络负荷较重  
+
+### Tomcat  
+Web容器：
+1. Tomcat的安装和配置
+    * 解压:不要有中文不要有空格  
+    * 目录结构说明 :
+        bin 可执行文件目录  
+        conf 配置文件目录  
+        lib 存放lib的目录  
+        logs 日志文件目录  
+        webapps 项目部署的目录  
+        work 工作目录  
+        temp 临时目录  
+        deploy :部署  
+        baidu&gt; context root  
+    * 配置环境变量，让tomcat能够运行因为tomcat也是用java和C来写的，因此需要JRE，所以需要配置JAVA HOME  
+    * 启动tomcat，然后访问主页  
+2. 新建Web项目，并在tomcat中部署最后再访问  
+
+### Servlet  
+#### 使用场景  
+1. 用户在html的表单添加请求，action=&quot;add&quot;，method=&quot;post&quot;
+2. 新建AddServlet文件，继承HttpServlet，重写doPost或doGet方法，通过request.getParameter根据name值获取表单中的属性，以及添加其他有关数据库的代码。    
+3. WEB-INFO目录下的web.xml文件中添加映射配置：  
+```xml
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;web-app xmlns=&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&quot;
+         version=&quot;4.0&quot;&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;AddServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;com.atguigu.servlets.AddServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;AddServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/add&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;!--
+    1. 用户发请求，action=add
+    2. 项目中，web.xml中找到url-pattern = /add   -&gt; 第12行
+    3. 找第11行的servlet-name = AddServlet
+    4. 找和servlet-mapping中servlet-name一致的servlet ， 找到第7行
+    5. 找第8行的servlet-class -&gt; com.atguigu.servlets.AddServlet
+    6. 用户发送的是post请求（method=post） ， 因此 tomcat会执行AddServlet中的doPost方法
+    --&gt;
+&lt;/web-app&gt;
+</code></pre>
+<p>可以通过welcome-file-list标签进行设置欢迎页(在tomcat的web.xml中设置，或者在自己项目的web.xml中设置)。  </p>
+<h4 id="设置编码"><a href="#设置编码" class="headerlink" title="设置编码"></a>设置编码</h4><p>post方式下，doPost开头设置编码，在所有获取参数动作之前，防止中文乱码  </p>
+<pre><code class="java">
+    request.setCharacterEncoding(&quot;UTF-8&quot;);
+</code></pre>
+<p>get方式目前不需要设置编码（基于tomcat8），tomcat8之前，设置编码，.getBytes(“xxx”)，再重新组装成格式  </p>
+<h4 id="Servlet的继承关系"><a href="#Servlet的继承关系" class="headerlink" title="Servlet的继承关系"></a>Servlet的继承关系</h4><ol>
+<li><p>继承关系<br>   javax.servlet.Servlet接口<br>   javax.servlet.GenericServlet抽象类<br>       javax.servlet.http.HttpServlet抽象子类</p>
+</li>
+<li><p>相关方法<br> javax.servlet.Servlet接口:<br> void init(config) - 初始化方法<br> void service(request,response) - 服务方法<br> void destory() - 销毁方法</p>
+<p> javax.servlet.GenericServlet抽象类：<br> void service(request,response) - 仍然是抽象的</p>
+<p> javax.servlet.http.HttpServlet 抽象子类：<br> void service(request,response) - 不是抽象的</p>
+<ul>
+<li>String method &#x3D; req.getMethod(); 获取请求的方式  </li>
+<li>各种if判断，根据请求方式不同，决定去调用不同的do方法<br>  if (method.equals(“GET”)) {<br>  this.doGet(req,resp);<br>  } else if (method.equals(“HEAD”)) {<br>  this.doHead(req, resp);<br>  } else if (method.equals(“POST”)) {<br>  this.doPost(req, resp);<br>  } else if (method.equals(“PUT”)) {}…</li>
+<li>在HttpServlet这个抽象类中，do方法都差不多:</li>
+</ul>
+<pre><code class="java">    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException &#123;
+        String protocol = req.getProtocol();
+        String msg = lStrings.getString(&quot;http.method_get_not_supported&quot;);
+        if (protocol.endsWith(&quot;1.1&quot;)) &#123;
+            resp.sendError(405, msg);
+        &#125; else &#123;
+            resp.sendError(400, msg);
+        &#125;
+    &#125;
+</code></pre>
+</li>
+</ol>
+<h4 id="Servlet的生命周期"><a href="#Servlet的生命周期" class="headerlink" title="Servlet的生命周期"></a>Servlet的生命周期</h4><ol>
+<li>生命周期：从出生到死亡的过程就是生命周期。对应Servlet中的三个方法：init(),service(),destroy()</li>
+<li>默认情况下：<ul>
+<li>第一次接收请求时，这个Servlet会进行实例化(调用构造方法)、初始化(调用init())、然后服务(调用service())</li>
+<li>从第二次请求开始，每一次都是服务</li>
+<li>当容器关闭时，其中的所有的servlet实例会被销毁，调用销毁方法</li>
+</ul>
+</li>
+<li>通过案例我们发现：<ul>
+<li>Servlet实例tomcat只会创建一个，所有的请求都是这个实例去响应。</li>
+<li>默认情况下，第一次请求时，tomcat才会去实例化，初始化，然后再服务.这样的好处是什么？ 提高系统的启动速度 。 这样的缺点是什么？ 第一次请求时，耗时较长。</li>
+<li>因此得出结论： 如果需要提高系统的启动速度，当前默认情况就是这样。如果需要提高响应速度，我们应该设置Servlet的初始化时机。</li>
+</ul>
+</li>
+<li>Servlet的初始化时机：<ul>
+<li>默认是第一次接收请求时，实例化，初始化</li>
+<li>我们可以通过load-on-startup来设置servlet启动的先后顺序，数字越小，启动越靠前，最小值0</li>
+</ul>
+</li>
+<li>Servlet在容器中是：单例的、线程不安全的<ul>
+<li>单例：所有的请求都是同一个实例去响应</li>
+<li>线程不安全：一个线程需要根据这个实例中的某个成员变量值去做逻辑判断。但是在中间某个时机，另一个线程改变了这个成员变量的值，从而导致第一个线程的执行路径发生了变化</li>
+<li>我们已经知道了servlet是线程不安全的，给我们的启发是： 尽量的不要在servlet中定义成员变量。如果不得不定义成员变量，那么不要去：①不要去修改成员变量的值 ②不要去根据成员变量的值做一些逻辑判断</li>
+</ul>
+</li>
+</ol>
+<h4 id="Http协议"><a href="#Http协议" class="headerlink" title="Http协议"></a>Http协议</h4><ul>
+<li>HTTP：Hyper Text Transfer Protocol 超文本传输协议  </li>
+<li>Http是无状态的，包含 请求和响应 两个部分</li>
+<li>Http请求报文包含三个部分：请求行、请求消息头、请求主题  <ul>
+<li>请求行：请求方式、访问地址URL、请求的协议（一般是http1.1）  </li>
+<li>请求消息头：通过具体的参数对本次请求进行具体的说明，包含许多键值对  </li>
+<li>请求体：① get方式，没有请求体，但有queryString ② post方式，有请求体 form data ③ json格式，有请求体，request payload</li>
+</ul>
+</li>
+<li>Http响应报文也包含三个部分：响应行、响应消息头、响应体  <ul>
+<li>响应行：协议、响应状态码、响应状态  </li>
+<li>响应消息头：包含了服务器的信息；服务器发送给浏览器的信息（内容的媒体类型、编码、内容长度等）  </li>
+<li>响应体：响应的实际内容（比如请求xxx.html页面时，响应的内容就是&lt;html&gt;&lt;head&gt;&lt;body&gt;&lt;form&gt;）</li>
+</ul>
+</li>
+</ul>
+<h4 id="会话Session"><a href="#会话Session" class="headerlink" title="会话Session"></a>会话Session</h4><ul>
+<li>Http是无状态的：服务器无法判断这两次请求时同一个客户端发过来的，还是不同的客户端发过来的。  </li>
+<li>带的问题：无法区分同一个用户，导致混乱  </li>
+<li>通过会话跟踪技术来解决无状态问题  <ul>
+<li>客户端第一次发请求给服务器，服务器获取session，获取不到，则创建新的，然后响应给客户端  </li>
+<li>下次客户端给服务器发请求时，会把sessionID带给服务器，那么服务器就能获取到了，那么服务器就判断这一次请求和上次某次请求是同一个客户端，从而能够区分开客户端  </li>
+<li>常用的API:<br>  request.getSession() -&gt; 获取当前的会话，没有则创建一个新的会话<br>  request.getSession(true) -&gt; 效果和不带参数相同<br>  request.getSession(false) -&gt; 获取当前会话，没有则返回null，不会创建新的<br>  session.getId() -&gt; 获取sessionID<br>  session.isNew() -&gt; 判断当前session是否是新的<br>  session.getMaxInactiveInterval() -&gt; session的非激活间隔时长，默认1800秒<br>  session.setMaxInactiveInterval()<br>  session.invalidate() -&gt; 强制性让会话立即失效<br>  session.getAttribute()&#x2F;setAttribute(key,value)，removeAttribute()<br>  ….</li>
+</ul>
+</li>
+<li>session保存作用域时和具体的某一个session对应的</li>
+</ul>
+<h4 id="服务器内部转发以及客户端重定向"><a href="#服务器内部转发以及客户端重定向" class="headerlink" title="服务器内部转发以及客户端重定向"></a>服务器内部转发以及客户端重定向</h4><ol>
+<li>服务器内部转发：request.getRequestDispatcher(“…”).forward(request,response);  <ul>
+<li>一次请求响应的过程，对于客户端而言，内部经过了多少次转发，客户端是不知道的  </li>
+<li>地址栏没有变化</li>
+</ul>
+</li>
+<li>客户端重定向：response.sendRedirect(“…”);  <ul>
+<li>两次请求响应的过程。客户端肯定知道请求URL有变化  </li>
+<li>地址栏有变化</li>
+</ul>
+</li>
+</ol>
+<h4 id="Thymeleaf"><a href="#Thymeleaf" class="headerlink" title="Thymeleaf"></a>Thymeleaf</h4>
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> Contents</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JAVAWEB"><span class="toc-text">JAVAWEB</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML"><span class="toc-text">HTML</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS"><span class="toc-text">CSS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B"><span class="toc-text">盒子模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E7%BC%96%E7%A0%81"><span class="toc-text">设置编码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Servlet%E7%9A%84%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB"><span class="toc-text">Servlet的继承关系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Servlet%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">Servlet的生命周期</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Http%E5%8D%8F%E8%AE%AE"><span class="toc-text">Http协议</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%9A%E8%AF%9DSession"><span class="toc-text">会话Session</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%86%85%E9%83%A8%E8%BD%AC%E5%8F%91%E4%BB%A5%E5%8F%8A%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-text">服务器内部转发以及客户端重定向</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Thymeleaf"><span class="toc-text">Thymeleaf</span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+          <blockquote id="copyright">
+              <p>Original link: <a href="http://example.com/2023/07/06/offer-javaweb/">http://example.com/2023/07/06/offer-javaweb/</a></p>
+              <p>Copyright Notice: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/" rel="tag">Web</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Share:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+    <a href="/2023/05/10/offer-Nginx/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">
+        
+          offer-Nginx
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/07/10/offer-redis6/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">newer</strong>
+      <div class="article-nav-title">
+        
+          offer-redis6
+        
+      </div>
+    </a>
+  
+</nav>
+
+      
+      
+        
+
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> Recent</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/04/18/Java-gulimall/">Java-gulimall</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/11/offer-JVM/">offer-JVM</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/29/offer-SSM/">offer-SSM</a>
+          </li>
+        
+          <li>
+            <a href="/2023/07/18/Prompt-Engineering/">Prompt Engineering</a>
+          </li>
+        
+          <li>
+            <a href="/2023/07/10/offer-redis6/">offer-redis6</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CRS/" style="font-size: 20px;">CRS</a> <a href="/tags/ChatGPT/" style="font-size: 20px;">ChatGPT</a> <a href="/tags/Dialog/" style="font-size: 10px;">Dialog</a> <a href="/tags/JAVA/" style="font-size: 15px;">JAVA</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/LLM/" style="font-size: 10px;">LLM</a> <a href="/tags/PyTorch/" style="font-size: 10px;">PyTorch</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/SSM/" style="font-size: 10px;">SSM</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/flask-vue-mysql/" style="font-size: 10px;">flask,vue,mysql</a>
+    </div>
+  </div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> Archive</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">18</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CRS/" rel="tag">CRS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dialog/" rel="tag">Dialog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/" rel="tag">JAVA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PyTorch/" rel="tag">PyTorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSM/" rel="tag">SSM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flask-vue-mysql/" rel="tag">flask,vue,mysql</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-link"></i> Blogroll</h3>
+    <div class="widget">
+      <ul>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example1.com/">site-name1</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example2.com/">site-name2</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example3.com/">site-name3</a>
+        </li>
+      
+      </ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">Site Map</a>
+        <span> | </span><a href="/atom.xml">Subscribe to this site</a>
+        <span> | </span><a href="/about/">Contact the blogger</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2024 JupiterTop.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+    </div>
+  </div>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+    
+<script src="/localshare/js/social-share.js"></script>
+
+    
+<script src="/localshare/js/qrcode.js"></script>
+
+  
+  
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+
+
+
+
+</body>
+</html>

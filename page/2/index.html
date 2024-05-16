@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>wBlog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  
+  
+    <link rel="alternate" href="/atom.xml" title="wBlog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">wBlog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Home</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> Archive</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> About</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> RSS</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="search"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  <article id="post-CRS-Adversarial-Examples" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/03/20/CRS-Adversarial-Examples/">CRS-Adversarial Examples</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-03-20T07:47:31.000Z" itemprop="datePublished">2023年03月20日</time>
+</span>
+      
+      
+      
+<a href="/2023/03/20/CRS-Adversarial-Examples/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Guestbook
+</a>
+
+
+      
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Evaluating-the-Robustness-of-Conversational-Recommender-Systems-by-Adversarial-Examples"><a href="#Evaluating-the-Robustness-of-Conversational-Recommender-Systems-by-Adversarial-Examples" class="headerlink" title="Evaluating the Robustness of Conversational Recommender Systems by Adversarial Examples"></a>Evaluating the Robustness of Conversational Recommender Systems by Adversarial Examples</h1><h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><ul>
+<li>测试CRS系统的鲁棒性，考虑到人机交互时输入信息的复杂性</li>
+</ul>
+<h2 id="贡献"><a href="#贡献" class="headerlink" title="贡献"></a>贡献</h2><ul>
+<li>提出了一种包含两类四种方案的对抗性评估方案，并自动生成对抗性实例来评估这些系统在面对不同输入数据时的鲁棒性。  </li>
+<li>对三个CRS模型进行了对抗测试，结果都是较差的鲁棒性</li>
+</ul>
+<h2 id="四种方案"><a href="#四种方案" class="headerlink" title="四种方案"></a>四种方案</h2><ol>
+<li>expecting the same prediction by changing the user’s answer<br>期望得到相同的预测，但改变用户的回答</li>
+</ol>
+<p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230320161041.png">  </p>
+<ol start="2">
+<li>expecting the same prediction by adding more details to the user’s answer<br>期望得到相同的预测，但为用户的回答中添加更多的信息</li>
+</ol>
+<p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230320161111.png">  </p>
+<ol start="3">
+<li>expecting a different prediction by<br>changing the user’s answer<br>期望得到不同的预测，但改变用户的回答</li>
+</ol>
+<p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230320161123.png">  </p>
+<ol start="4">
+<li>expecting a different prediction by adding a contradictory sentence to the user’s answer<br>期望得到不同的预测，但为用户的回答中添加一句矛盾的句子</li>
+</ol>
+<p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230320161149.png">  </p>
+<h2 id="结果分析及启发"><a href="#结果分析及启发" class="headerlink" title="结果分析及启发"></a>结果分析及启发</h2><ul>
+<li>We believe that if a model needs to be successful in this task, should have a strong attention mechanism on the user’s answer. This helps the system to fully understand user preferences.  </li>
+<li>first needs to decide which words are important in the user’s answer, then consider all these important words (which are user preferences) in the recommendation.</li>
+</ul>
+<p>这篇文章通过一些对抗实例来测试如今一些好的CRS模型，发现其鲁棒性较差的问题。大部分性能都是下降了，说明在复杂句子中去理解单词的重要性以充分理解用户偏好对CRS性能提升很重要。但也有略微上升的情况，是否可以说明增加适当的对抗或者说干扰，对模型的鲁棒性有一定的提升？<br>带来的思考在于，对抗与非对抗之间的平衡，一方面CRS模型要能抵御一些句子层面上的干扰，另一方面能将干扰化为己用来提高性能。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Original link: <a href="http://example.com/page/2/index.html">http://example.com/page/2/index.html</a></p>
+              <p>Copyright Notice: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CRS/" rel="tag">CRS</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Share:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/03/15/hello-world/">Hello World</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-03-14T16:08:31.094Z" itemprop="datePublished">2023年03月15日</time>
+</span>
+      
+      
+      
+<a href="/2023/03/15/hello-world/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Guestbook
+</a>
+
+
+      
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Original link: <a href="http://example.com/page/2/index.html">http://example.com/page/2/index.html</a></p>
+              <p>Copyright Notice: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>Share:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-some-ideas" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/03/09/some-ideas/">some ideas</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-03-09T06:53:55.000Z" itemprop="datePublished">2023年03月09日</time>
+</span>
+      
+      
+      
+<a href="/2023/03/09/some-ideas/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Guestbook
+</a>
+
+
+      
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Some-ideas"><a href="#Some-ideas" class="headerlink" title="Some ideas"></a>Some ideas</h1><p>对话推荐</p>
+<ol>
+<li>Conversation Module：对话模块，负责理解用户的自然语言反馈以及给出系统的文本答复  </li>
+<li>Conversation Module：策略模块，根据当前状态做出如何回复的决定，是继续询问还是进行推荐  </li>
+<li>Recommender Module：推荐模块，负责根据用户的偏好给出相应的推荐列表或者单个推荐结果</li>
+</ol>
+<h2 id="基于属性的对话推荐"><a href="#基于属性的对话推荐" class="headerlink" title="基于属性的对话推荐"></a>基于属性的对话推荐</h2><p>更多地针对策略模块，希望在最短的交谈次数内实现尽可能精确的推荐。  </p>
+<h3 id="单轮场景"><a href="#单轮场景" class="headerlink" title="单轮场景"></a>单轮场景</h3><blockquote>
+<p>SIGIR 2018（CRM）：Conversational Recommender System  </p>
+</blockquote>
+<ul>
+<li>动机：如何准确地理解用户的意图？如何实施序列化的决策并在每一步采取合适的行动？如何做个性化的推荐以最大化地提升用户的满意程度？  </li>
+<li>方法：提出三个模块分别解决上述三个问题。Belief Tracker +  Policy Network + Recommender  <ol>
+<li>对于一句话，利用n-gram词表转化为向量，LSTM 网络学习所有对话的隐含表示 </li>
+<li>推荐模块采用2-way FM二路因子分解机，输入为用户信息、物品信息和对话信息，输出为用户对物品的预测评分  </li>
+<li>策略模块，输入对话信息，简单的两层前馈神经网络，输出用户的动作预测 。利用强化学习中的 Policy Gradient 方法进行训练</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230310163647.png">  </p>
+<h3 id="多轮场景"><a href="#多轮场景" class="headerlink" title="多轮场景"></a>多轮场景</h3><blockquote>
+<p>WSDM 2020（EAR）：Estimation–Action–Reflection: Towards Deep Interaction Between Conversational and Recommender Systems  </p>
+</blockquote>
+<ul>
+<li>动机：认为对话推荐应该采用多轮场景，系统能对一个用户进行多次推荐，并根据之前推荐的反馈改善后面的推荐  </li>
+<li>方法：加强对话模块和推荐模块的交互（What attributes to ask? When to recommend items? How to adapt to users’ online feedback?）<br>Estimation–Action–Reflection框架：  <ol>
+<li>Estimation 模块完成推荐任务，FM + BPR  </li>
+<li>Action 模块负责决策，基于强化学习训练，网络结构同CRM，更简单的奖励机制  </li>
+<li>Reflection 模块以负反馈物品为负例构建新的损失函数项进一步训练</li>
+</ol>
+</li>
+</ul>
+<h3 id="搜索剪枝"><a href="#搜索剪枝" class="headerlink" title="搜索剪枝"></a>搜索剪枝</h3><blockquote>
+<p>KDD 2022（CPR）：Interactive Path Reasoning on Graph for Conversational Recommendation  </p>
+</blockquote>
+<ul>
+<li>动机：之前的工作都是用隐式的方法来利用用户在属性方面的反馈信息  </li>
+<li>方法：本文基于图机构（由用户、物品、属性三类节点构成），通过显式方法来利用用户喜欢的属性，删去了大量无关的候选物品。</li>
+</ul>
+<p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230310170308.png">  </p>
+<ol>
+<li>将决策的动作空间缩小为两个，询问or推荐  </li>
+<li>持久化地维护之前访问过的属性节点集合、询问用户时被予以否定的属性集合和候选物品集合。显式地利用用户的反馈信息确定了物品和属性的候选范围  </li>
+<li>在候选集合中进一步排序，与EAR类似</li>
+</ol>
+<h3 id="统一架构"><a href="#统一架构" class="headerlink" title="统一架构"></a>统一架构</h3><blockquote>
+<p>SIGIR 2021（UNICORN）：Unified Conversational Recommendation Policy Learning via Graph-based Reinforcement Learning  </p>
+</blockquote>
+<ul>
+<li>动机：过去基于属性的对话推荐系统工作总是将决策过程分到多个模块去完成，这对模型的可扩展性造成了影响  </li>
+<li>方法：将三个决策问题（询问还是推荐、询问什么、推荐什么）统一起来</li>
+</ul>
+<p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230310173438.png"> </p>
+<ol>
+<li>Graph-based MDP Environment：基本上沿用了 CPR 构建的图上路径推理机制  </li>
+<li>Graph-enhanced State Representation Learning：将当前对话状态表示成一个向量  </li>
+<li>Action Selection Strategy：强化学习动作空间，两类动作（推荐和询问）各选 k1 和 k2 个，选择top-k1个物品推荐，选择top-k2个属性进行询问  </li>
+<li>Deep Q-Learning Network：强化学习决策网络模块，输入是2中的对话状态向量和3中的k1 + k2个节点的embedding，采用DQN算法进行学习训练，输出是？？</li>
+</ol>
+<h2 id="生成式对话推荐"><a href="#生成式对话推荐" class="headerlink" title="生成式对话推荐"></a>生成式对话推荐</h2><p>更注重向用户提供流畅的对话体验，同时将推荐物品相关的信息融入到回复文本中，提高推荐的可解释性。  </p>
+<h3 id="降噪协同"><a href="#降噪协同" class="headerlink" title="降噪协同"></a>降噪协同</h3><blockquote>
+<p> NeurIPS 2018（ReDial）:Towards Deep Conversational Recommendations  </p>
+</blockquote>
+<ul>
+<li>构造了电影场景下的对话推荐数据集REDIAL（包含 6924 部电影、956 位用户、11348 个对话，平均每个对话由 18 个英文句子构成，并保证每个对话中至少提到 4 部电影，还包含语句的情感判断标签）  </li>
+<li>先按模块分别用更大的数据集训练，然后再一起端到端地用 REDIAL 训练  </li>
+<li>对话模块中，使用层次化的RNN结构HRED来编码对话，并采用了预训练的 Gensen 句子向量表示。HRED 得到对话的隐含向量表示之后，一方面会给情感分析 RNN 进行计算，一方面给 Switching Decoder 来将推荐结果融入到对话中，另外还能用于给 RNN 解码出回复语句</li>
+<li>推荐模块中，采用降噪自编码器，同时利用了情感分析模块的计算结果进一步修正推荐结果  </li>
+<li>后续的工作基本上都不再利用情感标签</li>
+</ul>
+<h3 id="知识增强"><a href="#知识增强" class="headerlink" title="知识增强"></a>知识增强</h3><blockquote>
+<p>EMNLP 2019（KBRD）：Towards Knowledge-Based Recommender Dialog System  </p>
+</blockquote>
+<ul>
+<li>动机：ReDial当对话中没有提到物品时则无法向用户提供推荐结果  </li>
+<li>方法：引入知识图谱，从中抽取与 REDIAL 任务相关的子图，将上面的节点与 REDIAL 中的实体（包括电影实体和如导演、演员、影片类别等其他实体）进行对齐；R-GCN 学习图上实体的向量表示；采用自注意力机制来进行融合不同实体对应的 embedding，从而得到用户表示；最终通过向量内积来计算每个实体的得分；对话模块采用 Transformer 架构，并在最终生成的词汇分布上加上 Vocabulary Bias  </li>
+<li>对话模块获得的实体信息对推荐产生促进作用  </li>
+<li>推荐模块产生的用户embedding转化为Vocabulary Bias来促进对话生成</li>
+</ul>
+<h3 id="语义融合"><a href="#语义融合" class="headerlink" title="语义融合"></a>语义融合</h3><blockquote>
+<p>KDD 2020(KGSF)：Improving Conversational Recommender Systems via Knowledge Graph based Semantic Fusion  </p>
+</blockquote>
+<ul>
+<li><p>动机：过去的生成式对话推荐系统工作没能很好地处理文本信息，基于自然语言的表达与基于实体构建的用户偏好表示二者存在天然的语义差异  </p>
+</li>
+<li><p>方法：通过互信息最大化的多知识图谱语义融合技术，打通不同类型信息之间的语义差异  </p>
+<ol>
+<li>实体信息方面，DBpedia 子图进行编码  </li>
+<li>词汇信息方面，与 ConceptNet 中的词汇对齐</li>
+<li>使用互信息最大化算法来对两类 embedding 进行预训练  </li>
+<li>对话模块，KGSF 修改了 Transformer 的内部结构，将用户或者说对话构造的实体矩阵、词汇矩阵通过多头自注意力机制逐步融入解码过程中</li>
+</ol>
+</li>
+</ul>
+<h3 id="话题引导"><a href="#话题引导" class="headerlink" title="话题引导"></a>话题引导</h3><blockquote>
+<p>COLING 2020(TGReDial):Towards Topic-Guided Conversational Recommender System  </p>
+</blockquote>
+<ul>
+<li>动机：缺乏主动的引导来将非推荐场景的对话转变为推荐场景的对话；由数据标注平台的工作人员对话来生成的对话推荐数据集难以捕捉现实世界场景丰富且复杂的情况</li>
+</ul>
+<p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230311095718.png"></p>
+<ul>
+<li>方法：  <ol>
+<li>收集电影序列，对于某一用户可以从其观影记录中的电影构建若干子序列，其中每个序列的电影都有相同的话题标签  </li>
+<li>构建话题转移的通道，作者借助深度优先搜索算法，在知识图谱 ConceptNet 上找到一条从最初话题（greeting）到目标电影话题的转移路径  </li>
+<li>利用深度学习模型从话题生成对话文本，并进行人工修改和润色，以保证对话的流畅性</li>
+</ol>
+</li>
+</ul>
+<h3 id="可控生成"><a href="#可控生成" class="headerlink" title="可控生成"></a>可控生成</h3><blockquote>
+<p>EMNLP 2021(NTRD):Learning Neural Templates for Recommender Dialogue System  </p>
+</blockquote>
+<ul>
+<li><p>动机：不能总是将推荐结果精确且恰当地融入到生成的回复中；推荐结果总是在训练集中提到的物品，缺乏泛化性  </p>
+</li>
+<li><p>方法：</p>
+<ol>
+<li>将 KGSF 的对话模块改造为 Response Template Generator，具体做法是将数据集中的所有物品（电影）全部替换为特殊符号[ITEM]，使得生成的对话不带具体的电影信息，而是一个个句子模板  </li>
+<li>构造一个物品选择器来填写模板中的[ITEM]槽，NTRD 使用堆叠的多头注意力函数来构造选择器。在这个堆叠的结构中逐步融入了模板词汇相关信息、模板的槽相关信息、推荐模块得到的候选物品相关信息</li>
+</ol>
+</li>
+</ul>
+<h2 id="UCCR"><a href="#UCCR" class="headerlink" title="UCCR"></a>UCCR</h2><blockquote>
+<p>User-Centric Conversational Recommendation with Multi-Aspect User Modeling  </p>
+</blockquote>
+<p>SIGIR 2022 以用户为中心的对话推荐系统  </p>
+<ul>
+<li>动机：现有方法本质上当前会话的建模，而忽略了用户建模。而本文发现<em>用户历史会话</em>和<em>相似用户信息</em>也可以很好地辅助用户兴趣建模，特别是在用户当前会话信息较少（冷启动）的场景下效果更佳。  </li>
+<li>方法：在历史会话建模部分，UCCR同时考虑了用户的实体偏好、语义偏好和消费偏好，从这三种偏好中提取有益于用户当前兴趣建模的信息；之后UCCR基于对比学习，学习不同用户当前&#x2F;历史兴趣偏好之间的内在联系；在查找相似用户部分，UCCR考虑了用户兴趣的动态变化过程，基于用户历史兴趣查找相似用户；最终将多维度的用户信息融合在一起。</li>
+</ul>
+<ol>
+<li>历史对话学习器：从历史对话中提取用户multi-view兴趣偏好，包含实体偏好（用户提到的实体）、语义偏好（用户提到的单词）、消费偏好（用户历史喜欢的商品）。  </li>
+<li>多视图兴趣偏好映射器：学习不同view的兴趣偏好间的内在联系。其核心思想是：同一用户的不同view的兴趣偏好应当相关，而不同用户之间应当无关。  </li>
+<li>时序相似用户选择器：历史兴趣相似的用户，其当前兴趣有更大概率会相似。  </li>
+<li>用户兴趣偏好融合：平衡当前对话信息与multi-aspect信息之间的关系</li>
+</ol>
+<p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230309151626.png">  </p>
+<ul>
+<li>Current Session Learner：对当前对话建模，与KGSF和KBRD差不多，DBpedia和ConceptNet分别编码实体和单词  </li>
+<li>Historical Sessions Learner：  <ol>
+<li>Historical Entity Learner：用户历史提到的所有实体，与当前实体的相似度进行加权平均，目的是更多地选择和当前实体偏好相似的历史实体，以防止不相关信息干扰  </li>
+<li>Historical Word Learner：建模近因效应提取到适当的语义知识，利用每个单词出现的对话轮数对齐加权平均  </li>
+<li>Historical Item Learner：历史item，利用当前实体表示和当前单词表示的组合来代替当前商品表示，最终得到历史商品表示</li>
+</ol>
+</li>
+<li>Multi-View Preference Mapper：基于对比学习，学习不同view的内在信息，进而得到更准确地表示  </li>
+<li>Temporal Look-Alike User Selector：由于CRS中用户兴趣随着对话推进不断变化，将用户每一次交互历史都和target用户历史进行比较，学习其中最有用的信息  </li>
+<li>Multi-Aspect User-Centric Modeling：Entity-View + Word-View + Item-View</li>
+</ul>
+<p>ReDial英文数据集 和 TG-ReDial中文数据集<br>利用对话时间对数据集进行重排  </p>
+<h2 id="UniCRS"><a href="#UniCRS" class="headerlink" title="UniCRS"></a>UniCRS</h2><blockquote>
+<p>KDD 2022:Towards Unified Conversational Recommender Systems via Knowledge-Enhanced Prompt Learning  </p>
+</blockquote>
+<h2 id="Challenges"><a href="#Challenges" class="headerlink" title="Challenges"></a>Challenges</h2><ul>
+<li>三个子模块的共同优化</li>
+<li>推荐系统的去偏</li>
+<li>精心设计的多轮对话策略</li>
+<li>引入更多的知识如多模态数据</li>
+<li>更合理的评测机制和更好的用户模拟器</li>
+</ul>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Original link: <a href="http://example.com/page/2/index.html">http://example.com/page/2/index.html</a></p>
+              <p>Copyright Notice: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CRS/" rel="tag">CRS</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Share:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-prompt-learning" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/02/28/prompt-learning/">prompt learning</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-02-28T05:52:37.000Z" itemprop="datePublished">2023年02月28日</time>
+</span>
+      
+      
+      
+<a href="/2023/02/28/prompt-learning/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Guestbook
+</a>
+
+
+      
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        
+        
+        
+          <blockquote id="copyright">
+              <p>Original link: <a href="http://example.com/page/2/index.html">http://example.com/page/2/index.html</a></p>
+              <p>Copyright Notice: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>Share:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-pytorch-study" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/02/28/pytorch-study/">pytorch study</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-02-28T05:52:25.000Z" itemprop="datePublished">2023年02月28日</time>
+</span>
+      
+      
+      
+<a href="/2023/02/28/pytorch-study/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Guestbook
+</a>
+
+
+      
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="PyTorch深度学习实践学习记录"><a href="#PyTorch深度学习实践学习记录" class="headerlink" title="PyTorch深度学习实践学习记录"></a>PyTorch深度学习实践学习记录</h1><h2 id="0-配置环境"><a href="#0-配置环境" class="headerlink" title="0 配置环境"></a>0 配置环境</h2><ul>
+<li><p>conda环境：’pytorch’  </p>
+<pre><code>  conda create -n pytorch python=3.9  
+</code></pre>
+</li>
+<li><p>GPU：NVIDIA GeForce GTX 1050 Ti  </p>
+</li>
+<li><p>安装cuda  </p>
+<pre><code> conda install pytorch==1.10.1 torchvision==0.11.2 torchaudio==0.10.1 cudatoolkit=10.2
+</code></pre>
+</li>
+<li><p>测试一下  </p>
+<pre><code>  import torch  
+  torch.cuda.is_available()  //成功则返回True
+</code></pre>
+</li>
+<li><p>安装pycharm和jupyter notebook  </p>
+</li>
+<li><p>dir()和help()函数</p>
+</li>
+</ul>
+<h2 id="1-加载数据"><a href="#1-加载数据" class="headerlink" title="1 加载数据"></a>1 加载数据</h2><ol>
+<li>Dataset  提供一种方式去获取数据及其label</li>
+</ol>
+<ul>
+<li><p>如何获取每一个数据及其label？   </p>
+<pre><code>  def __init__(self, root_dir, label_dir)  
+  def __getitem__(self, idx):
+</code></pre>
+</li>
+</ul>
+<p>三种数据集结构  1.label是文件夹名 2.label在txt文件中  3.label包含在文件名中  </p>
+<ul>
+<li><p>告诉我们总共有多少的数据？  </p>
+<pre><code>  def __len__(self):
+      return len(self.img_path_list)
+</code></pre>
+</li>
+</ul>
+<ol start="2">
+<li><p>Dataloader  为后面的网络提供不同的数据形式  </p>
+<pre><code> test_loader = DataLoader(dataset=test_data, batch_size=64，shuffle=True, num_workers=0)
+
+ writer = SummaryWriter(&quot;dataloader_logs&quot;)
+ for epoch in range(2):
+         step = 0
+         for data in test_loader:
+                 imgs, targets = data
+                 writer.add_images(&quot;epoch: &#123;&#125;&quot;.format(epoch), imgs, step)
+                 step = step + 1 
+</code></pre>
+<p> <img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230309132216.png"></p>
+</li>
+</ol>
+<h2 id="2-tensorboard的使用"><a href="#2-tensorboard的使用" class="headerlink" title="2 tensorboard的使用"></a>2 tensorboard的使用</h2><p>启动tensorboard  </p>
+<pre><code>    tensorboard --logdir=logs --port=6007
+</code></pre>
+<p>example：  </p>
+<pre><code>    writer = SummaryWriter(&quot;logs&quot;)
+
+    image_path = &quot;dataset/train/ants/0013035.jpg&quot;
+    img_PIL = Image.open(image_path)
+    img_array = np.array(img_PIL)
+    writer.add_image(&quot;train&quot;, img_array, 1, dataformats=&#39;HWC&#39;)
+    # y = 2x
+    for i in range(100):
+    writer.add_scalar(&quot;y=2x&quot;, 2*i, i)
+    writer.close()  
+</code></pre>
+<h2 id="3-transform的使用"><a href="#3-transform的使用" class="headerlink" title="3 transform的使用"></a>3 transform的使用</h2><p>关注输入和输出类型，多看官方文档，关注方法需要的参数  </p>
+<ol>
+<li><p>ToTensor()</p>
+<pre><code> tensor_trans = transforms.ToTensor()
+ tensor_img = tensor_trans(img)
+</code></pre>
+</li>
+<li><p>Normalize  </p>
+<pre><code> trans_norm = transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
+ img_norm = trans_norm(tensor_img)  
+</code></pre>
+</li>
+<li><p>Resize </p>
+<pre><code> trans_resize = transforms.Resize((256, 256))  
+</code></pre>
+</li>
+<li><p>Compose </p>
+<pre><code> trans_resize_2 = transforms.Resize(256)
+ trans_compose = transforms.Compose([trans_resize_2, tensor_trans])
+ img_resize_2 = trans_compose(img)  
+</code></pre>
+</li>
+<li><p>RandomCrop</p>
+<pre><code> trans_random = transforms.RandomCrop(256)
+ trans_compose_2 = transforms.Compose([trans_random, tensor_trans])
+</code></pre>
+</li>
+</ol>
+<h2 id="4-dataset-和-transform-一起使用"><a href="#4-dataset-和-transform-一起使用" class="headerlink" title="4 dataset 和 transform 一起使用"></a>4 dataset 和 transform 一起使用</h2><pre><code>    dataset_transform = torchvision.transforms.Compose([
+            torchvision.transforms.ToTensor() 
+            ])
+    train_set = torchvision.datasets.CIFAR10(root=&quot;./dataset_CIFAR10&quot;，transform=dataset_transform, train=True, download=True)
+    test_set = torchvision.datasets.CIFAR10(root=&quot;./dataset_CIFAR10&quot;, transform=dataset_transform, train=False, download=True)  
+</code></pre>
+<h2 id="5-Neural-Network"><a href="#5-Neural-Network" class="headerlink" title="5 Neural Network"></a>5 Neural Network</h2><h3 id="1-nn-Module"><a href="#1-nn-Module" class="headerlink" title="1 nn.Module"></a>1 nn.Module</h3><p>Base class for all neural network modules<br>example:</p>
+<pre><code>    import torch.nn as nn
+    import torch.nn.functional as F
+
+    class Model(nn.Module):
+    def __init__(self):
+            super().__init__()
+            self.conv1 = nn.Conv2d(1, 20, 5)
+            self.conv2 = nn.Conv2d(20, 20, 5)
+
+    def forward(self, x):
+            x = F.relu(self.conv1(x))
+            return F.relu(self.conv2(x))  
+</code></pre>
+<h3 id="2-nn-Conv2d"><a href="#2-nn-Conv2d" class="headerlink" title="2 nn.Conv2d"></a>2 nn.Conv2d</h3><p>Parameters:   </p>
+<ul>
+<li><p>in_channels (int) – Number of channels in the input image  </p>
+</li>
+<li><p>out_channels (int) – Number of channels produced by the convolution</p>
+</li>
+<li><p>kernel_size (int or tuple) – Size of the convolving kernel</p>
+</li>
+<li><p>stride (int or tuple, optional) – Stride of the convolution. Default: 1</p>
+</li>
+<li><p>padding (int, tuple or str, optional) – Padding added to all four sides of the input. Default: 0</p>
+</li>
+<li><p>padding_mode (str, optional) – ‘zeros’, ‘reflect’, ‘replicate’ or ‘circular’. Default: ‘zeros’</p>
+</li>
+<li><p>dilation (int or tuple, optional) – Spacing between kernel elements. Default: 1  空洞卷积</p>
+</li>
+<li><p>groups (int, optional) – Number of blocked connections from input channels to output channels. Default: 1</p>
+</li>
+<li><p>bias (bool, optional) – If True, adds a learnable bias to the output. Default: True  </p>
+<p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230319164750.png#pic_center"></p>
+</li>
+</ul>
+<h3 id="3-nn-MaxPool2d"><a href="#3-nn-MaxPool2d" class="headerlink" title="3 nn.MaxPool2d"></a>3 nn.MaxPool2d</h3><p>又叫下采样， nn.MaxUnpool2d 为上采样<br>Parameters:</p>
+<ul>
+<li><p>kernel_size (Union[int, Tuple[int, int]]) – the size of the window to take a max over</p>
+</li>
+<li><p>stride (Union[int, Tuple[int, int]]) – the stride of the window. Default <em><strong>value is kernel_size</strong></em></p>
+</li>
+<li><p>padding (Union[int, Tuple[int, int]]) – Implicit negative infinity padding to be added on both sides</p>
+</li>
+<li><p>dilation (Union[int, Tuple[int, int]]) – a parameter that controls the stride of elements in the window</p>
+</li>
+<li><p>return_indices (bool) – if True, will return the max indices along with the outputs. Useful for torch.nn.MaxUnpool2d later</p>
+</li>
+<li><p>ceil_mode (bool) – when True, will use ceil instead of floor to compute the output shape  </p>
+<p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230319164621.png#pic_center"></p>
+</li>
+</ul>
+<h3 id="4-Non-linear-Activations"><a href="#4-Non-linear-Activations" class="headerlink" title="4 Non-linear Activations"></a>4 Non-linear Activations</h3><ul>
+<li><p>nn.ReLU  </p>
+</li>
+<li><p>nn.Sigmoid<br>效果：</p>
+<p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230320092744.png#pic_center"></p>
+</li>
+</ul>
+<h3 id="5-nn-Sequential"><a href="#5-nn-Sequential" class="headerlink" title="5 nn.Sequential"></a>5 nn.Sequential</h3><p>example:  </p>
+<pre><code>    self.model1 = Sequential(
+        Conv2d(3, 32, 5, padding=2),
+        MaxPool2d(2),
+        Conv2d(32, 32, 5, padding=2),
+        MaxPool2d(2),
+        Conv2d(32, 64, 5, padding=2),
+        MaxPool2d(2),
+        Flatten(),
+        Linear(1024, 64),
+        Linear(64, 10)
+    )  
+</code></pre>
+<p>  <img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230320101329.png#pic_center"></p>
+<h2 id="使用已有模型开发"><a href="#使用已有模型开发" class="headerlink" title="使用已有模型开发"></a>使用已有模型开发</h2><pre><code>    vgg16_false = torchvision.models.vgg16(pretrained=False)
+    vgg16_true = torchvision.models.vgg16(pretrained=True)
+</code></pre>
+<p>vgg16预训练是在ImagNet上，但ImagNetl类别是1000个，Cifar10类别是10个<br>方案1：add_module添加一个线性层  </p>
+<pre><code>    vgg16_true.classifier.add_module(&#39;add_linear&#39;, nn.Linear(1000, 10))
+</code></pre>
+<p>方案2：直接修改某一层</p>
+<pre><code>    vgg16_false.classifier[6] = nn.Linear(4096, 10)
+</code></pre>
+<p>模型的保存与导入（两种）    </p>
+<ol>
+<li><p>   torch.save(vgg16_false, “vgg16_method1.pth”)<br>   model &#x3D; torch.load(“vgg16_method1.pth”)</p>
+</li>
+<li><p>(recommend) smaller  通过字典形式存储参数</p>
+<pre><code>torch.save(vgg16_false.state_dict(), &quot;vgg16_method2.pth&quot;)   
+vgg16_false.load_state_dict(torch.load(&quot;vgg16_method2.pth&quot;))
+</code></pre>
+</li>
+</ol>
+<h2 id="完整的训练流程（套路）"><a href="#完整的训练流程（套路）" class="headerlink" title="完整的训练流程（套路）"></a>完整的训练流程（套路）</h2><ol>
+<li><p>准备数据集</p>
+</li>
+<li><p>dataloader加载数据集</p>
+</li>
+<li><p>搭建网络模型</p>
+</li>
+<li><p>创建网络模型实例</p>
+</li>
+<li><p>定义损失函数</p>
+</li>
+<li><p>定义优化器</p>
+</li>
+<li><p>设置网络训练的参数</p>
+</li>
+<li><p>开始训练</p>
+</li>
+<li><p>验证模型</p>
+</li>
+<li><p>最后保存模型</p>
+</li>
+<li><p>tensorboard训练结果展示</p>
+<pre><code># 准备训练数据集
+train_data = torchvision.datasets.CIFAR10(root=&quot;./dataset_CIFAR10&quot;, train=True, transform=torchvision.transforms.ToTensor(),download=True)
+
+# 准备训练数据集
+test_data = torchvision.datasets.CIFAR10(root=&quot;./dataset_CIFAR10&quot;, train=False, transform=torchvision.transforms.ToTensor(),download=True)
+print(&quot;训练数据集的长度为：&#123;&#125;&quot;.format(len(train_data)))
+
+# 利用DataLoader来加载数据集
+train_dataloader = DataLoader(train_data, batch_size=64)
+test_dataloader = DataLoader(train_data, batch_size=64)
+
+# 创建网络模型
+model = Model()
+
+# 损失函数
+loss_fn = nn.CrossEntropyLoss()
+
+# 优化器
+learning_rate = 1e-2
+optimizer =  torch.optim.SGD(model.parameters(), lr=learning_rate)
+
+# 设置训练网络的一些参数
+# 记录训练的次数
+total_train_step = 0
+# 记录测试的次数
+total_test_step = 0
+# 训练的轮数
+epoch = 10
+
+# 添加tensorboard
+writer = SummaryWriter(&quot;train_logs&quot;)
+
+for i in range(epoch):
+print(&quot;--------第 &#123;&#125; 轮训练开始--------&quot;.format(i+1))
+# 训练步骤
+# model.train()  # 适用于有dropout层，Norm层
+for data in train_dataloader:
+        imgs, targets = data
+        outputs = model(imgs)
+        loss = loss_fn(outputs, targets)
+        # 优化器优化模型
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+        total_train_step = total_train_step + 1
+        if total_train_step % 100 == 0:
+        print(&quot;训练次数：&#123;&#125;，loss:&#123;&#125;&quot;.format(total_train_step, loss.item()))
+        writer.add_scalar(&quot;train_loss&quot;, loss.item(), total_train_step)
+
+# 测试步骤
+# model.eval()  # 适用于有dropout层，Norm层
+total_test_loss = 0.0
+with torch.no_grad():
+        for data in test_dataloader:
+        imgs, targets = data
+        outputs = model(imgs)
+        loss = loss_fn(outputs, targets)
+        total_test_loss += loss.item()
+        accuracy = (outputs.argmax(1) == targets).sum()
+        total_accuracy = total_accuracy + accuracy
+print(&quot;整体测试集上的Loss：&#123;&#125;&quot;.format(total_test_loss))
+print(&quot;整体测试集上的accuracy：&#123;&#125;&quot;.format(total_accuracy/len(test_data)))
+writer.add_scalar(&quot;test_loss&quot;, total_test_loss, total_test_step)
+writer.add_scalar(&quot;test_accuracy&quot;, total_accuracy/len(test_data), total_test_step)
+total_train_step += 1
+
+# 保存模型
+# torch.save(model, &quot;model_&#123;&#125;.pth&quot;.format(i))
+# print(&quot;模型已保存&quot;)
+writer.close()
+</code></pre>
+</li>
+</ol>
+<h2 id="使用GPU训练"><a href="#使用GPU训练" class="headerlink" title="使用GPU训练"></a>使用GPU训练</h2><p>对模型、损失函数、要训练和验证数据处理，两种方式：  </p>
+<ol>
+<li>.cuda() </li>
+<li>先定义device &#x3D; torch.device(“cuda”)，然后对模型、损失函数、数据使用.to(device)<br>可使用google.colab使用免费的计算资源</li>
+</ol>
+<h2 id="验证的流程"><a href="#验证的流程" class="headerlink" title="验证的流程"></a>验证的流程</h2><pre><code>    image_path = &quot;&quot;
+    image = Image.open(image_path)
+
+    transform = torchvision.transforms.Compose([torchvision.transforms.Resize((32, 32)),
+                                            torchvision.transforms.ToTensor()])
+
+    image = transform(image)
+
+    # 载入网络模型
+    # 如果是gpu上训练的结果在cpu上载入，要加map_location=torch.device(&#39;cpu&#39;)
+    model = torch.load(&quot;model_29_gpu.pth&quot;, map_location=torch.device(&#39;cpu&#39;))
+
+    image = torch.reshape(image, (1, 3, 32, 32))
+    model.eval()
+    with torch.no_grad():
+    output = model(image)
+    print(output)
+    print(output.argmax(1))
+</code></pre>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Original link: <a href="http://example.com/page/2/index.html">http://example.com/page/2/index.html</a></p>
+              <p>Copyright Notice: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PyTorch/" rel="tag">PyTorch</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Share:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-Knowledge-Enhanced-Prompt-Learning" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/02/24/Knowledge-Enhanced-Prompt-Learning/">Knowledge-Enhanced Prompt Learning</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-02-24T01:47:52.000Z" itemprop="datePublished">2023年02月24日</time>
+</span>
+      
+      
+      
+<a href="/2023/02/24/Knowledge-Enhanced-Prompt-Learning/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Guestbook
+</a>
+
+
+      
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Towards-Unified-Conversational-Recommender-Systems-via-Knowledge-Enhanced-Prompt-Learning"><a href="#Towards-Unified-Conversational-Recommender-Systems-via-Knowledge-Enhanced-Prompt-Learning" class="headerlink" title="Towards Unified Conversational Recommender Systems via Knowledge-Enhanced Prompt Learning"></a>Towards Unified Conversational Recommender Systems via Knowledge-Enhanced Prompt Learning</h1><blockquote>
+<p>通过知识增强的提示学习实现统一的CRS  KDD 2022  </p>
+</blockquote>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><ul>
+<li>propose a unified CRS model named <b>UniCRS</b> based on knowledge-enhanced prompt learning.</li>
+<li>unifies the recommendation and conversation subtasks into the prompt learning paradigm, and utilizes knowledge-enhanced prompts based on a fixed pre-trained language model (PLM) to fulfill both subtasks in a unified approach. </li>
+<li>In the prompt design, we include fused knowledge representations, task-specific soft tokens,and the dialogue context, which can provide sufficient contextual information to adapt the PLM for the CRS task.  </li>
+<li>for the recommendation subtask, we also incorporate the generated response template as an important part of the prompt, to enhance the information interaction between the two subtasks.</li>
+</ul>
+<h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><ul>
+<li>Existing works either design semantic alignment strategies, or share knowledge resources and representations between the two modules. However, these approaches still rely on different architectures or techniques to develop the two modules, making it difficult for effective module integration.<br>现有的工作要么设计语义对齐策略，要么在两个模块之间共享知识资源和表示。然而，这些方法仍然依赖于不同的架构或技术来开发这两个模块，这使得有效的模块集成变得困难。</li>
+<li>it has been pointed out that the generated responses from the conversation module do not always match the predicted items from the recommendation module</li>
+</ul>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230224105229.png"></p>
+<h3 id="用于提示学习的语义融合"><a href="#用于提示学习的语义融合" class="headerlink" title="用于提示学习的语义融合"></a>用于提示学习的语义融合</h3><ul>
+<li>根据先前的研究，本文将 KG 合并为特定于任务的知识资源，因为它涉及对话中提到的实体和项目的有用知识。然而，已经发现对话的语义空间和 KGs 之间存在很大的语义差距。 本文需要首先融合两个语义空间以进行有效的知识对齐和丰富。 特别是，这一步的目的是融合来自不同编码器的令牌和实体嵌入。</li>
+</ul>
+<ol>
+<li>编码词标记和知识图谱实体：给定对话历史 ，本文首先将对话历史中出现的对话词和 KG 实体分别编码为词嵌入和实体嵌入。 为了补充本文的基础 PLM DialoGPT（单向解码器），本文采用了另一个固定的 PLM RoBERTa（双向编码器）来推导词嵌入。 </li>
+<li>词实体语义融合：为了弥合词和实体之间的语义鸿沟，本文使用交叉交互机制通过双线性变换将两种语义表示联系起来：<img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230224113310.png">  </li>
+<li>预训练融合模块：为了更好地优化融合模块的参数，提出了一种基于提示的预训练方法，它利用了对话中的自我监督信号</li>
+</ol>
+<h3 id="特定于子任务的提示设计"><a href="#特定于子任务的提示设计" class="headerlink" title="特定于子任务的提示设计"></a>特定于子任务的提示设计</h3><ul>
+<li>虽然基础 PLM 是固定的，无需微调，但本文可以设计特定的提示以使其适应 CRS 的不同子任务。 对于每个子任务（推荐或对话），提示的主要设计由三部分组成，即对话历史、子任务特定软令牌和融合知识表示。 对于推荐，本文进一步将生成的响应模板合并为额外的提示标记。 接下来，本文详细描述这两个子任务的具体提示设计。</li>
+</ul>
+<ol>
+<li>提示生成响应：响应生成的提示由原始对话历史记录（以单词标记 的形式）、特定于生成的软标记（以潜在向量 P 的形式）和融合的文本上下文（以潜在向量 T~ 的形式）组成。<img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230224114103.png"></li>
+<li>提示项目推荐：项目推荐提示由原始对话历史 （以单词标记的形式）、特定于推荐的软标记 P（以潜在向量的形式）、融合实体上下文 E~（以潜在向量的形式）和 响应模板 （以单词标记的形式）。<img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230224114205.png"></li>
+</ol>
+<h2 id="实验和结果"><a href="#实验和结果" class="headerlink" title="实验和结果"></a>实验和结果</h2><p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230224112248.png">  </p>
+<p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230224112303.png"><br>KGSF &gt; KBRD &gt; ReDial。 KGSF 和 KBRD 都将外部 KG 纳入其推荐模块中，这可以丰富对话历史中提到的实体的语义，以更好地捕捉用户意图和偏好。 此外，KGSF 还采用互信息最大化的方法来进一步改进实体表示。 对于四个预训练模型，本文可以看到 BERT 和 BART 的表现优于 GPT-2 和 DialoGPT。 原因可能是 GPT-2 和 DialoGPT 基于单向 Transformer 架构，这限制了它们的对话理解能力。 此外，可以看到 BART 在 ReDial 数据集上实现了相当的性能，甚至优于 BERT。 这表明 BART 也可以很好地理解推荐任务的对话语义。最后，可以看到本文模型大大优于所有基线。 本文利用专门设计的提示来指导基础 PLM，并结合 KG 通过预训练任务提高提示质量。</p>
+<h2 id="启发"><a href="#启发" class="headerlink" title="启发"></a>启发</h2>
+        
+        
+          <blockquote id="copyright">
+              <p>Original link: <a href="http://example.com/page/2/index.html">http://example.com/page/2/index.html</a></p>
+              <p>Copyright Notice: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CRS/" rel="tag">CRS</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Share:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-flask-vue-mysql前后分离项目每日记录" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/02/23/flask-vue-mysql%E5%89%8D%E5%90%8E%E5%88%86%E7%A6%BB%E9%A1%B9%E7%9B%AE%E6%AF%8F%E6%97%A5%E8%AE%B0%E5%BD%95/">flask+vue+mysql前后分离项目每日记录</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-02-23T08:50:00.000Z" itemprop="datePublished">2023年02月23日</time>
+</span>
+      
+      
+      
+<a href="/2023/02/23/flask-vue-mysql%E5%89%8D%E5%90%8E%E5%88%86%E7%A6%BB%E9%A1%B9%E7%9B%AE%E6%AF%8F%E6%97%A5%E8%AE%B0%E5%BD%95/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Guestbook
+</a>
+
+
+      
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="flask-vue-mysql前后分离项目每日记录"><a href="#flask-vue-mysql前后分离项目每日记录" class="headerlink" title="flask+vue+mysql前后分离项目每日记录"></a>flask+vue+mysql前后分离项目每日记录</h1><h2 id="Day1"><a href="#Day1" class="headerlink" title="Day1"></a>Day1</h2><h3 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h3><ul>
+<li>conda创建虚拟环境：flask-vue 安装第三方库：requirement.txt</li>
+<li>前端用的vue-admin-template-master，在此基础上改造开发</li>
+<li>新建mysql数据库movies</li>
+</ul>
+<h3 id="flask配置数据库"><a href="#flask配置数据库" class="headerlink" title="flask配置数据库"></a>flask配置数据库</h3><p>创建config.py 文件，配置数据库</p>
+<pre><code>SQLALCHEMY_DATABASE_URI = &quot;mysql://root:123456@localhost:3306/movies&quot;
+SQLALCHEMY_COMMIT_ON_TEARDOWN = True
+SQLALCHEMY_TRACK_MODIFICATIONS = False    
+</code></pre>
+<p>设计user表和movie表（以user表为例）  </p>
+<pre><code>class Users(db.Model):
+    __tablename__ = &#39;user&#39;
+    userid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(
+        db.String(255),
+        nullable=False,
+    )
+    ...
+    created_on = db.Column(
+        db.DateTime,
+        nullable=False,
+    )
+    enable = db.Column(
+        db.Boolean,
+        default=True,
+        nullable=False,
+    )
+
+    def set_password(self, password: str):
+        self.password = generate_password_hash(password, method=&#39;sha512&#39;)
+
+    def check_password(self, password: str):
+        return check_password_hash(self.password, password)
+
+    def __repr__(self):
+        return &#39;&lt;User &#123;&#125;&gt;&#39;.format(self.name)
+
+    @classmethod
+    def add(cls, user):
+        db.session.add(user)
+        db.session.commit()
+</code></pre>
+<p>命令行一次性创建所有表</p>
+<pre><code>python run.py create_db   //注意切换到项目的conda环境
+</code></pre>
+<h3 id="movie数据"><a href="#movie数据" class="headerlink" title="movie数据"></a>movie数据</h3><ul>
+<li>MovieLens Latest Datasets</li>
+<li>ml-latest-small.zip</li>
+<li>Small: 100,000 ratings and 3,600 tag applications applied to 9,000 movies by 600 users. Last updated 9&#x2F;2018.<br>通过爬虫从IMBD网站中获取电影的详细信息和封面图片。<a target="_blank" rel="noopener" href="https://blog.csdn.net/hhmy77/article/details/106389370">参考链接</a>  这里直接使用其爬好的最终csv文件，info.csv<br>mysql中导入csv，注意字段的长度！longtext &gt; text &gt; varchar(255)</li>
+</ul>
+<h2 id="Day2"><a href="#Day2" class="headerlink" title="Day2"></a>Day2</h2><h3 id="用户登录"><a href="#用户登录" class="headerlink" title="用户登录"></a>用户登录</h3><pre><code>    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument(&#39;username&#39;,
+                            required=True,
+                            nullable=False,
+                            type=str,
+                            location=&#39;json&#39;,
+                            help=&quot;username is required&quot;)
+        parser.add_argument(&#39;password&#39;,
+                            required=True,
+                            nullable=False,
+                            type=str,
+                            location=&#39;json&#39;,
+                            help=&quot;password is required&quot;)
+        args = parser.parse_args()
+        username = args.get(&#39;username&#39;)
+        password = args.get(&#39;password&#39;)
+        user = Users.query.filter_by(name=username).first()
+        if user is None:
+            error = &#39;User not exists&#39;
+        elif user.check_password(password=password):
+            access_token = create_access_token(
+                identity=user.userid, expires_delta=datetime.timedelta(days=1))
+            return jsonify(&#123;&#39;access_token&#39;: access_token&#125;)
+        else:
+            error = &#39;user and password not match&#39;
+        return error, 401  
+</code></pre>
+<p>username与password匹配则返回jwt_token;前端发送请求需携带jwt_token，例如获取用户信息显示在页面头部位置。  </p>
+<pre><code>    @jwt_required()
+    def get(self):
+        userid = get_jwt_identity()
+        user = Users.query.filter_by(userid=userid).first()
+        return jsonify(&#123;
+            &#39;username&#39;:
+                user.name,
+            &#39;email&#39;:
+                user.email
+            &#125;)  
+</code></pre>
+<h3 id="postman测试"><a href="#postman测试" class="headerlink" title="postman测试"></a>postman测试</h3><p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/%407D8H2CVW%29%60%5D%7E5K%60%7EHXAN9H.png"><br>如果post请求参数是json需在boby里写。  </p>
+<h3 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h3><p>我把它定义为Flask和Vue在使用JWT过程中的跨域问题。因为使用了flask_cros中间件，其他的方法都是不存在跨域问题的，单单在前端携带token发送请求时报了错。如图：<br><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/9JJ%40LE%28BHQ5N8%5BJ%24Y4UJJ%5BG.png"><br>后端控制台显示丢失head信息。<br><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/QVI03B5I4H9H8M%5BCVWVEUB5.png"><br>但postman测试，如果’Authorization’字段为’Bearer ‘ + token,则可以请求成功。于是把前端的request拦截器中携带token发送请求时也加上’Bearer ‘的头部信息，则成功解决。<br>查阅资料：在token前面加上Bearer是一种规范， W3C 的 HTTP 1.0 规范，Authorization 的格式是：<br><code> Authorization: &lt;type&gt; &lt;authorization-parameters&gt;</code><br>Bearer 常见于 OAuth 和 JWT 授权。</p>
+<h3 id="明天目标"><a href="#明天目标" class="headerlink" title="明天目标"></a>明天目标</h3><ol>
+<li>用户注册</li>
+<li>用户首页设计</li>
+<li>系统整体功能模块设计</li>
+</ol>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Original link: <a href="http://example.com/page/2/index.html">http://example.com/page/2/index.html</a></p>
+              <p>Copyright Notice: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flask-vue-mysql/" rel="tag">flask,vue,mysql</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Share:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-About-ChatGPT" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/02/22/About-ChatGPT/">About ChatGPT</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-02-22T01:29:19.000Z" itemprop="datePublished">2023年02月22日</time>
+</span>
+      
+      
+      
+<a href="/2023/02/22/About-ChatGPT/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Guestbook
+</a>
+
+
+      
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="ChatGPT背后的工作原理"><a href="#ChatGPT背后的工作原理" class="headerlink" title="ChatGPT背后的工作原理"></a>ChatGPT背后的工作原理</h1><p><a target="_blank" rel="noopener" href="https://www.assemblyai.com/blog/how-chatgpt-actually-works/?continueFlag=1bafdcd5c034def869fecb4f3bdaed70">原文链接</a>  </p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><ul>
+<li>ChatGPT是OpenAI发布的最新语言模型，能以不同样式、不同目的生成文本，并且在准确度、叙述细节和上下文连贯性上具有更优的表现。</li>
+<li>OpenAI使用监督学习和强化学习的组合来调优ChatGPT，其中的强化学习组件使ChatGPT独一无二。OpenAI使用了「人类反馈强化学习」（RLHF）的训练方法，该方法在训练中使用人类反馈，以最小化无益、失真或偏见的输出。</li>
+</ul>
+<h2 id="GPT-3"><a href="#GPT-3" class="headerlink" title="GPT-3"></a>GPT-3</h2><p>非一致模型，基于来自互联网的大量文本数据进行训练，能够生成类似人类的文本，但它们可能并不总是产生符合人类期望的输出。它们的目标函数是词序列上的概率分布，用来预测序列中的下一个单词是什么。一致性问题表现为:</p>
+<ul>
+<li>提供无效帮助：没有遵循用户的明确指示。</li>
+<li>内容胡编乱造：虚构不存在或错误事实的模型。</li>
+<li>缺乏可解释性：人们很难理解模型是如何得出特定决策或预测的。</li>
+<li>内容偏见有害：一个基于有偏见、有害数据训练的语言模型可能会在其输出中出现这种情况，即使它没有明确指示这样做。</li>
+</ul>
+<h2 id="语言模型训练策略"><a href="#语言模型训练策略" class="headerlink" title="语言模型训练策略"></a>语言模型训练策略</h2><ol>
+<li>Next-token-prediction</li>
+<li>masked-language-modeling<br>一般来说，这些训练策略可能会导致语言模型在一些更复杂的任务中出现不一致，因为一个仅被训练来预测文本序列中的下一个词的模型可能不一定会学习其含义的某些更高级表征。因此，该模型很难推广到需要对语言更深入理解的任务。</li>
+</ol>
+<h2 id="RLHF"><a href="#RLHF" class="headerlink" title="RLHF"></a>RLHF</h2><p>ChatGPT 基于最初的 GPT-3 模型，但为了解决模型的不一致问题，使用了人类反馈来指导学习过程，对其进行了进一步训练。方法总体上包括三个不同步骤：  </p>
+<ol>
+<li>有监督的调优：预训练的语言模型在少量已标注的数据上进行调优，以学习从给定的 prompt 列表生成输出的有监督的策略（即 SFT 模型）；</li>
+<li>模拟人类偏好：标注者们对相对大量的 SFT 模型输出进行投票，这就创建了一个由比较数据组成的新数据集。在此数据集上训练新模型，被称为训练回报模型（Reward Model，RM）；</li>
+<li>近端策略优化（PPO）：RM 模型用于进一步调优和改进 SFT 模型，PPO 输出结果是策略模式。<br>步骤 1 只进行一次，而步骤 2 和步骤 3 可以持续重复进行：在当前最佳策略模型上收集更多的比较数据，用于训练新的 RM 模型，然后训练新的策略。</li>
+</ol>
+<h3 id="监督调优模型"><a href="#监督调优模型" class="headerlink" title="监督调优模型"></a>监督调优模型</h3><ul>
+<li>数据收集：选择一个提示列表，标注人员按要求写下预期的输出。对于 ChatGPT，使用了两种不同的 prompt 来源：一些是直接使用标注人员或研究人员准备的，另一些是从 OpenAI 的 API 请求（即从 GPT-3 用户那里）获取的。虽然整个过程缓慢且昂贵，但最终得到的结果是一个相对较小、高质量的数据集（大概有 12-15k 个数据点），可用于调优预训练的语言模型。  </li>
+<li>模型选择：GPT-3.5 系列中的预训练模型，text-davinci-003<br>这里的问题是监督学习步骤具有高可扩展性成本。<br>为了克服这个问题，使用的策略是让人工标注者对 SFT 模型的不同输出进行排序以创建 RM 模型，而不是让人工标注者创建一个更大的精选数据集。</li>
+</ul>
+<h3 id="训练回报模型"><a href="#训练回报模型" class="headerlink" title="训练回报模型"></a>训练回报模型</h3><p>这一步的目标是直接从数据中学习目标函数。该函数的目的是为 SFT 模型输出进行打分，这代表这些输出对于人类来说可取程度有多大。这强有力地反映了选定的人类标注者的具体偏好以及他们同意遵循的共同准则。最后，这个过程将从数据中得到模仿人类偏好的系统。  </p>
+<ul>
+<li>选择 prompt 列表，SFT 模型为每个 prompt 生成多个输出（4 到 9 之间的任意值）；</li>
+<li>标注者将输出从最佳到最差排序。结果是一个新的标签数据集，该数据集的大小大约是用于 SFT 模型的精确数据集的 10 倍；</li>
+<li>此新数据用于训练 RM 模型 。该模型将 SFT 模型输出作为输入，并按优先顺序对它们进行排序。<br>对于标注者来说，对输出进行排序比从头开始打标要容易得多，这一过程可以更有效地扩展。</li>
+</ul>
+<h3 id="PPO模型微调SFT模型"><a href="#PPO模型微调SFT模型" class="headerlink" title="PPO模型微调SFT模型"></a>PPO模型微调SFT模型</h3><p>强化学习被应用于通过优化 RM 模型来调优 SFT 模型。近端策略优化（PPO），近端策略优化模型。 PPO 可以根据所采取行动的估计价值对策略进行更明智的更新。PPO 模型由 SFT 模型初始化，价值函数由 RM 模型初始化。该环境是一个「bandit environment」，它会产生随机 prompt 并期望对 prompt 做出响应。对于给定的 prompt 和响应，它会产生相应的回报（由 RM 模型决定）。SFT 模型会对每个 token 添加 KL 惩罚因子，以尽量避免 RM 模型的过度优化。  </p>
+<h2 id="局限性"><a href="#局限性" class="headerlink" title="局限性"></a>局限性</h2><ol>
+<li>会受到各种错综复杂的主观因素的影响 </li>
+<li>缺乏对照研究</li>
+</ol>
+<h2 id="相关论文"><a href="#相关论文" class="headerlink" title="相关论文"></a>相关论文</h2><ul>
+<li>Training language models to follow instructions with human feedback（<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2203.02155.pdf%EF%BC%89">https://arxiv.org/pdf/2203.02155.pdf）</a>  InstructionGPT  </li>
+<li>Learning to summarize from Human Feedback （<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2009.01325.pdf%EF%BC%89">https://arxiv.org/pdf/2009.01325.pdf）</a> RLHF  </li>
+<li>PPO（<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1707.06347.pdf%EF%BC%89">https://arxiv.org/pdf/1707.06347.pdf）</a> PPO </li>
+<li>Deep reinforcement learning from human preferences （<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1706.03741%EF%BC%89">https://arxiv.org/abs/1706.03741）</a></li>
+</ul>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Original link: <a href="http://example.com/page/2/index.html">http://example.com/page/2/index.html</a></p>
+              <p>Copyright Notice: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Share:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-Is-ChatGPT-A-Good-Translator" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/02/21/Is-ChatGPT-A-Good-Translator/">Is ChatGPT A Good Translator?</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-02-21T08:13:49.000Z" itemprop="datePublished">2023年02月21日</time>
+</span>
+      
+      
+      
+<a href="/2023/02/21/Is-ChatGPT-A-Good-Translator/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Guestbook
+</a>
+
+
+      
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Is-ChatGPT-A-Good-Translator-A-Preliminary-Study"><a href="#Is-ChatGPT-A-Good-Translator-A-Preliminary-Study" class="headerlink" title="Is ChatGPT A Good Translator? A Preliminary Study"></a>Is ChatGPT A Good Translator? A Preliminary Study</h1><h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><ul>
+<li>提供了ChatGPT对机器翻译的初步评估，包括翻译提示性、多语言翻译和翻译的鲁棒性。我们采用ChatGPT建议的提示来触发其翻译能力，并发现候选提示通常效果很好，并表现出微小的性能差异。  </li>
+<li>ChatGPT在高资源的欧洲语言上与商业翻译产品（例如谷歌翻译）具有竞争能力，但在低资源或遥远的语言上明显落后。</li>
+<li>For distant languages, we explore an interesting strategy<br>named <b>pivot</b> prompting that asks ChatGPT to translate the source sentence into a high-resource pivot language before into the target language, which improves the translation performance significantly.  </li>
+<li>至于翻译的健壮性，ChatGPT在生物医学摘要或Reddit注释上的性能不如商业系统，但它可能是一个很好的口语翻译器。</li>
+</ul>
+<h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><p> We are particularly interested in how ChatGPT performs for machine translation tasks, especially the gap between ChatGPT and commercial translation products.  </p>
+<ol>
+<li>Translation Prompt 翻译提示</li>
+<li>Multilingual Translation 多语种翻译</li>
+<li>Translation Robustness 翻译的鲁棒性</li>
+</ol>
+<h2 id="实验和结果"><a href="#实验和结果" class="headerlink" title="实验和结果"></a>实验和结果</h2><h3 id="Translation-Prompt"><a href="#Translation-Prompt" class="headerlink" title="Translation Prompt"></a>Translation Prompt</h3><p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230221171417.png"><br>To design the prompts for triggering the machine translation ability of ChatGPT, we seek inspiration from ChatGPT by asking it for advice.<br>Thus, we summarize them into three candidate prompts,where<br>[SRC] and [TGT] represent the source and target languages of translation.<br><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230221171521.png"><br>TP3 performs the best in terms of all the three metrics. Thus, we use TP3 throughout this report by default.<br><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230221172354.png"></p>
+<h3 id="Multilingual-Translation"><a href="#Multilingual-Translation" class="headerlink" title="Multilingual Translation"></a>Multilingual Translation</h3><p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230221172514.png"></p>
+<ul>
+<li>Specifically, we ask ChatGPT to translate the source sentence into a high-resource pivot language (i.e., English by default) first and then into the target language.<br><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230221173244.png"><br><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230221173037.png"></li>
+</ul>
+<h3 id="Translation-Robustness"><a href="#Translation-Robustness" class="headerlink" title="Translation Robustness"></a>Translation Robustness</h3><p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230221173813.png"></p>
+<h2 id="总结与启发"><a href="#总结与启发" class="headerlink" title="总结与启发"></a>总结与启发</h2><p>可以在对chatGPT解决某一任务做实验的过程中发现chatGPT的缺点，并提出一定的解决方案，作出改进，比如本文中的pivot策略。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Original link: <a href="http://example.com/page/2/index.html">http://example.com/page/2/index.html</a></p>
+              <p>Copyright Notice: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Share:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-An-Analysis-of-the-Automatic-Bug-Fixing-Performance-of-ChatGPT" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/02/21/An-Analysis-of-the-Automatic-Bug-Fixing-Performance-of-ChatGPT/">An Analysis of the Automatic Bug Fixing Performance of ChatGPT</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-02-21T06:37:25.000Z" itemprop="datePublished">2023年02月21日</time>
+</span>
+      
+      
+      
+<a href="/2023/02/21/An-Analysis-of-the-Automatic-Bug-Fixing-Performance-of-ChatGPT/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Guestbook
+</a>
+
+
+      
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="An-Analysis-of-the-Automatic-Bug-Fixing-Performance-of-ChatGPT（ChatGPT在Bug自动修复的性能分析）"><a href="#An-Analysis-of-the-Automatic-Bug-Fixing-Performance-of-ChatGPT（ChatGPT在Bug自动修复的性能分析）" class="headerlink" title="An Analysis of the Automatic Bug Fixing Performance of ChatGPT（ChatGPT在Bug自动修复的性能分析）"></a>An Analysis of the Automatic Bug Fixing Performance of ChatGPT（ChatGPT在Bug自动修复的性能分析）</h1><h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><ul>
+<li>evaluate ChatGPT on the standard bug fixing benchmark set, QuixBugs, and compare the performance with the results of several other approaches reported in the literature.<br>在标准bug修复基准集Quixbug上评估ChatGPT，并将其性能与文献中报道的其他几种方法的结果进行比较。  </li>
+<li>ChatGPT’s bug fixing performance is competitive to the common deep learning approaches CoCoNut and Codex and notably better than the results reported for the standard program repair approaches.<br>ChatGPT的bug修复性能与常见的深度学习方法CoCoNut和Codex相比具有竞争力，并且明显优于标准程序修复方法报告的结果。</li>
+<li>ChatGPT offers a dialogue system through which further information, e.g., the expected output for a certain input or an observed error message, can be entered. By providing such hints to ChatGPT, its success rate can be further increased<br>ChatGPT提供了一个对话系统，通过该系统可以输入进一步的信息，例如，某个输入的预期输出或观察到的错误信息。通过向ChatGPT提供这些提示，可以进一步提高其成功率。</li>
+</ul>
+<h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><ul>
+<li>The bug fixing performance of ChatGPT is so far unclear.</li>
+</ul>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><ol>
+<li>first ask ChatGPT for bug fixes for the selected benchmarks and manually check whether the suggested solution is correct or not.<br>首先询问ChatGPT对所选基准测试的bug修复，并手动检查建议的解决方案是否正确。  </li>
+<li>study and categorize ChatGPT’s answers to gain a deeper understanding of its behavior.<br>研究和分类ChatGPT的答案，以获得更深入地了解它的行为。</li>
+<li>provide a small hint to the model (e.g., a failing test input with an error it produces) to see if it improves ChatGPT’s fix rate.<br>为模型提供了一个小提示（例如，一个失败的测试输入并产生一个错误），看看它是否提高了ChatGPT的修复率。</li>
+</ol>
+<p>对于QuixBugs中的40个基准测试问题中的每一个，使用错误的Python代码，删除所有包含的注释，并询问ChatGPT代码是否包含bug以及如何修复它。对于每个基准测试问题，向ChatGPT发出几个独立的请求，并手动检查给定的答案是否正确。通过对每个查询使用相同的格式来标准化我们的过程。</p>
+<p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230221151640.png" alt="Fig 1"><br>expect from ChatGPT an answer that addresses the bug in line 7, where n ˆ&#x3D; n - 1 should be replaced with n &amp;&#x3D; n - 1, either with a response containing the complete code snippet with the fixed bug (correctly addressed) or by<br>giving an exact and correct description how to change the affected code lines.  </p>
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><h3 id="对比结果"><a href="#对比结果" class="headerlink" title="对比结果"></a>对比结果</h3><p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230221153052.png" alt="Fig 2"><br>a checkmark (✓) indicates that a correct answer was given in at least one of the four runs for a benchmark problem. A cross (✗) indicates that no correct answer was given in any of the runs.  </p>
+<ul>
+<li>for some problems, ChatGPT suggests a complete re-implementation which is then bug-free.  </li>
+<li>these are probably no real bug fixes, since the introduced bug is not localized. We assume that ChatGPT simply reproduced what it has learned here.  </li>
+<li>Furthermore, we do not count a bug as fixed if additional changes suggested by ChatGPT introduce new errors that prevent the program from running properly.</li>
+</ul>
+<h3 id="对回答分类"><a href="#对回答分类" class="headerlink" title="对回答分类"></a>对回答分类</h3><p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230221153926.png" alt="Fig 3"><br><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230221154124.png" alt="Fig 4">  </p>
+<h3 id="与其对话"><a href="#与其对话" class="headerlink" title="与其对话"></a>与其对话</h3><p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230221154314.png" alt="Fig 5"><br>give ChatGPT an exact input example and the resulting error message from Python (lines 17–19)  </p>
+<ul>
+<li>human input can be of much help to an automated APR system, with ChatGPT providing means to do so.</li>
+</ul>
+<h2 id="启发"><a href="#启发" class="headerlink" title="启发"></a>启发</h2><ol>
+<li>将chatGPT在某一基准数据集下的推荐性能与其他模型进行比较，分析推荐任务方面的性能  </li>
+<li>突出其对话的特性，使其在后续follow-up中性能有所提高，如本文与其他模型相比而言平平无奇，但加入和系统对话，为chatgpt提供更多信息或提示后，优越性立马体现出来。</li>
+</ol>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Original link: <a href="http://example.com/page/2/index.html">http://example.com/page/2/index.html</a></p>
+              <p>Copyright Notice: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Share:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+
+    <nav id="page-nav">
+
+<a class="extend prev" rel="prev" href="/">Previous</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+</nav>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> Recent</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/04/18/Java-gulimall/">Java-gulimall</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/11/offer-JVM/">offer-JVM</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/29/offer-SSM/">offer-SSM</a>
+          </li>
+        
+          <li>
+            <a href="/2023/07/18/Prompt-Engineering/">Prompt Engineering</a>
+          </li>
+        
+          <li>
+            <a href="/2023/07/10/offer-redis6/">offer-redis6</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CRS/" style="font-size: 20px;">CRS</a> <a href="/tags/ChatGPT/" style="font-size: 20px;">ChatGPT</a> <a href="/tags/Dialog/" style="font-size: 10px;">Dialog</a> <a href="/tags/JAVA/" style="font-size: 15px;">JAVA</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/LLM/" style="font-size: 10px;">LLM</a> <a href="/tags/PyTorch/" style="font-size: 10px;">PyTorch</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/SSM/" style="font-size: 10px;">SSM</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/flask-vue-mysql/" style="font-size: 10px;">flask,vue,mysql</a>
+    </div>
+  </div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> Archive</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">18</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CRS/" rel="tag">CRS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dialog/" rel="tag">Dialog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/" rel="tag">JAVA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PyTorch/" rel="tag">PyTorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSM/" rel="tag">SSM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flask-vue-mysql/" rel="tag">flask,vue,mysql</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-link"></i> Blogroll</h3>
+    <div class="widget">
+      <ul>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example1.com/">site-name1</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example2.com/">site-name2</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example3.com/">site-name3</a>
+        </li>
+      
+      </ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">Site Map</a>
+        <span> | </span><a href="/atom.xml">Subscribe to this site</a>
+        <span> | </span><a href="/about/">Contact the blogger</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2024 JupiterTop.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+    </div>
+  </div>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+
+
+</body>
+</html>

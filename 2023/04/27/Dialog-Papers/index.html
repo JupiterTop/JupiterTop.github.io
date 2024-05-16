@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Dialog Papers | wBlog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  
+  
+    <link rel="alternate" href="/atom.xml" title="wBlog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">wBlog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Home</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> Archive</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> About</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> RSS</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="search"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Dialog-Papers" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Dialog Papers
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-04-27T09:05:08.000Z" itemprop="datePublished">2023年04月27日</time>
+</span>
+      
+      
+        <span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+      
+      
+<a href="/2023/04/27/Dialog-Papers/#comments" class="article-comment-link">
+  
+    
+    
+    
+    
+    
+  
+  <i class="fa fa-commt"></i>
+  Guestbook
+</a>
+
+
+      
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="1-Target-Guided-Open-Domain-Conversation-ACL-2019"><a href="#1-Target-Guided-Open-Domain-Conversation-ACL-2019" class="headerlink" title="1 Target-Guided Open-Domain Conversation(ACL 2019)"></a>1 Target-Guided Open-Domain Conversation(ACL 2019)</h1><blockquote>
+<p>code: <a target="_blank" rel="noopener" href="https://github.com/squareRoot3/Target-Guided-Conversation">https://github.com/squareRoot3/Target-Guided-Conversation</a>  </p>
+</blockquote>
+<ul>
+<li>motivation:  we want a conversational system to chat naturally with human and proactively guide the conversation to a designated target subject</li>
+</ul>
+<p><img src="/./images/dialog/1.png">  </p>
+<ul>
+<li>approach:   <ol>
+<li>propose a structured approach that introduces coarse-grained keywords to control the intended content of system responses.  </li>
+<li>then attain smooth conversation transition through turn-level supervised learning, and drive the conversation towards the target with<br>  discourse-level constraints. </li>
+<li>further derive a keyword-augmented conversation dataset for the study.</li>
+</ol>
+</li>
+</ul>
+<p><img src="/./images/dialog/2.png">  </p>
+<p>divide-and-conquer approach  </p>
+<h2 id="Turn-level-Keyword-Transition"><a href="#Turn-level-Keyword-Transition" class="headerlink" title="Turn-level Keyword Transition"></a>Turn-level Keyword Transition</h2><p>this module aims to predict keywords of the next response that is appropriate in the conversation context. This part is agnostic to the end target,and therefore aligns with the conventional chitchat objective. We thus can use any open-ended chat data with extracted utterance keywords to<br>learn the prediction module in a supervised manner.  </p>
+<h3 id="Pairwise-PMI-based-Transition"><a href="#Pairwise-PMI-based-Transition" class="headerlink" title="Pairwise PMI-based Transition"></a>Pairwise PMI-based Transition</h3><p>given two keywords wi and wj , computes likeliness of wj → wi:  </p>
+<blockquote>
+<p>PMI(wi, wj ) &#x3D; log p(wi|wj )&#x2F;p(wi)  </p>
+</blockquote>
+<p>where p(wi|wj ) is the ratio of transitioning to wi in the next turn given wj in the current turn, and p(wi) is the ratio of wi occurrence.  </p>
+<ul>
+<li>The approach enjoys simplicity and interpretability, yet can suffer from data sparsity and perform poorly with a priori unseen transition pairs.</li>
+</ul>
+<h3 id="Neural-based-Prediction"><a href="#Neural-based-Prediction" class="headerlink" title="Neural-based Prediction"></a>Neural-based Prediction</h3><p>first use a recurrent network to encode the conversation history, and feed the resulting features to a prediction layer to obtain a distribution over keywords for the next turn.The network is learned by maximizing the likelihood of observed keywords in the data.   </p>
+<ul>
+<li>The neural approach is straightforward, but can rely on a large amount of data for learning.</li>
+</ul>
+<h3 id="Hybrid-Kernel-based-Method"><a href="#Hybrid-Kernel-based-Method" class="headerlink" title="Hybrid Kernel-based Method*"></a>Hybrid Kernel-based Method*</h3><p>given a pair of a current keyword and a candidate next keyword, by first measuring the cosine similarity of their normalized word embeddings, and feeding the quantity to a kernel layer consisting of K RBF kernels.The output of the kernel layer is a K-dimension kernel feature vector, which is then fed to a single-unit dense layer for a candidate score.The score is finally normalized across all candidate keywords to yield the candidate probability distribution.  </p>
+<h2 id="Discourse-level-Target-Guided-Strategy"><a href="#Discourse-level-Target-Guided-Strategy" class="headerlink" title="Discourse-level Target-Guided Strategy"></a>Discourse-level Target-Guided Strategy</h2><p>This module aims to fulfill the end target by proactively driving the discussion topic forward in the course of the conversation.</p>
+<ol>
+<li>constrain that the keyword of each turn must move strictly closer to the end target compared to those of preceding turns.  </li>
+<li>use cosine similarity between normalized word embeddings as the measure of keyword closeness.  </li>
+<li>the above constraint first collects a set of valid candidates, and the turn-level transition module samples or picks the most likely one the from the set according to the keyword distribution.</li>
+</ol>
+<ul>
+<li>the predicted keyword for next response can be both a smooth transition and an effective step towards the target.</li>
+</ul>
+<h2 id="Keyword-augmented-Response-Retrieval"><a href="#Keyword-augmented-Response-Retrieval" class="headerlink" title="Keyword-augmented Response Retrieval"></a>Keyword-augmented Response Retrieval</h2><p>The final module in the system aims to produce a response conditioning on both the conversation history and the predicted keyword.  </p>
+<ul>
+<li>retrieval-based approach* or generation-based method</li>
+</ul>
+<h2 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h2><p>the PersonaChat corpus:  </p>
+<ul>
+<li>The conversations cover a broadrange of topics such as work, family, personal interest, etc; and the discussion topics change frequently during the course of the conversations.These properties make the conversations particularly suitable for learning smooth, natural transitions at each turn.  </li>
+<li>without end targets and do not exhibit target-guided behaviors</li>
+</ul>
+<p>*apply a rule-based keyword extractor which combines TF-IDF and Part-Of Speech features for scoring word salience  </p>
+<p><img src="/./images/dialog/3.png">   </p>
+<h2 id="Case-Study"><a href="#Case-Study" class="headerlink" title="Case Study"></a>Case Study</h2><p><img src="/./images/dialog/4.png">   </p>
+<h1 id="2-Target-Guided-Open-Domain-Conversation-Planning-COLING-2022"><a href="#2-Target-Guided-Open-Domain-Conversation-Planning-COLING-2022" class="headerlink" title="2 Target-Guided Open-Domain Conversation Planning (COLING 2022)"></a>2 Target-Guided Open-Domain Conversation Planning (COLING 2022)</h1><blockquote>
+<p>code:<a target="_blank" rel="noopener" href="https://github.com/y-kishinami/TGCP">https://github.com/y-kishinami/TGCP</a></p>
+</blockquote>
+<ul>
+<li><p>motivation: Prior studies addressing target-oriented conversational tasks lack a crucial notion that has been intensively studied in the context of goaloriented artificial intelligence agents, namely,<em><strong>planning</strong></em>  </p>
+</li>
+<li><p>contributions:</p>
+</li>
+</ul>
+<ol>
+<li>propose the TGCP task as a framework to assess the prerequisite ability of a model for goal-oriented conversation planning</li>
+</ol>
+<p><img src="/./images/dialog/5.png">  </p>
+<ol start="2">
+<li>conduct a set of experiments on the TGCP framework using<br>several existing retrieval-based neural models and recently proposed strong generative neural models of conversational agents</li>
+</ol>
+<p><img src="/./images/dialog/6.png">  </p>
+<ol start="3">
+<li>Our experimental results reveal the challenges facing current technology</li>
+</ol>
+<p><img src="/./images/dialog/7.png">   </p>
+<ul>
+<li>Using TGCP, we revealed that the dialogue models with current technology have difficulty planning conversations to achieve given goals while ensuring the naturalness of the conversation.  </li>
+<li>The experimental results also showed that refining the subgoal strategies for generative models might be an effective method to overcome this trade-off.</li>
+</ul>
+<h1 id="3-Conversational-Graph-Grounded-Policy-Learning-for-Open-Domain-Conversation-Generation-ACL-2020"><a href="#3-Conversational-Graph-Grounded-Policy-Learning-for-Open-Domain-Conversation-Generation-ACL-2020" class="headerlink" title="3 Conversational Graph Grounded Policy Learning for Open-Domain Conversation Generation(ACL 2020)"></a>3 Conversational Graph Grounded Policy Learning for Open-Domain Conversation Generation(ACL 2020)</h1><ul>
+<li>motivation:  utterance-level methods tend to produce less coherent multi-turn dialogs since it is quite challenging to learn semantic transitions in a dialog flow merely from dialog data without the help of prior information  </li>
+<li>approach：propose to represent prior information about dialog transitions as a graph and learn a graph grounded dialog policy, aimed at fostering a more coherent and controllable dialog.  <ol>
+<li>a Conversational Graph (CG) that captures both localappropriateness and global-coherence information,</li>
+<li>a reinforcement learning (RL) based policy，model that learns to leverage the CG to foster a more coherent dialog.</li>
+</ol>
+</li>
+</ul>
+<p><img src="/./images/dialog/9.png">  </p>
+<h2 id="Conversational-Graph-CG"><a href="#Conversational-Graph-CG" class="headerlink" title="Conversational Graph (CG)"></a>Conversational Graph (CG)</h2><p>use vertices to represent utterance content, and edges to represent dialog transitions between utterances：</p>
+<ol>
+<li>a what-vertex that contains a keyword  </li>
+<li>a how-vertex that contains a responding mechanism (from a multi-mapping based generator) to capture rich variability of expressions<br>also use this multi-mapping based method to build edges between two what-vertices to capture the local-appropriateness between the two keywords as a message and a response respectively</li>
+</ol>
+<p><img src="/./images/dialog/10.png">  </p>
+<ul>
+<li>Given a user message, to obtain candidate actions, the NLU module attempts to retrieve contextually relevant subgraphs from CG.   </li>
+<li>The state&#x2F;action module maintains candidate actions, history keywords that selected by policy at previous turns or mentioned by user, and the message.   </li>
+<li>The policy module learns to select a response keyword and a<br>responding mechanism from the above subgraphs.</li>
+<li>The NLG module first encodes the message into a representation using a message encoder and the selected mechanism, and then employs a Seq2BF<br>model (Mou et al., 2016) to produce a response with the above representation and the selected keyword as input.</li>
+</ul>
+<h2 id="Background-Multi-mapping-Generator-for-NLG"><a href="#Background-Multi-mapping-Generator-for-NLG" class="headerlink" title="Background: Multi-mapping Generator for NLG"></a>Background: Multi-mapping Generator for NLG</h2><p><img src="/./images/dialog/11.png">  </p>
+<h2 id="CG-Construction"><a href="#CG-Construction" class="headerlink" title="CG Construction"></a>CG Construction</h2><p>Given a dialog corpus D, we construct the CG with three steps: </p>
+<ol>
+<li>what-vertex construction:use a rule-based keyword extractor to obtain salient keywords from utterances in D</li>
+<li>how-vertex construction: a set of responding mechanisms from the generator</li>
+<li>edge construction:  <ul>
+<li>One is to join two what-vertices:selecting top five keywords decoded (decoding length is 1) by each responding mechanism</li>
+<li>the other is to join a what-vertex and a how-vertex:use the ground-truth response to select the most suitable mechanism for each keyword.select top five mechanisms that are frequently selected for vw’s keyword</li>
+</ul>
+</li>
+</ol>
+<h2 id="NLU"><a href="#NLU" class="headerlink" title="NLU"></a>NLU</h2><p>To obtain subgraphs to provide high-quality candidate actions:</p>
+<ol>
+<li>extract keywords in the last utterance of the context (message) using the same tool in CG construction  </li>
+<li>link each keyword to the CG through exact string matching, to obtain multiple hit what-vertices  </li>
+<li>retrieve a subgraph for each keyword, and use vertices (exclude hit what-vertices) in these subgraphs as candidate actions</li>
+</ol>
+<h2 id="State-x2F-Action"><a href="#State-x2F-Action" class="headerlink" title="State&#x2F;Action"></a>State&#x2F;Action</h2><p>This module maintains candidate actions, history keywords that selected by the policy or mentioned by user, and the message.  </p>
+<h2 id="Policy"><a href="#Policy" class="headerlink" title="Policy"></a>Policy</h2><ul>
+<li>State representation： concatenate a message representation and a history keywords representation + a graph attention mechanism and graph embedding to encode global structure information into state representation  </li>
+<li>Policy decision：  <ol>
+<li>what-policy selects a what-vertex from candidate what-vertices  </li>
+<li>how-policy selects a how-vertex from how-vertex neighbors of the selected what-vertex</li>
+</ol>
+</li>
+</ul>
+<h2 id="Rewards"><a href="#Rewards" class="headerlink" title="Rewards"></a>Rewards</h2><p>utterance-level rewards:</p>
+<ol>
+<li>Local relevance：DualEncoder in (Lowe et al., 2015)  </li>
+<li>Repetition：Repetition penalty is 1 if the generated response shares more than 60% words with any contextual utterances, otherwise 0  </li>
+<li>Target similarity：calculate cosine similarity between the chosen keyword and the target word in pretrained word embedding space as target similarity</li>
+</ol>
+<p>To leverage the global graph structure information of CG to facilitate policy learning：  </p>
+<ol>
+<li>Global coherence： the average cosine distance between the chosen what-vertex and one of history what-vertices (selected or mentioned previously) in TransE based embedding space  </li>
+<li>Sustainability： calculate a PageRank score (calculated on the full CG) for the chosen whatvertex  </li>
+<li>Shortest path distance to the target：closer 1;otherwise 0;not change -1</li>
+</ol>
+<h2 id="NLG"><a href="#NLG" class="headerlink" title="NLG"></a>NLG</h2><p>feed the keyword in the selected what-vertex and r¯ into a Seq2BF decoder (Mou et al., 2016) for response generation.  </p>
+<p><img src="/./images/dialog/12.png"> </p>
+
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> Contents</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Target-Guided-Open-Domain-Conversation-ACL-2019"><span class="toc-text">1 Target-Guided Open-Domain Conversation(ACL 2019)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Turn-level-Keyword-Transition"><span class="toc-text">Turn-level Keyword Transition</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pairwise-PMI-based-Transition"><span class="toc-text">Pairwise PMI-based Transition</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Neural-based-Prediction"><span class="toc-text">Neural-based Prediction</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hybrid-Kernel-based-Method"><span class="toc-text">Hybrid Kernel-based Method*</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Discourse-level-Target-Guided-Strategy"><span class="toc-text">Discourse-level Target-Guided Strategy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Keyword-augmented-Response-Retrieval"><span class="toc-text">Keyword-augmented Response Retrieval</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dataset"><span class="toc-text">Dataset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Case-Study"><span class="toc-text">Case Study</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Target-Guided-Open-Domain-Conversation-Planning-COLING-2022"><span class="toc-text">2 Target-Guided Open-Domain Conversation Planning (COLING 2022)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Conversational-Graph-Grounded-Policy-Learning-for-Open-Domain-Conversation-Generation-ACL-2020"><span class="toc-text">3 Conversational Graph Grounded Policy Learning for Open-Domain Conversation Generation(ACL 2020)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Conversational-Graph-CG"><span class="toc-text">Conversational Graph (CG)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Background-Multi-mapping-Generator-for-NLG"><span class="toc-text">Background: Multi-mapping Generator for NLG</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CG-Construction"><span class="toc-text">CG Construction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NLU"><span class="toc-text">NLU</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#State-x2F-Action"><span class="toc-text">State&#x2F;Action</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Policy"><span class="toc-text">Policy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rewards"><span class="toc-text">Rewards</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NLG"><span class="toc-text">NLG</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+          <blockquote id="copyright">
+              <p>Original link: <a href="http://example.com/2023/04/27/Dialog-Papers/">http://example.com/2023/04/27/Dialog-Papers/</a></p>
+              <p>Copyright Notice: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dialog/" rel="tag">Dialog</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Share:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+    <a href="/2023/04/10/offer-Java/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">
+        
+          offer---Java
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/05/10/offer-Nginx/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">newer</strong>
+      <div class="article-nav-title">
+        
+          offer-Nginx
+        
+      </div>
+    </a>
+  
+</nav>
+
+      
+      
+        
+
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> Recent</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/04/18/Java-gulimall/">Java-gulimall</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/11/offer-JVM/">offer-JVM</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/29/offer-SSM/">offer-SSM</a>
+          </li>
+        
+          <li>
+            <a href="/2023/07/18/Prompt-Engineering/">Prompt Engineering</a>
+          </li>
+        
+          <li>
+            <a href="/2023/07/10/offer-redis6/">offer-redis6</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CRS/" style="font-size: 20px;">CRS</a> <a href="/tags/ChatGPT/" style="font-size: 20px;">ChatGPT</a> <a href="/tags/Dialog/" style="font-size: 10px;">Dialog</a> <a href="/tags/JAVA/" style="font-size: 15px;">JAVA</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/LLM/" style="font-size: 10px;">LLM</a> <a href="/tags/PyTorch/" style="font-size: 10px;">PyTorch</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/SSM/" style="font-size: 10px;">SSM</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/flask-vue-mysql/" style="font-size: 10px;">flask,vue,mysql</a>
+    </div>
+  </div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> Archive</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">18</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CRS/" rel="tag">CRS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dialog/" rel="tag">Dialog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/" rel="tag">JAVA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PyTorch/" rel="tag">PyTorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSM/" rel="tag">SSM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flask-vue-mysql/" rel="tag">flask,vue,mysql</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-link"></i> Blogroll</h3>
+    <div class="widget">
+      <ul>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example1.com/">site-name1</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example2.com/">site-name2</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example3.com/">site-name3</a>
+        </li>
+      
+      </ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">Site Map</a>
+        <span> | </span><a href="/atom.xml">Subscribe to this site</a>
+        <span> | </span><a href="/about/">Contact the blogger</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2024 JupiterTop.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+    </div>
+  </div>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+    
+<script src="/localshare/js/social-share.js"></script>
+
+    
+<script src="/localshare/js/qrcode.js"></script>
+
+  
+  
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+
+
+
+
+</body>
+</html>

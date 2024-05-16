@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>offer-JVM | wBlog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  
+  
+    <link rel="alternate" href="/atom.xml" title="wBlog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">wBlog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Home</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> Archive</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> About</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> RSS</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="search"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-offer-JVM" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      offer-JVM
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2024-03-11T02:32:11.000Z" itemprop="datePublished">2024年03月11日</time>
+</span>
+      
+      
+        <span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+      
+      
+<a href="/2024/03/11/offer-JVM/#comments" class="article-comment-link">
+  
+    
+    
+    
+    
+    
+  
+  <i class="fa fa-commt"></i>
+  Guestbook
+</a>
+
+
+      
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h1><h2 id="JVM内存与垃圾回收"><a href="#JVM内存与垃圾回收" class="headerlink" title="JVM内存与垃圾回收"></a>JVM内存与垃圾回收</h2><h3 id="1-JVM与Java体系结构"><a href="#1-JVM与Java体系结构" class="headerlink" title="1 JVM与Java体系结构"></a>1 JVM与Java体系结构</h3><ul>
+<li>Java虚拟机是一台执行<em>Java字节码</em>的虚拟计算机；Java虚拟机就是二进制字节码的运行环境</li>
+<li>特点：一次编译，到处运行；自动内存管理；自动垃圾回收功能</li>
+<li>用户User ——&gt; 字节码文件 ——&gt; JVM ——&gt; 操作系统 ——&gt; 硬件 </li>
+<li>JVM的整体结构（HotSpot VM）<br><img src="/./images/JVM/JVM%E6%9E%B6%E6%9E%84-%E7%AE%80%E5%9B%BE.jpg" alt="结构简图"></li>
+<li>JVM的架构模型：Java编译器输入的指令流基本上是一种基于<em>栈的指令集架构</em>，另外一种指令集架构则是基于<em>寄存器的指令集架构</em>。前者指令集小，后者指令少。后者执行效率高，但依赖硬件。  </li>
+<li>JVM的生命周期：  <ol>
+<li>虚拟机的启动：通过引导类加载器创建一个初始类来完成的，这个类是由虚拟机的具体实现指定的。  </li>
+<li>虚拟机的执行：执行一个所谓的Java程序的时候，真真正正执行的是一个叫<em>Java虚拟机的进程</em>。  </li>
+<li>虚拟机的退出：程序正常执行结束；异常或错误而导致终止；某线程调用Runtime类或System类的exit方法，Runtime类的halt方法。</li>
+</ol>
+</li>
+</ul>
+<h3 id="2-类加载子系统"><a href="#2-类加载子系统" class="headerlink" title="2 类加载子系统"></a>2 类加载子系统</h3><h4 id="类加载器和类的加载过程"><a href="#类加载器和类的加载过程" class="headerlink" title="类加载器和类的加载过程"></a>类加载器和类的加载过程</h4><ol>
+<li><p>类加载器子系统作用：负责从文件系统或网络中加载Class文件；ClassLoader只负责加载，至于是否可以运行，则有执行引擎决定。  </p>
+</li>
+<li><p>类的加载过程：（加载 ——&gt; 链接（验证-&gt;准备-&gt;解析） ——&gt; 初始化）  </p>
+<ul>
+<li>加载：通过一个类的全限定名获取定义此类的二进制字节流；将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构；在内存中生成一个代表这个类的java.lang.Class对象，作为方法区这个类的各种数据的访问入口。  </li>
+<li>链接：  <ol>
+<li>验证：目的在于确保class文件的字节流中包含信息符合当前虚拟机要求，保证被加载类的正确性，不会危害虚拟机自身安全。主要包括四种验证，文件格式验证、元数据验证、字节码验证、符号引用验证。  <em>CAFE BABY</em></li>
+<li>准备：为类变量分配内存并且设置该类变量的默认初始值，即零值。这里不包含用final修饰的static，因为final在编译的时候就会分配了，准备阶段会显式初始化。这里不会为实例变量分配初始化，类变量会分配在方法区中，而实例变量是会随着对象一起分配到Java堆中。  </li>
+<li>解析：将常量池内的符号引用转换为直接引用的过程。事实上，解析操作往往会伴随着JVM在执行完初始化之后再执行。解析动作主要针对类或接口、字段、类方法、接口方法、方法类型等。</li>
+</ol>
+</li>
+<li>初始化：初始化阶段就是执行类构造器方法<clinit>()的过程。此方法不需定义，式javac编译器自动收集类中的所有类变量的赋值动作和静态代码块中的语句合并而来。构造器方法中指令按语句在源文件出现的顺序执行。<clinit>()不同于类的构造器<init>()。若该类具有父类，JVM会保证字类的<clinit>()执行前，父类的<clinit>()已经执行完毕。虚拟机必须保证一个类的<clinit>()方法在多线程下被同步加锁。</li>
+</ul>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ClassInitTest</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">num</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">static</span>&#123;</span><br><span class="line">            num = <span class="number">2</span>;</span><br><span class="line">            number = <span class="number">20</span>;</span><br><span class="line">            System.out.println(num);</span><br><span class="line">            <span class="comment">//System.out.println(number);//报错：非法的前向引用。</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">number</span> <span class="operator">=</span> <span class="number">10</span>;  <span class="comment">//linking之prepare: number = 0 --&gt; initial: 20 --&gt; 10</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">                System.out.println(ClassInitTest.num);<span class="comment">//2</span></span><br><span class="line">                System.out.println(ClassInitTest.number);<span class="comment">//10</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    ```  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">3.</span> 类加载器的分类  </span><br><span class="line">JVM支持*引导类加载器*和*用户自定义加载器*两类。将派生于抽象类ClassLoader的类加载器都称为用户自定义加载器，如扩展类加载器、应用程序类加载器。</span><br><span class="line">    - *引导类加载器*底层为非java语言（C/C++）编写，Java的核心类库都是使用类加载器进行加载的，出于安全考虑，Bootstrap启动类加载器只加载包名为java、javax、sun等开头的类。</span><br><span class="line">    - *扩展类加载器*派生于ClassLoader，jre/lib/ext。</span><br><span class="line">    - *应用程序类加载器*派生于ClassLoader，负责加载环境变量classpath或系统属性java.class.path指定路径下的类库，是程序中默认的类加载器。</span><br><span class="line">    - *ClassLoader*，一个抽象类，loadClass(String name)或着findClass和defineClass组合使用，生成class实例，都不是抽象方法。  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">4.</span> 双亲委派机制（面试重点）  </span><br><span class="line">- *工作原理*：<span class="number">1</span>）如果一个类加载器收到了类加载器的请求，它并不会自己先去加载，而是把这个请求委托给父类的加载器去执行；<span class="number">2</span>）如果父类加载器还存在其父类加载器，则进一步向上委托，一次递归，请求最终将到达顶层的启动类加载器；<span class="number">3</span>）如果父类加载器可以完成类加载器任务，就成功返回，倘若父类加载器无法完成此加载任务，子加载器才会尝试自己去加载。</span><br><span class="line">![](./images/JVM/%E5%<span class="number">8F</span>%8C%E4%BA%B2%E5%A7%<span class="number">94</span>%E6%B4%BE%E6%A8%A1%E5%BC%<span class="number">8F</span>.png)  </span><br><span class="line">- 优势：避免类的重复加载，保护程序安全，防止核心API被随意篡改。java.lang.wzh  </span><br><span class="line">- 沙箱安全机制，保证对java核心源代码的保护  </span><br><span class="line"></span><br><span class="line"><span class="number">5.</span> 其他内容  </span><br><span class="line">- 在JVM中表示两个class对象是否为同一类存在两个必要条件：<span class="number">1.</span> 类的完整类名必须一致，包括包名。 <span class="number">2.</span> 加载这个类的classLoader（指classLoader实例对象）必须相同。  </span><br><span class="line">- 如果一个类型是由用户类加载器加载的，那么JVM会将这个类加载器的一个引用作为类型信息的一部分保存在方法区中。当解析一个类型到另一个类型的引用的时候，JVM需要保证这两个类型的类加载器是相同的。  </span><br><span class="line">- 类的主动使用和被动使用。主动使用分为七种情况：<span class="number">1</span>）创建类的实例；<span class="number">2</span>）访问某个类或接口的静态变量，或者对该静态变量赋值；<span class="number">3</span>）调用类的静态方法；<span class="number">4</span>）反射；<span class="number">5</span>）初始化一个类的子类；<span class="number">6</span>）java虚拟机启动时被标明为启动类的类；<span class="number">7</span>）JDK <span class="number">7</span> 开始提供的动态语言支持。类的被动使用不会导致类的初始化。</span><br><span class="line"></span><br><span class="line">### <span class="number">3</span> 运行时数据区概述及线程  </span><br><span class="line">不同的JVM对于内存的划分方式和管理机制存在着部分差异。</span><br><span class="line">JVM允许一个应用有多个线程并行的执行；在Hotspot JVM里，每个线程都与操作系统的本地线程直接映射。</span><br><span class="line"></span><br><span class="line">### <span class="number">4</span> 程序计数器（PC寄存器）  </span><br><span class="line">#### 介绍（Program Counter Register）  </span><br><span class="line"><span class="number">1.</span> JVM中的PC寄存器是对物理PC寄存器的一种抽象模拟，程序钩子。</span><br><span class="line"><span class="number">2.</span> 用来存储指向下一条指令的地址，由执行引擎读取下一条指令。内存空间小，运行速度最快的存储区域。  </span><br><span class="line"><span class="number">3.</span> 唯一一个没有规定任何OutofMemoryError的区域。 </span><br><span class="line">![](./images/JVM/PC%E5%AF%<span class="number">84</span>%E5%AD%<span class="number">98</span>%E5%<span class="number">99</span>%A8.png)   </span><br><span class="line">#### 两个常见的问题  </span><br><span class="line"><span class="number">1.</span> 使用PC寄存器存储字节码指令地址有什么用呢？为什么使用PC寄存器记录当前线程的执行地址呢？  </span><br><span class="line">答： 因为CPU需要不停的切换各个线程，这时候切换回来以后，就得知道接着从哪开始继续执行。  </span><br><span class="line"><span class="number">2.</span> PC寄存器为甚会被设定为线程私有？  </span><br><span class="line">答： 为了能够准确地记录各个线程正在执行的当前字节码指令地址，最好的办法自然是为每一个线程都分配一个PC寄存器，这样各个线程之间便可以进行独立计算，从而不会出现相互干扰的情况。  </span><br><span class="line"></span><br><span class="line">### <span class="number">5</span> 虚拟机栈  </span><br><span class="line">#### 虚拟机栈概述  </span><br><span class="line">栈是运行时的单位，而堆是存储的单位。  </span><br><span class="line">每个线程在创建时都会创建一个虚拟机栈，其内部保存一个个的栈帧，对应着一次次的Java方法调用。是线程私有的。  </span><br><span class="line">生命周期和线程一致。作用是主管Java程序的运行，它保存方法的局部变量（<span class="number">8</span>种基本数据类型、对象的引用地址）、部分结果，并参与方法的调用和返回。  </span><br><span class="line">优点是跨平台，指令集小，编译器容易实现，缺点是性能下降，实现同样的功能需要更多的指令。</span><br><span class="line">访问速度仅次于程序计数器，只有进栈出栈两个操作，对于栈来说不存在垃圾回收（GC）问题，但存在OOM问题。</span><br><span class="line">栈中可能出现的异常：<span class="number">1.</span> StackOverflowError异常（线程请求分配的栈容量超过java虚拟机栈允许的最大容量）；<span class="number">2.</span> OutOfMemoryError异常（没有足够的内存去扩展或创建）。 -Xss设置栈内存的大小</span><br><span class="line"></span><br><span class="line">#### 栈的存储单位  </span><br><span class="line">栈帧（Stack Frame）；在这个线程上正在执行的每个方法都各自对应一个栈帧。栈帧是一个内存区块，是一个数据集，维系着方法执行过程中的各种信息。</span><br><span class="line">当前栈帧——当前方法——当前类；</span><br><span class="line">栈帧结构：局部变量表（Local Variables）；操作数栈（Operand Stack）（或表达式栈）；动态链接（Dynamic Linking）（或指向允许时常量池的方法引用）；方法返回地址（Return Address）（或方法正常退出或者异常推出的定义）；一些附加信息。</span><br><span class="line"></span><br><span class="line">#### 局部变量表  </span><br><span class="line">局部变量数组或本地变量表，定义一个数字数组，用于存储方法参数和定义在方法体内的局部变量，基本数据类型，对象引用，returnAddress类型。不存在数据安全问题，线程的私有数据；局部变量表所需的容量大小是在编译期确定下来的。只在当前方法调用中生效，随着栈帧的销毁而销毁。</span><br><span class="line"></span><br><span class="line"><span class="number">1.</span> 局部变量表，最基本的存储单元是Slot（变量槽）；<span class="number">32</span>位以内的类型只占用一个slot（包括returnAddress类型），<span class="number">64</span>位的类型（<span class="type">long</span>和<span class="type">double</span>）占用两个slot；按照顺序被复制到每一个slot上；</span><br><span class="line"><span class="number">2.</span> 如果当前帧是由构造方法或实例方法创建的，那么该对象引用<span class="built_in">this</span>将会放在index为<span class="number">0</span>的slot处，其余按顺序。  </span><br><span class="line"><span class="number">3.</span> 栈帧中的局部变量表中的槽位是可以重用的，如果一个局部变量过了其作用域，那么在其作用域之后申明的新的局部变量就很有可能会复用过期局部变量的槽位，从而达到节省资源的目的。</span><br><span class="line"></span><br><span class="line">例：按照在类中声明的位置分--&gt; <span class="number">1</span>）成员变量，在使用前都经历过默认初始化赋值；类变量，linking的prepare阶段，默认赋值，initial阶段，显式赋值；实例变量，随着对象的创建，会在堆空间中分配实例变量空间，并进行默认赋值。  <span class="number">2</span>）局部变量，在使用前，必须进行显式赋值，否则编译不通过。</span><br><span class="line"></span><br><span class="line">在栈帧中，与性能调优关系最为密切的部分是局部变量表，局部变量表中的变量也是重要的垃圾回收根节点，只要被局部变量表中直接或间接引用的对象都不会被回收。</span><br><span class="line"></span><br><span class="line">#### 操作数栈  </span><br><span class="line">栈可以使用数组或链表来实现。操作数栈是用数组实现，或叫表达式栈。根据字节码指令，入栈出栈。主要用于保存计算过程的中间结果，同时作为计算过程中变量临时的存储空间。编译期就定义好了栈深度。32bit一个栈单位深度，64bit两个。如果被调用的方法带有返回值的话，其返回值将会被压入当前栈帧的操作数栈中。Java虚拟机的解释引擎是基于操作数栈的执行引擎。</span><br><span class="line"></span><br><span class="line">#### 代码追踪  </span><br><span class="line">```java</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testAddOperation</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">//byte、short、char、boolean：都以int型来保存</span></span><br><span class="line">        <span class="type">byte</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">15</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">8</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> i + j;</span><br><span class="line"></span><br><span class="line">       <span class="comment">// int m = 800;</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><img src="/./images/JVM/%E6%93%8D%E4%BD%9C%E6%95%B0%E6%A0%88%E4%BB%A3%E7%A0%81%E8%BF%BD%E8%B8%AA.png"></p>
+<ul>
+<li>如果被调用的方法带有返回值的话，其返回值将会被压入当前栈帧的操作数栈中。</li>
+<li>面试题重点：常见的i++和++i有什么区别？</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">add</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="comment">//第1类问题：</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">i1</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line">    i1++;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> <span class="variable">i2</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line">    ++i2;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//第2类问题：</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">i3</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">i4</span> <span class="operator">=</span> i3++;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> <span class="variable">i5</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">i6</span> <span class="operator">=</span> ++i5;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//第3类问题：</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">i7</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line">    i7 = i7++;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> <span class="variable">i8</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line">    i8 = ++i8;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//第4类问题：</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">i9</span> <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">i10</span> <span class="operator">=</span> i9++ + ++i9;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="栈顶缓存技术"><a href="#栈顶缓存技术" class="headerlink" title="栈顶缓存技术"></a>栈顶缓存技术</h4><p>Top-of-Stack Cashing：将栈顶元素全部缓存在物理CPU的寄存器中，以此降低对内存的读&#x2F;写次数，提升执行引擎的执行效率。</p>
+<h4 id="动态链接"><a href="#动态链接" class="headerlink" title="动态链接"></a>动态链接</h4><p>每一个栈帧内部都包含一个<em>指向运行时常量池</em>中该栈帧的所属方法的引用。目的是将符号引用转换为调用方法的直接引用。</p>
+<h4 id="方法的调用：解析与分派"><a href="#方法的调用：解析与分派" class="headerlink" title="方法的调用：解析与分派"></a>方法的调用：解析与分派</h4><p>静态链接：如果被调用的目标方法在编译器可知，且运行期保持不变（早期绑定）；<br>动态链接：如果被调用的方法在编译器无法被确定下来，只能够在程序运行期根据实际的类型绑定相关的方法（晚期绑定）。  </p>
+<ul>
+<li><p>绑定是一个字段、方法或者类在符号引用被替换为直接引用的过程，这仅仅发生一次。</p>
+</li>
+<li><p>如果方法在编译期就确定了具体的调用版本，这个版本在运行时是不可变的。这样的方法称为<em>非虚方法</em>。静态方法、私有方法、final方法、实例构造器、父类方法都是非虚方法。其他方法称为虚方法。</p>
+</li>
+</ul>
+<p>虚拟机中提供了以下几条方法调用指令:</p>
+<ul>
+<li>普通调用指令：  <ol>
+<li>invokestatic：调用静态方法，解析阶段确定唯一方法版本；  </li>
+<li>invokespecial：调用<init>方法、私有及父类方法，解析阶段确定唯一方法版本；  </li>
+<li>invokevirtual：调用所有虚方法；  </li>
+<li>invokeinterface：调用接口方法。</li>
+</ol>
+</li>
+<li>动态调用指令：  <ol start="5">
+<li>invokedynamic：动态解析出需要调用的方法，然后执行。如lambda表达式。</li>
+</ol>
+</li>
+</ul>
+<p>1，2调用的方法为非虚方法，其余（final修饰的除外）称为虚方法。</p>
+<p>静态类型语言是判断变量自身的类型信息；动态类型语言是判断变量值的类型信息，变量没有类型信息，变量值才有类型信息。  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Java: <span class="type">String</span> <span class="variable">info</span> <span class="operator">=</span> <span class="string">&quot;xxx&quot;</span>;</span><br><span class="line">JS: <span class="type">var</span> <span class="variable">name</span> <span class="operator">=</span> <span class="string">&quot;xxx&quot;</span>;</span><br><span class="line">Python: info = <span class="number">130.5</span> </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>虚方法表：用索引表代替查找</li>
+</ul>
+<h4 id="方法返回地址"><a href="#方法返回地址" class="headerlink" title="方法返回地址"></a>方法返回地址</h4><ul>
+<li>帧数据区（动态链接、方法返回地址、一些附加信息）  </li>
+<li>方法返回地址：存放调用该方法的pc寄存器的值。</li>
+</ul>
+<h4 id="一些附加信息及栈的相关面试题"><a href="#一些附加信息及栈的相关面试题" class="headerlink" title="一些附加信息及栈的相关面试题"></a>一些附加信息及栈的相关面试题</h4><ul>
+<li>一些附加信息：栈帧中还允许携带与Java虚拟机实现相关的一些附加信息。例如，对程序调试提供支持的信息。</li>
+</ul>
+
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> Contents</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JVM"><span class="toc-text">JVM</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM%E5%86%85%E5%AD%98%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="toc-text">JVM内存与垃圾回收</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-JVM%E4%B8%8EJava%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="toc-text">1 JVM与Java体系结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%AD%90%E7%B3%BB%E7%BB%9F"><span class="toc-text">2 类加载子系统</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8%E5%92%8C%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B"><span class="toc-text">类加载器和类的加载过程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%88%E9%A1%B6%E7%BC%93%E5%AD%98%E6%8A%80%E6%9C%AF"><span class="toc-text">栈顶缓存技术</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-text">动态链接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E7%9A%84%E8%B0%83%E7%94%A8%EF%BC%9A%E8%A7%A3%E6%9E%90%E4%B8%8E%E5%88%86%E6%B4%BE"><span class="toc-text">方法的调用：解析与分派</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E8%BF%94%E5%9B%9E%E5%9C%B0%E5%9D%80"><span class="toc-text">方法返回地址</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E9%99%84%E5%8A%A0%E4%BF%A1%E6%81%AF%E5%8F%8A%E6%A0%88%E7%9A%84%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98"><span class="toc-text">一些附加信息及栈的相关面试题</span></a></li></ol></li></ol></li></ol></li></ol>
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+          <blockquote id="copyright">
+              <p>Original link: <a href="http://example.com/2024/03/11/offer-JVM/">http://example.com/2024/03/11/offer-JVM/</a></p>
+              <p>Copyright Notice: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>Share:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+    <a href="/2023/08/29/offer-SSM/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">
+        
+          offer-SSM
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/04/18/Java-gulimall/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">newer</strong>
+      <div class="article-nav-title">
+        
+          Java-gulimall
+        
+      </div>
+    </a>
+  
+</nav>
+
+      
+      
+        
+
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> Recent</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/04/18/Java-gulimall/">Java-gulimall</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/11/offer-JVM/">offer-JVM</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/29/offer-SSM/">offer-SSM</a>
+          </li>
+        
+          <li>
+            <a href="/2023/07/18/Prompt-Engineering/">Prompt Engineering</a>
+          </li>
+        
+          <li>
+            <a href="/2023/07/10/offer-redis6/">offer-redis6</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CRS/" style="font-size: 20px;">CRS</a> <a href="/tags/ChatGPT/" style="font-size: 20px;">ChatGPT</a> <a href="/tags/Dialog/" style="font-size: 10px;">Dialog</a> <a href="/tags/JAVA/" style="font-size: 15px;">JAVA</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/LLM/" style="font-size: 10px;">LLM</a> <a href="/tags/PyTorch/" style="font-size: 10px;">PyTorch</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/SSM/" style="font-size: 10px;">SSM</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/flask-vue-mysql/" style="font-size: 10px;">flask,vue,mysql</a>
+    </div>
+  </div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> Archive</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">18</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CRS/" rel="tag">CRS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dialog/" rel="tag">Dialog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/" rel="tag">JAVA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PyTorch/" rel="tag">PyTorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSM/" rel="tag">SSM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flask-vue-mysql/" rel="tag">flask,vue,mysql</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-link"></i> Blogroll</h3>
+    <div class="widget">
+      <ul>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example1.com/">site-name1</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example2.com/">site-name2</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example3.com/">site-name3</a>
+        </li>
+      
+      </ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">Site Map</a>
+        <span> | </span><a href="/atom.xml">Subscribe to this site</a>
+        <span> | </span><a href="/about/">Contact the blogger</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2024 JupiterTop.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+    </div>
+  </div>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+    
+<script src="/localshare/js/social-share.js"></script>
+
+    
+<script src="/localshare/js/qrcode.js"></script>
+
+  
+  
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+
+
+
+
+</body>
+</html>
