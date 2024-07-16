@@ -155,7 +155,7 @@
 <li>解析：将常量池内的符号引用转换为直接引用的过程。事实上，解析操作往往会伴随着JVM在执行完初始化之后再执行。解析动作主要针对类或接口、字段、类方法、接口方法、方法类型等。</li>
 </ol>
 </li>
-<li>初始化：初始化阶段就是执行类构造器方法<clinit>()的过程。此方法不需定义，式javac编译器自动收集类中的所有类变量的赋值动作和静态代码块中的语句合并而来。构造器方法中指令按语句在源文件出现的顺序执行。<clinit>()不同于类的构造器<init>()。若该类具有父类，JVM会保证字类的<clinit>()执行前，父类的<clinit>()已经执行完毕。虚拟机必须保证一个类的<clinit>()方法在多线程下被同步加锁.</li>
+<li>初始化：初始化阶段就是执行类构造器方法<clinit>()的过程。此方法不需定义，式javac编译器自动收集类中的所有类变量的赋值动作和静态代码块中的语句合并而来。构造器方法中指令按语句在源文件出现的顺序执行。<clinit>()不同于类的构造器<init>()。若该类具有父类，JVM会保证字类的<clinit>()执行前，父类的<clinit>()已经执行完毕。虚拟机必须保证一个类的<clinit>()方法在多线程下被同步加锁.</clinit></clinit></clinit></init></clinit></clinit></li>
 </ul>
  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ClassInitTest</span> &#123;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">num</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span>&#123;</span><br><span class="line">    num = <span class="number">2</span>;</span><br><span class="line">    number = <span class="number">20</span>;</span><br><span class="line">    System.out.println(num);</span><br><span class="line">    <span class="comment">//System.out.println(number);//报错：非法的前向引用。</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">number</span> <span class="operator">=</span> <span class="number">10</span>;  <span class="comment">//linking之prepare: number = 0 --&gt; initial: 20 --&gt; 10</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        System.out.println(ClassInitTest.num);<span class="comment">//2</span></span><br><span class="line">        System.out.println(ClassInitTest.number);<span class="comment">//10</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -226,7 +226,7 @@
 <ul>
 <li>普通调用指令：  <ol>
 <li>invokestatic：调用静态方法，解析阶段确定唯一方法版本；  </li>
-<li>invokespecial：调用<init>方法、私有及父类方法，解析阶段确定唯一方法版本；  </li>
+<li>invokespecial：调用<init>方法、私有及父类方法，解析阶段确定唯一方法版本；  </init></li>
 <li>invokevirtual：调用所有虚方法；  </li>
 <li>invokeinterface：调用接口方法。</li>
 </ol>
@@ -338,6 +338,14 @@
       <ul>
         
           <li>
+            <a href="/2024/07/04/redis7/">redis7</a>
+          </li>
+        
+          <li>
+            <a href="/2024/06/17/offer-ES/">offer-ES</a>
+          </li>
+        
+          <li>
             <a href="/2024/04/18/Java-gulimall/">Java-gulimall</a>
           </li>
         
@@ -347,14 +355,6 @@
         
           <li>
             <a href="/2023/08/29/offer-SSM/">offer-SSM</a>
-          </li>
-        
-          <li>
-            <a href="/2023/07/18/Prompt-Engineering/">Prompt Engineering</a>
-          </li>
-        
-          <li>
-            <a href="/2023/07/10/offer-redis6/">offer-redis6</a>
           </li>
         
       </ul>
@@ -379,7 +379,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> Archive</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">18</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">17</span></li></ul>
     </div>
   </div>
 

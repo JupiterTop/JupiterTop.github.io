@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>redis7 | wBlog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  
+  
+    <link rel="alternate" href="/atom.xml" title="wBlog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">wBlog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Home</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> Archive</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> About</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> RSS</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="search"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-redis7" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      redis7
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2024-07-04T05:12:08.000Z" itemprop="datePublished">2024年07月04日</time>
+</span>
+      
+      
+        <span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+      
+      
+<a href="/2024/07/04/redis7/#comments" class="article-comment-link">
+  
+    
+    
+    
+    
+    
+  
+  <i class="fa fa-commt"></i>
+  Guestbook
+</a>
+
+
+      
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Redis-7"><a href="#Redis-7" class="headerlink" title="Redis 7"></a>Redis 7</h1><h2 id="入门概述"><a href="#入门概述" class="headerlink" title="入门概述"></a>入门概述</h2><h3 id="是什么？"><a href="#是什么？" class="headerlink" title="是什么？"></a>是什么？</h3><ul>
+<li>Redis: Remote Dictionary Server(远程字典服务)  </li>
+<li>C语言编写的，key-value键值对的in-momery database</li>
+<li>作者安特雷兹github和个人博客包含redis的更新和新特性</li>
+</ul>
+<h3 id="能做啥"><a href="#能做啥" class="headerlink" title="能做啥"></a>能做啥</h3><ul>
+<li><p>before（MySQL）：</p>
+<ol>
+<li>硬件：disk磁盘</li>
+<li>查询：全表扫描</li>
+<li>关系的处理：关系型数据库</li>
+</ol>
+</li>
+<li><p>after（Redis）：</p>
+<ol>
+<li>硬件：memory内存  </li>
+<li>查询：kv键值对查询</li>
+<li>关系的处理：NoSQL非关系型数据库</li>
+</ol>
+</li>
+<li><p>分布式缓存，挡在mysql数据库之前的带刀护卫</p>
+</li>
+<li><p>两者并不是相互竞争的关系，而是相互配合。</p>
+</li>
+<li><p>支持内存存储和持久化（RDB+AOF），支持异步将内存中的数据持久化到disk硬盘上，同时不影响继续使用服务</p>
+</li>
+<li><p>高可用架构搭配，单机、主从、哨兵、集群  </p>
+</li>
+<li><p>缓存穿透、击穿、雪崩、分布式锁、队列  </p>
+</li>
+<li><p>排行榜、点赞应用场景</p>
+</li>
+<li><p>优势：</p>
+<ol>
+<li>性能极高，读的速度是110000次&#x2F;秒，写的速度是81000次&#x2F;秒，所以适用于秒杀任务；</li>
+<li>Redis数据类型丰富，除了kv类型的数据，还提供了list，set，zset，hash等数据结构的存储</li>
+<li>支持数据的持久化</li>
+<li>支持数据的备份，即master-slave模式的数据备份</li>
+</ol>
+</li>
+</ul>
+<h3 id="版本演变和redis7新特性"><a href="#版本演变和redis7新特性" class="headerlink" title="版本演变和redis7新特性"></a>版本演变和redis7新特性</h3><p><img src="/./images/Redis7/history.png"></p>
+<ol>
+<li>Redis Functions 针对Lua  </li>
+<li>Client-eviction 针对性能提升  </li>
+<li>Multi-part AOF 支持多个AOP文件，性能提升  </li>
+<li>ACL v2 精细化权限管理  </li>
+<li>新增命令  </li>
+<li>listpack替代ziplist  </li>
+<li>底层性能优化</li>
+</ol>
+<h2 id="安装配置"><a href="#安装配置" class="headerlink" title="安装配置"></a>安装配置</h2><p>虚拟机：CentOS9<br>检查操作系统位数和gcc编译环境。<br>redis版本：7.2.4<br>redis.conf配置文件，改完后确保生效，记得重启</p>
+<p>   1 默认daemonize no              改为  daemonize yes</p>
+<p>   2 默认protected-mode  yes    改为  protected-mode no</p>
+<p>   3 默认bind 127.0.0.1             改为  直接注释掉(默认bind 127.0.0.1只能本机访问)或改成本机IP地址，否则影响远程IP连接</p>
+<p>   4 添加redis密码                      改为 requirepass 你自己设置的密码  </p>
+<h2 id="redis-10-大数据类型"><a href="#redis-10-大数据类型" class="headerlink" title="redis 10 大数据类型"></a>redis 10 大数据类型</h2><p>注意：key一般都是字符串，value是十大类型；命令不区分大小写，而key是区分大小写的。help@类型 提供对应类型的帮助命令  </p>
+<h3 id="1-字符串（String）"><a href="#1-字符串（String）" class="headerlink" title="1 字符串（String）"></a>1 字符串（String）</h3><p>单值单value。  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">set key value [NX|XX] [GET] [EX seconds|PX milliseconds|EXAT unix-time-seconds|PXAT unix-time-milliseconds|KEEPTTL]</span><br><span class="line"></span><br><span class="line">get key</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>NX: 键不存在时设置键值；<br>XX：键存在的时侯设置键值；<br>EX|PX: 以秒|毫秒为单位设置过期时间；<br>EXAT|PXAT: 设置以秒|毫秒为单位的UNIX时间戳所对应的时间为过期时间，可通过“System.out.println(Long.toString(System.currentTimeMillis()&#x2F;1000L));”获得UNIX时间戳；<br>GET: 返回指定键值原来的值，若键不存在时返回nil；<br>KEEPTTL: 保留设置前指定键的生存时间。  </p>
+<p>其他命令：  </p>
+<ol>
+<li>mset:同时设置一个或多个 key-value 对。  </li>
+<li>mget:获取所有(一个或多个)给定 key 的值。  </li>
+<li>msetnx:同时设置一个或多个 key-value 对，当且仅当所有给定 key 都不存在。  </li>
+<li>getrange:获取指定区间范围内的值，类似between……and的关系，substring   从零到负一表示全部。  </li>
+<li>setrange设置指定区间范围内的值，格式是setrange key值 具体值。  </li>
+<li>数值增减：一定是数字才能进行增减；INCR|DECR key；INCRBY|DECRBY key increment|decrement。  </li>
+<li>获取字符串长度和内容追加，STRLEN key；APPEND key value。  </li>
+<li>分布式锁有关：setnx key value；setex(set with expire)；setnx(set if not exist)。  </li>
+<li>getset:将给定 key 的值设为 value ，并返回 key 的旧值(old value)。</li>
+</ol>
+<p>应用场景：</p>
+<ol>
+<li>短视频点赞，点一下加一次；  </li>
+<li>是否喜欢文章。</li>
+</ol>
+<h3 id="2-列表（List）"><a href="#2-列表（List）" class="headerlink" title="2 列表（List）"></a>2 列表（List）</h3><p>单key多value；底层是双端链表；<br>常用命令:  </p>
+<ol>
+<li>lpush&#x2F;rpush&#x2F;lrange  </li>
+<li>lpop&#x2F;rpop  </li>
+<li>lindex 按照索引下标获取元素  </li>
+<li>llen 获取列表中的元素个数  </li>
+<li>lrem key N value 删除N个值等于value的元素  </li>
+<li>ltrim key start stop 截取指定范围的值后再赋值给key  </li>
+<li>rpoplpush 源列表 目的列表 移除列表的最后一个元素，并将该元素添加到另一个列表并返回  </li>
+<li>lset key index value  </li>
+<li>linsert key before&#x2F;after 已有值 插入的值</li>
+</ol>
+<p>应用场景：微信公众号订阅消息</p>
+<h3 id="3-哈希表（Hash）"><a href="#3-哈希表（Hash）" class="headerlink" title="3 哈希表（Hash）"></a>3 哈希表（Hash）</h3><p>KV模式不变，但V是一个键值对 &lt;&#x3D;&gt; Map&lt;String,Map&lt;Object,Object&gt;&gt;  </p>
+<p>常用命令：  </p>
+<ol>
+<li>hset&#x2F;hget&#x2F;hmset&#x2F;hmget&#x2F;hgetall&#x2F;hel  </li>
+<li>hlen 获取某个key内的全部数量  </li>
+<li>hexists key field 判断key里面的某个field是否存在  </li>
+<li>hkeys&#x2F;hvals  </li>
+<li>hincrby&#x2F;hincrbyfloat  </li>
+<li>hsetnx 不存在赋值，存在了无效</li>
+</ol>
+<p>应用场景：  JD购物车早期，目前不再采用，当前中小厂可用<br>如  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">新增商品 → hset shopcar:uid1024 334488 1</span><br><span class="line"></span><br><span class="line">新增商品 → hset shopcar:uid1024 334477 1</span><br><span class="line"></span><br><span class="line">增加商品数量 → hincrby shopcar:uid1024 334477 1</span><br><span class="line"></span><br><span class="line">商品总数 → hlen shopcar:uid1024</span><br><span class="line"></span><br><span class="line">全部选择 → hgetall shopcar:uid1024</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="4-集合（Set）"><a href="#4-集合（Set）" class="headerlink" title="4 集合（Set）"></a>4 集合（Set）</h3><p>底层可以是intset或hashtable，String的无序集合，不允许重复。<br>单值多value，无重复。  </p>
+<p>常用命令：  </p>
+<ol>
+<li>SADD key values 添加元素  </li>
+<li>SMEMBERS key 遍历集合中的所有元素  </li>
+<li>SISMEMBER key member 判断元素是否在集合中  </li>
+<li>SREM key member 删除元素  </li>
+<li>scard key 获取集合里面的元素个数  </li>
+<li>SRANDMEMBER key [数字] 从集合中随机展现设置的数字个数元素，元素不删除  </li>
+<li>SPOP key [数字] 从集合中随机弹出元素，元素删除  </li>
+<li>smove key1 key2 value1 将key1中存在的value1赋给key2  </li>
+<li>集合的差集运算A-B ：属于A但不属于B的元素构成的集合，SDIFF A B  </li>
+<li>并集运算A∪B：SUNION A B  </li>
+<li>交集运算A∩B：SINTER A B（返回集合）；SINTERCARD numkeys A B [LIMIT limit] （返回基数）</li>
+</ol>
+<p>应用场景：  </p>
+<ol>
+<li><p>微信小程序抽奖：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">用户ID，立即参与按钮 →  sadd key 用户ID  </span><br><span class="line">显示已经有多少人参与了 →  SCARD key</span><br><span class="line">抽奖(从set中任意选取N个中奖人):</span><br><span class="line">                    SRANDMEMBER key 2    →   随机抽奖2个人，元素不删除</span><br><span class="line">                    SPOP  key 3         →    随机抽奖3个人，元素会删除</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>微信朋友圈点赞，查看同赞好友：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">新增点赞  → sadd pub:msgID  点赞用户ID1  点赞用户ID2</span><br><span class="line">取消点赞  → srem pub:msgID  点赞用户ID</span><br><span class="line">展现所有点赞过的用户 → SMEMBERS  pub:msgID</span><br><span class="line">点赞用户数统计，就是常见的点赞红色数字 → scard  pub:msgID</span><br><span class="line">判断某个朋友是否对楼主点赞过 →  SISMEMBER pub:msgID 用户ID</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>QQ内推可能认识的人：集合运算</p>
+</li>
+</ol>
+<h3 id="5-有序集合（sorted-set）"><a href="#5-有序集合（sorted-set）" class="headerlink" title="5 有序集合（sorted set）"></a>5 有序集合（sorted set）</h3><p>每个元素都会关联一个double类型的分数，通过该分数来进行排序，成员唯一，但分数可以重复。通过哈希表实现。  </p>
+<p>常用命令：  </p>
+<ol>
+<li>ZADD key score member […] 添加元素  </li>
+<li>ZRANGE key start stop [WITHSCORES] 按照元素分数从大到小的顺序，返回索引从start到stop之间的所有元素  </li>
+<li>ZREVARANGE 反转排序  </li>
+<li>ZRANGEBYSCORE key min max [WITHSCORES][LIMIT offset count] 获取指定分数范围的元素，（代表不包含  </li>
+<li>ZSCORE key member 获取元素的分数  </li>
+<li>ZCARD key 获取集合中元素的数量  </li>
+<li>zrem key member 删除元素  </li>
+<li>ZINCRBY key increment member 增加某个元素的分数  </li>
+<li>ZCOUNT key min max 获得指定分数范围内的元素个数  </li>
+<li>ZMPOP 弹出元素  </li>
+<li>zrank key value  获得下标值  </li>
+<li>zrevrank key value 逆序获得下标值</li>
+</ol>
+<p>应用场景：根据商品销售对商品进行排序显示<br>如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">思路：定义商品销售排行榜(sorted set集合)，key为goods:sellsort，分数为商品销售数量。</span><br><span class="line"></span><br><span class="line">商品编号1001的销量是9，商品编号1002的销量是15</span><br><span class="line">→ zadd goods:sellsort 9 1001 15 1002</span><br><span class="line">有一个客户又买了2件商品1001，商品编号1001销量加2</span><br><span class="line">→ zincrby goods:sellsort 2 1001</span><br><span class="line">求商品销量前10名</span><br><span class="line">→ ZRANGE goods:sellsort 0 9 withscores</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="6-地理空间（GEO）"><a href="#6-地理空间（GEO）" class="headerlink" title="6 地理空间（GEO）"></a>6 地理空间（GEO）</h3><p>存储地理位置。   </p>
+<p>type geo →  zset</p>
+<p>常用命令：  </p>
+<ol>
+<li>GEOADD 多个经度（longitude）、纬度（latitude）、位置名称（member）添加到指定的key中。处理中文乱码：redis-cli –raw  </li>
+<li>GEOPOS 从键里返回所有给定位置元素的经纬度  </li>
+<li>GEORADIUS 以给定的经纬度为中心，返回与中心的距离不超过给定最大距离的所有位置元素  </li>
+<li>GEODIST  返回两个给定位置之间的距离  </li>
+<li>GEORADIUSBYMEMBER  跟GEORADIUS类似，不过是以member为中心  </li>
+<li>GEOHASH  返回一个或多个位置元素的hash表示</li>
+</ol>
+<p>应用场景：  </p>
+<ol>
+<li>美团地图位置附近的酒店推送  </li>
+<li>高德地图附近的核酸检查点</li>
+</ol>
+<h3 id="7-基数统计（HyperLogLog）"><a href="#7-基数统计（HyperLogLog）" class="headerlink" title="7 基数统计（HyperLogLog）"></a>7 基数统计（HyperLogLog）</h3><p>基数统计 ，如访问量、点击率等庞大数据。  </p>
+<p>需求：统计某个网站的UV、统计某个文章的UV（Unique Visitor 独立访客，一般理解为客户端IP），需要去重考虑</p>
+<p>基数：是一种数据集，去重复后的真实个数。  </p>
+<p>常用命令：  </p>
+<ol>
+<li>PFADD key element 添加指定元素  </li>
+<li>PFCOUNT key 返回给定key的基数估算值（因为会有误差）  </li>
+<li>PFMERGE destkey sourcekey1 sourcekey2 将多个HyperLogLog合并成一个</li>
+</ol>
+<p>应用场景：天猫网站首页亿级UV的Redis统计方案</p>
+<h3 id="8-位图（bitmap）"><a href="#8-位图（bitmap）" class="headerlink" title="8 位图（bitmap）"></a>8 位图（bitmap）</h3><p>由0和1状态表现的二进制位的bit数组。用String类型作为底层数据结构实现的一种统计二值状态的数据类型。<br>需求：用户是否登录过Y，N；钉钉打卡，上班统计……   </p>
+<p>常用命令：  </p>
+<ol>
+<li>setbit key offset value  偏移量从零开始  </li>
+<li>getbit key offset  </li>
+<li>strlen  不是字符串长度而是占据几个字节，超过8位后自己按照8位一组一byte再扩容  </li>
+<li>bitcount 全部键里含有1的个数  </li>
+<li>bitop  可以用于统计两个键之间的关系，支持与或非操作，如统计连续两天都签到的用户</li>
+</ol>
+<p>应用场景：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">按年去存储一个用户的签到情况，365 天只需要 365 / 8 ≈ 46 Byte，1000W 用户量一年也只需要 44 MB 就足够了。</span><br><span class="line">此外，在实际使用时，最好对Bitmap设置过期时间，让Redis自动删除不再需要的签到记录以节省内存开销。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="9-位域（bitfield）"><a href="#9-位域（bitfield）" class="headerlink" title="9 位域（bitfield）"></a>9 位域（bitfield）</h3><p>可以一次性操作多个比特位域（指的是连续的多个比特位）。<br>将一个 Redis 字符串看作是一个由二进制位组成的数组，并对这个数组中任意偏移进行访问。<br>作用：1. 位域修改 2. 溢出控制  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">BITFIELD key [GET type offset] [SET type offset value] [INCRBY type offset increment] [OVERFLOW WRAP|SAT|FAIL]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>常用命令：  </p>
+<ol>
+<li>BITFIELD key GET type offset 返回指定的位域  </li>
+<li>BITFIELD key SET type offset value  设置指定位域的值并返回它的原值  </li>
+<li>BITFIELD key INCRBY type offset increment  默认overflow为wrap，即循环溢出  </li>
+<li>BITFIELD key OVERFLOW WRAP|SAT|FAIL  溢出控制 1）WRAP: 使用回绕(wrap around)方法处理有符号整数和无符号整数的溢出情况；2）SAT:使用饱和计算(saturation arithmetic)方法处理溢出下溢计算的结果为最小的整数值，而上溢计算的结果为最大的整数值；3）FAIL: 命令将拒绝执行那些会导致上溢或者下溢情况出现的计算并向用户返回空值表示计算未被执行</li>
+</ol>
+<h3 id="10-流（Stream）"><a href="#10-流（Stream）" class="headerlink" title="10 流（Stream）"></a>10 流（Stream）</h3><p>redis5.0版本新增的数据结构，主要用于消息队列。  </p>
+<ul>
+<li><p>redis5.0之前痛点：redis消息队列的两种方案<br>  1）List实现：<br>  <img src="/./images/Redis7/mq-list.png"><br>  缺点：点对点的模式。<br>  2）Pub&#x2F;Sub：<br>  <img src="/./images/Redis7/mq-pub.png"><br>  缺点：消息无法持久化，如果出现网络断开、Redis 宕机等，消息就会被丢弃。而且也没有 Ack 机制来保证数据的可靠性，假设一个消费者都没有，那消息就直接被丢弃了。  </p>
+</li>
+<li><p>redis5.0版本新增Stream数据结构：实现消息队列，它支持消息的持久化、支持自动生成全局唯-ID、支持ack确认消息的模式、支持消费组模式等，让消息队列更加的稳定和可靠。</p>
+</li>
+</ul>
+<p><img src="/./images/Redis7/mq-stream.png"></p>
+<p>特殊符号：  </p>
+<ol>
+<li>“- +” —— 最小和最大可能出现的id  </li>
+<li>“$” —— 只消费新的消息，当前流中最大的id，可用于将要到来的信息  </li>
+<li>“&gt;” —— 用于XREADGROUP命令，表示迄今还没有发送给组中使用者的信息，会更新消费者组的最后ID  </li>
+<li>“*” —— 用于XADD命令中，让系统自动生成id</li>
+</ol>
+<p>队列相关常用命令：  </p>
+<ol>
+<li>XADD mystream * id 11 name z3  默认用星号表示自动生成id，Redis对于ID有强制要求，格式必须是时间戳-自增Id这样的方式，且后续ID不能小于前一个ID  </li>
+<li>XRANGE mystream - + [count x]  获取消息列表，可以指定范围  </li>
+<li>XREVRANGE mystream + -  反向获取，end在前，start在后  </li>
+<li>XDEL id  </li>
+<li>XLEN 获取Stream队列的消息的长度  </li>
+<li>XTRIM 对Stream的长度进行截取，如超长会进行截取，MAXLEN允许的最大长度，对流进行修剪限制长度；MINID允许的最小id，从某个id值开始比该id值小的将会被抛弃  </li>
+<li>XREAD [COUNT count] [BLOCK milliseconds] STREAMS key [key …] ID [ID …]  block表示是否以阻塞的方式读取消息，默认不阻塞。$代表特殊ID，表示以当前Stream已经存储的最大的ID作为最后一个ID，当前Stream中不存在大于当前最大ID的消息，因此此时返回nil；<br>0-0代表从最小的ID开始获取Stream中的消息，当不指定count，将会返回Stream中的所有消息，注意也可以使用0（00&#x2F;000也都是可以的……）。<br>阻塞情况：<br><img src="/./images/Redis7/block.png"></li>
+</ol>
+<p>消费组常用命令：  </p>
+<ol>
+<li>XGROUP CREATE 创建消费者组，创建消费者组的时候必须指定 ID, ID 为 0 表示从头开始消费，为 $ 表示只消费新的消息，队尾新来  </li>
+<li>XREADGROUP GROUP groupA consumer1 STREAMS mystream &gt;  读完未被消费的消息。不同消费组的消费者可以消费同一条消息。消费组的目的：让组内的多个消费者共同分担读取消息，所以，我们通常会让每个消费者读取部分消息，从而实现消息读取负载在多个消费者间是均衡分布的  </li>
+<li>XPENDING 查询每个消费组内所有消费者[已读取、但尚未确认]的消息；或查看某个消费者具体读取了哪些数据  </li>
+<li>XACK mystream groupA id  向消息队列确认消息处理已完成  </li>
+<li>XINFO 打印Stream\Consumer\Group的详细信息</li>
+</ol>
+<h3 id="键（key操作）"><a href="#键（key操作）" class="headerlink" title="键（key操作）"></a>键（key操作）</h3><p><img src="/./images/Redis7/keys-1.png">  </p>
+<p><img src="/./images/Redis7/keys-2.png"></p>
+<h2 id="Redis持久化"><a href="#Redis持久化" class="headerlink" title="Redis持久化"></a>Redis持久化</h2><p><img src="/./images/Redis7/RDB+AOF.png"></p>
+<h3 id="RDB-Redis-DataBase"><a href="#RDB-Redis-DataBase" class="headerlink" title="RDB (Redis DataBase)"></a>RDB (Redis DataBase)</h3><p>概述：在指定的时间间隔，执行数据库的时间点快照，全量快照，以dump.rdb文件的形式保存；恢复时再将硬盘中的快照文件读回内存里。  </p>
+<p>自动触发bgsave配置：  </p>
+<ol>
+<li><p>Redis6.0.16以下<br> In the example below the behavior will be to save:  </p>
+<ul>
+<li>after 900 sec(15 min)if at least 1 key changed  </li>
+<li>after 300 sec(5 min)if at least 10 keys changed  </li>
+<li>after 60 sec if at least 10000 keys changed</li>
+</ul>
+<p> save 900 1<br> save 300 10<br> save 60 10000  </p>
+</li>
+<li><p>Redis6.2以及Redis7<br> Unless specified otherwise, by default Redis will save the DB:  </p>
+<ul>
+<li>After 3600 seconds(an hour) if at least 1 change was performed  </li>
+<li>After 300 seconds (5 minutes) if at least 100 changes were performed  </li>
+<li>After 60 seconds if at least 10000 changes were performed</li>
+</ul>
+<p> save 3600 1 300 100 60 10000  </p>
+</li>
+<li><p>自定义修改的路径且可以进入redis里用CONFIG GET dir获取目录（line 505）；修改dump文件名称 dbfilename xxxx.rdb（line 482）</p>
+</li>
+</ol>
+<p>触发RDB快照的情况：  </p>
+<ol>
+<li>满足配置文件中的自动触发条件  </li>
+<li>手动save&#x2F;bgsave命令  </li>
+<li>执行flushall&#x2F;flushdb命令也会产生dump.rdb文件，但内容为空，无意义  </li>
+<li>主从复制时，主节点自动触发</li>
+</ol>
+<p>恢复：重启服务即可自动恢复；物理恢复，一定要服务和备份分机隔离，分开各自存储，以防生产机物理损坏后备份文件也挂了。  </p>
+<p>手动触发RDB快照  </p>
+<ol>
+<li>Save：在主程序中执行会阻塞当前redis服务器，直到持久化工作完成；执行save命令期间，Redis不能处理其他命令，<em><strong>线上禁止使用</strong></em>。  </li>
+<li>BGSAVE（<em><strong>默认</strong></em>）：Redis会在后台异步进行快照操作，不阻塞快照同时还可以响应客户端请求,该触发方式会fork一个子进程由子进程复制持久化过程，允许主进程同时可以修改数据。  </li>
+<li>LASTSAVE：获取最后一次成功执行快照的时间戳。</li>
+</ol>
+<p>其他：  </p>
+<ol>
+<li>检查修复dump.rdb文件，使用redis-check-rdb xxxx.rdb  </li>
+<li>禁用快照：1）动态所有停止RDB保存规则的方法redis-cli config set save “”；2）配置文件里改  </li>
+<li>配置文件SNAPSHOTTING模块  <ul>
+<li>save <seconds><changes>  </changes></seconds></li>
+<li>dbfilename  </li>
+<li>dir  </li>
+<li>stop-writes-on-bgsave-error保证数据一致性  </li>
+<li>rdbcompression压缩存储  </li>
+<li>rdbchecksum数据校验  </li>
+<li>rdb-del-sync-files在没有持久性的情况下删除复制中使用的RDB文件启用</li>
+</ul>
+</li>
+</ol>
+<p>优势：<br>适合大规模的数据恢复；按照业务定时备份；对数据完整性和一致性要求不高；RDB文件在内存中的加载速度比AOF快得多。  </p>
+<p>劣势：<br>在一定间隔时间做一次备份，所以如果redis意外down掉的话，就会丢失从当前至最近一次快照期间的数据，快照之间的数据会丢失；内存数据的全量同步，如果数据量太大会导致I&#x2F;0严重影响服务器性能；RDB依赖于主进程的fork，在更大的数据集中，这可能会导致服务请求的瞬间延迟；fork的时候内存中的数据被克隆了一份，大致2倍的膨胀性，需要考虑。  </p>
+<h3 id="AOF-Append-Only-File"><a href="#AOF-Append-Only-File" class="headerlink" title="AOF (Append Only File)"></a>AOF (Append Only File)</h3><p>以日志的形式来记录每个写操作，将Redis执行过的所有写指令记录下来(读操作不记录)，只许追加文件但不可以改写文件，redis启动之初会读取该文件重新构建数据，换言之，redis重启的话就根据日志文件的内容将写指令从前到后执行一次以完成数据的恢复工作。默认情况下，redis是没有开启AOF(append only file)的。开启AOF功能需要设置配置:appendonly yes。保存的文件是appendonly.aof。  </p>
+<p>AOF持久化工作流程：<br><img src="/./images/Redis7/AOF.png">  </p>
+<p>三种写回策略：  </p>
+<ol>
+<li>Always  同步写回，每个写命令执行完立刻同步地将日志写回磁盘  </li>
+<li>everysec  每秒写回，每个写命令执行完，只是先把日志写到AOF文件的内存缓冲区，每隔1秒把缓冲区中的内容写入磁盘  </li>
+<li>no  每个写命令执行完，只是先把日志写到AOF文件的内存缓冲区，由操作系统决定何时将缓冲区内容写回磁盘<br>默认写回策略，每秒钟  appendsync everysec</li>
+</ol>
+<p><img src="/./images/Redis7/rewrite.png">  </p>
+<p>AOF文件-保存路径：redis6的AOF文件位置和RDB保存文件的位置是一样的，都是通过dir配置（line 506）；redis7之后通过appenddirname “xxxx”配置（line 1414）。  </p>
+<p>AOF文件-保存名称：redis6有且只有一个，通过appendfilename “appendonly.aof”配置；redis7之后，新特性采取Multi Part AOF的设计，拆分为三个文件。base基本文件（最多只有一个），incr增量文件（可能存在多个），manifest清单文件（跟踪、管理这些AOF）。</p>
+<p>异常修复命令:redis-check-aof –fix 修复AOF文件  </p>
+<p>优势：更好的保护数据不丢失、性能高、可做紧急恢复<br>劣势：相同数据集的数据而言AOF文件要远大于RDB文件，恢复速度慢于RDB；AOF运行效率要慢于RDB，每秒同步策略效率较好，不同步效率和RDB相同。  </p>
+<p>AOF重写机制：启动AOF文件的内容压缩，只保留可以恢复数据的最小指令集。<br>自动触发默认配置：<br>    auto-aof-rewrite-percentage 100  根据上次重写后的aof大小，判断当前aof大小是不是增长了1倍<br>    auto-aof-rewrite-min-size 64mb  重写时满足的文件大小<br>注意，<em><strong>同时满足，且的关系</strong></em>才会触发。  </p>
+<p>手动触发：客户端向服务器发送bgrewriteaof命令。  </p>
+<p>重写原理：  </p>
+<ol>
+<li>在重写开始前，redis会创建一个“重写子进程”，这个子进程会读取现有的AOF文件，并将其包含的指令进行分析压缩并写入到一个临时文件中。  </li>
+<li>与此同时，主进程会将新接收到的写指令一边累积到内存缓冲区中，一边继续写入到原有的AOF文件中，这样做是保证原有的AOF文件的可用性，避免在重写过程中出现意外。  </li>
+<li>当“重写子进程”完成重写工作后，它会给父进程发一个信号，父进程收到信号后就会将内存中缓存的写指令追加到新AOF文件中。  </li>
+<li>当追加结束后，redis就会用新AOF文件来代替旧AOF文件，之后再有新的写指令，就都会追加到新的AOF文件中。  </li>
+<li>重写aof文件的操作，并没有读取旧的aof文件，而是将整个内存中的数据库内容用命令的方式重写了一个新的aof文件，这点和快照有点类似。</li>
+</ol>
+<h3 id="RDB-AOF混合持久化"><a href="#RDB-AOF混合持久化" class="headerlink" title="RDB-AOF混合持久化"></a>RDB-AOF混合持久化</h3><p><img src="/./images/Redis7/RDB+AOF-1.png"><br>同时开启两种持久化方式，在这种情况下,当redis重启的时候会优先载入AOF文件来恢复原始的数据，因为在通常情况下AOF文件保存的数据集要比RDB文件保存的数据集要完整。RDB的数据不实时，同时使用两者时服务器重启也只会找AOF文件。那要不要只使用AOF呢?乍者建议不要，因为RDB更适合用于备份数据库(AOF在不断变化不好备份)，留着RDB作为一个万一的手段。<br>结论：RDB镜像做全量持久化，AOF做增量持久化。  </p>
+<h3 id="纯缓存模式"><a href="#纯缓存模式" class="headerlink" title="纯缓存模式"></a>纯缓存模式</h3><p>同时关闭RDB和AOF：  </p>
+<ol>
+<li>save “” 禁用RDB配置；在禁用RDB持久化模式下，仍然可以使用save、bgsave生成RDB文件  </li>
+<li>appendonly no 禁用AOF配置；禁用AOF持久化模式下，仍然可以使用命令bgrewriteaof生成AOF文件</li>
+</ol>
+<h2 id="Redis事务"><a href="#Redis事务" class="headerlink" title="Redis事务"></a>Redis事务</h2><p>事务：可以一次执行多个命令，本质是一组命令的集合。一个事务中的所有命令都会序列化，按顺序地串行化执行而不会被其它命令插入，不许加塞。  </p>
+<p>Redis事务 VS 数据库事务  </p>
+<ol>
+<li>单独的隔离操作。Redis的事务仅仅是保证事务里的操作会被连续独占的执行，redis命令执行是单线程架构，在执行完事务内所有指令前是不可能再去同时执行其他客户端的请求的；</li>
+<li>没有隔离级别的概念。因为事务提交前任何指令都不会被实际执行，也就不存在”事务内的查询要看到事务里的更新，在事务外查询不能看到”这种问题了；</li>
+<li>不保证原子性。Redis的事务不保证原子性，也就是不保证所有指令同时成功或同时失败，只有决定是否开始执行全部指令的能力，没有执行到一半进行回滚的能力；</li>
+<li>排它性.Redis会保证一个事务内的命令依次执行，而不会被其它命令插入。</li>
+</ol>
+<p>case1：正常执行<br>先MULTI命令，然后写若干命令，加入到队列中，最后EXEC命令提交；  </p>
+<p>case2：放弃事务<br>先MULTI命令，然后写若干命令，加入到队列中，最后DISCARD放弃事务提交；  </p>
+<p>case3：全体连坐<br>先MULTI命令，然后写若干命令，其中出现某一条语法编译不通过，然后EXEC，事务中的所有命令执行失败；  </p>
+<p>case4：冤头债主<br>前期语法都没错，编译通过，但执行EXEC后报错，这种情况下对的执行，错的不执行。Redis不提供事务回滚的功能，开发者必须在事务执行出错后，自行恢复数据库状态。而传统数据库事务，要么一起成功要么一起失败。  </p>
+<p>case5：watch监控<br>Redis使用Watch来提供乐观锁定，类似于CAS（Check-and-Set）；unwatch解除锁定。一旦执行了exec，之前的监控锁都会被取消掉了。  </p>
+<h2 id="Redis管道"><a href="#Redis管道" class="headerlink" title="Redis管道"></a>Redis管道</h2><p>Redis是一种基于客户端-服务端模型以及请求&#x2F;响应协议的TCP服务。一个请求会遵循以下步骤：<br>1 客户端向服务端发送命令分四步(发送命令→命令排队→命令执行→返回结果)，并监听Socket返回，通常以阻塞模式等待服务端响应。<br>2 服务端处理命令，并将结果返回给客户端。<br>上述两步称为：Round Trip Time(简称RTT,数据包往返于两端的时间)。如果同时需要执行大量的命令，那么就要等待上一条命令应答后再执行，这中间不仅仅多了RTT（Round Time Trip），而且还频繁调用系统IO，发送网络请求，同时需要redis调用多次read()和write()系统方法，系统方法会将数据从用户态转移到内核态，这样就会对进程上下文有比较大的影响了，性能不太好。  </p>
+<p>如何优化频繁命令往返造成的性能瓶颈？  —— 管道。管道(pipeline)可以一次性发送多条命令给服务端，服务端依次处理完完毕后，通过一条响应一次性将结果返回，通过减少客户端与redis的通信次数来实现降低往返延时时间。pipeline实现的原理是队列，先进先出特性就保证数据的顺序性。  </p>
+<blockquote>
+<p>cat cmd.txt | redis-cli -a 111111 –pipe  </p>
+</blockquote>
+<p>pipeline VS 原生批量命令：  </p>
+<ol>
+<li>原生批量命令是原子性(例如:mset,mget)，pipeline是非原子性；  </li>
+<li>原生批量命令一次只能执行一种命令，pipeline支持批量执行不同数据类型的命令；  </li>
+<li>原生批命令是服务端实现，而pipeline需要服务端与客户端共同完成。</li>
+</ol>
+<p>pipeline VS 事务：  </p>
+<ol>
+<li>事务具有原子性，管道不具有原子性；  </li>
+<li>管道一次性将多条命令发送到服务器，事务是一条一条的发，事务只有在接收到exec命令后才会执行，管道不会；  </li>
+<li>执行事务时会阻塞其他命令的执行，而执行管道中的命令时不会。</li>
+</ol>
+<p>注意：pipeline缓冲的指令只是会依次执行，不保证原子性，如果执行中指令发生异常，将会继续执行后续的指令；使用pipeline组装的命令个数不能太多，不然数据量过大客户端阻塞的时间可能过久，同时服务端此时也被迫回复一个队列答复，占用很多内存。  </p>
+<h2 id="Redis发布订阅"><a href="#Redis发布订阅" class="headerlink" title="Redis发布订阅"></a>Redis发布订阅</h2><p>是一种消息通信模式:发送者(PUBLISH)发送消息，订阅者(SUBSCRIBE)接收消息，可以实现进程间的消息传递。发布&#x2F;订阅其实是一个轻量的队列，只不过数据不会被持久化，一般用来处理实时性较高的异步消息。  </p>
+<p>常用命令：  </p>
+<ol>
+<li>SUBSCRIBE channel 订阅给定的一个或多个频道的消息，每次可以收到一个包含3个参数的消息（消息种类，始发频道的名称，实际的消息内容）  </li>
+<li>PUBLISH channel message 发布消息到指定的频道  </li>
+<li>PSUBSCRIBE pattern 按照模式批量订阅，订阅一个或多个符合给定模式（*，?）的频道  </li>
+<li>PUBSUB CHANNELS 返回由活跃频道组成的列表  </li>
+<li>PUBSUB NUMSUB channel  某个频道有几个订阅者  </li>
+<li>PUBSUB NUMPAT 只统计使用PSUBSCRIBE命令执行的，返回客户端订阅的唯一模式的数量  </li>
+<li>UNSUBSCRIBE channel 取消订阅  </li>
+<li>PUNSUBSCRIBE 退订所有给定模式的频道</li>
+</ol>
+<p>缺点：  </p>
+<ol>
+<li>发布的消息在Redis系统中不能持久化，因此，必须先执行订阅，再等待消息发布。如果先发布了消息，那么该消息由于没有订阅者，消息将被直接丢弃；  </li>
+<li>消息只管发送对于发布者而言消息是即发即失的，不管接收，也没有ACK机制，无法保证消息的消费成功。  </li>
+<li>以上的缺点导致Redis的Pub&#x2F;sub模式就像个小玩具，在生产环境中几乎无用武之地，为此Redis5.0版本新增了Stream数据结构，不但支持多播，还支持数据持久化，相比Pub&#x2F;Sub更加的强大。</li>
+</ol>
+<h2 id="Redis复制"><a href="#Redis复制" class="headerlink" title="Redis复制"></a>Redis复制</h2><p>主从复制，master以写为主，slave以读为主；当master数据变化的时候，自动将新的数据异步同步到其他slave数据库。<br>作用：读写分离；容灾恢复；数据备份；水平扩容支撑高并发  </p>
+<p>配置细节：  </p>
+<ol>
+<li>配从（库）不配主（库）；  </li>
+<li>master如果配置了requirepass参数，需要密码登录，那么slave就要配置masterauth来设置校验密码，否则的话master会拒绝slave的访问请求；</li>
+</ol>
+<p>常用命令：  </p>
+<ol>
+<li>info replication 可以查看复制节点的主从关系和配置信息  </li>
+<li>replicaof 主库IP 主库端口 （在redis.conf配置文件内配置）  </li>
+<li>slaveof 主库IP 主库端口  每次与master断开之后，都需要重新连接，除非配置进redis.conf文件；在运行期间修改slave节点的信息，如果该数据库已经是某个主数据库的从数据库，那么会停止和原主数据库的同步关系，转而和新的主数据库同步  </li>
+<li>salveof no one 使当前数据库停止与其他数据库的同步，转为主数据库，自立为master，原来数据不丢失，除非清空数据库</li>
+</ol>
+<p>常用案例：  </p>
+<ol>
+<li><p>一主二仆  </p>
+<ul>
+<li>从机不可以执行写的命令；  </li>
+<li>从机切入点问题：首次一锅端，后续跟随，master写，slave跟；  </li>
+<li>主机shutdown后，从机会上位吗？重启后主从关系还在吗？从机还能否顺利复制？答：从机不动，原地待命，从机数据可以正常使用，等待主机重启动归来；重启后主从关系依旧，复制依旧；  </li>
+<li>某台从机down后，master继续，从机重启后它能跟上大部队吗？答：不一定。看是配置还是命令，配置持久稳定，命令当次生效。</li>
+</ul>
+</li>
+<li><p>薪火相传  </p>
+<ul>
+<li>上一个slave可以是下一个slave的master，slave同样可以接收其他slaves的连接和同步请求，那么该slave作为了链条中下一个master，可以有效减轻主master的写压力；  </li>
+<li>中途变更转向：会清除之前的数据，重新建立拷贝最新的；  </li>
+<li>slaveof 主库IP 新主库端口。</li>
+</ul>
+</li>
+<li><p>反客为主：slaveof no one</p>
+</li>
+</ol>
+<p>复制原理和工作流程：  </p>
+<ol>
+<li>slave启动，同步初请： slave启动成功连接到master后会发送一个sync命令；slave首次全新连接master，一次完全同步(全量复制)将被自动执行，slave自身原有数据会被master数据覆盖清除；  </li>
+<li>首次连接，全量复制：master节点收到sync命令后会开始在后台保存快照(即RDB持久化，主从复制时会触发RDB)同时收集所有接收到的用于修改数据集命令缓存起来，master节点执行RDB持久化完后，master将rdb快照文件和所有缓存的命令发送到所有slave，以完成一次完全同步；而slave服务在接收到数据库文件数据后，将其存盘并加载到内存中，从而完成复制初始化；  </li>
+<li>心跳持续，保持通信：master发出PING包的周期，默认是10秒；repl-ping-replica-period 10；   </li>
+<li>进入平稳，增量复制：Master继续将新的所有收集到的修改命令自动依次传给slave，完成同步；  </li>
+<li>从机下线，重连续传：master会检查backlog里面的offset，master和slave都会保存一个复制的offset还有一个masterId，Master只会把以及复制的offset后面的数据复制给Slave，类似断点续传。</li>
+</ol>
+<p>复制的缺点：  </p>
+<ol>
+<li>复制延时，信号衰减：由于所有的写操作都是先在Master上操作，然后同步更新到Slave上，所以从Master同步到Slave机器有一定的延迟，当系统很繁忙的时候，延迟问题会更加严重，Slave机器数量的增加也会使这个问题更加严重。  </li>
+<li>master挂了怎么办，默认情况下，不会在slave节点中自动重选一个master。无人值守安装变成刚需。</li>
+</ol>
+<h2 id="Redis哨兵（sentinel）"><a href="#Redis哨兵（sentinel）" class="headerlink" title="Redis哨兵（sentinel）"></a>Redis哨兵（sentinel）</h2><p>无人值守运维，主要作用：  </p>
+<ul>
+<li>主从监控，监控主从redis库运行是否正常；  </li>
+<li>消息通知，哨兵可以将故障转移的结果发送给客户端；  </li>
+<li>故障转移，如Master异常，则会进行主从切换，将其中一个Slave作为新Master；  </li>
+<li>配置中心，客户端通过连接哨兵来获得当前Redis服务的主节点地址。</li>
+</ul>
+<p><img src="/./images/Redis7/sentinel.png">  </p>
+<p>生产都是不同机房不同服务器，很少出现3个哨兵全挂掉的情况，可以同时监控多个master，一行一个。  </p>
+<p>sentinel.conf文件通用配置：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">bind 0.0.0.0</span><br><span class="line">daemonize yes</span><br><span class="line">protected-mode no</span><br><span class="line">port 26379</span><br><span class="line">logfile &quot;/myredis/sentinel26379.log&quot;</span><br><span class="line">pidfile /var/run/redis-sentinel26379.pid</span><br><span class="line">dir /myredis</span><br><span class="line">sentinel monitor mymaster 192.168.111.169 6379 2  # 设置要监控的master服务器，quorum表示最少有几个哨兵认可客观下线，同意故障迁移的法定票数</span><br><span class="line">sentinel auth-pass mymaster 111111 # 连接master服务的密码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>注意：6379后续可能会变成从机，需要设置访问新主机的密码， 请设置masterauth项访问密码为统一密码，不然后续可能报错master_link_status:down<br>启动哨兵，完成监控：redis-sentinel sentinel26379.conf –sentinel</p>
+<p>模拟原有的master挂了：  </p>
+<ol>
+<li>两台从机数据是否OK？  ok，可能会出现broken pipe（对端管道断开）或server closed the connection的错误，耐心等待一会即可。  </li>
+<li>是否会从剩下的2台机器上选出新的master？  投票新选。  </li>
+<li>之前down机的master机器重启回来，谁会是新master，会不会双master冲突？  原master重启后降级为slave。  </li>
+<li>对比配置文件。文件的内容，在运行期间会被sentinel动态进行更改；master-slave切换后，master_redis.conf、slave_redis.conf和sentinel.conf的内容都会发生改变，即master_redis.conf中会多一行slaveof的配置，sentinel.conf的监控目标会随之调换。</li>
+</ol>
+<p>（重点）哨兵运行流程和选举原理：<br>当一个主从配置中的master失效之后，sentinel可以选举出一个新的master用于自动接替原master的工作，主从配置中的其他redis服务器自动指向新的master同步数据般建议sentinel采取奇数台，防止某一台sentinel无法连接到master导致误切换。  </p>
+<ol>
+<li>SDown主观下线（Subjectively Down）：SDOWN（主观不可用）是单个sentinel自己主观上检测到的关于master的状态，从sentinel的角度来看，如果发送了PING心跳后，在一定时间内没有收到合法的回复，就达到了SDOWN的条件。sentinel配置文件中的down-after-milliseconds设置了判断主观下线的时间长度。  </li>
+<li>ODown客观下线（Objectively Down）：ODOWN需要一定数量的sentinel，多个哨兵达成一致意见才能认为一个master客观上已经宕掉。  </li>
+<li>选举出领导者哨兵（哨兵中选出兵王）：当主节点被判断客观下线以后，各个哨兵节点会进行协商先选举出一个 <em><strong>领导者哨兵节点（兵王）</strong></em> 并由该领导者节点也即被选举出的兵王进行failover（故障迁移）。Raft算法选兵王，  <img src="/./images/Redis7/raft.png">  </li>
+<li>由兵王开始推动故障切换流程并选出一个新master：  <ul>
+<li>某个Slave被选中成为新master规则   <img src="/./images/Redis7/new_master.png">  </li>
+<li>执行slaveof no one命令让选出来的从节点成为新的主节点，并通过slaveof命令让其他节点成为其从节点；Sentinel leader会对选举出的新master执行slaveofno one操作，将其提升为master节点；Sentinel leader向其它slave发送命令，让剩余的slave成为新的master节点的slave。  </li>
+<li>将之前已下线的老master设置为新选出的新master的从节点，当老master重新上线后，它会成为新master的从节点；Sentinel leader会让原来的master降级为slave并恢复正常工作。</li>
+</ul>
+</li>
+</ol>
+<p>哨兵使用建议：  </p>
+<ul>
+<li>哨兵节点的数量应为多个，哨兵本身应该集群，保证高可用；  </li>
+<li>哨兵节点的数量应该是奇数；  </li>
+<li>各个哨兵节点的配置应一致；  </li>
+<li>如果哨兵节点部署在Docker等容器里面，尤其要注意端口的正确映射；  </li>
+<li>哨兵集群+主从复制，并不能保证数据零丢失，写操作会被终止，承上启下引出 <em><strong>集群</strong></em>。</li>
+</ul>
+<h2 id="Redis集群（cluster）"><a href="#Redis集群（cluster）" class="headerlink" title="Redis集群（cluster）"></a>Redis集群（cluster）</h2><p>定义：由于数据量过大，单个Master复制集难以承担，因此需要对多个复制集进行集群，形成水平扩展每个复制集只负责存储整个数据集的一部分，这就是Redis的集群，其作用是提供在多个Redis节点间共享数据的程序集。Redis集群是一个提供在多个Redis节点间共享数据的程序集，可以支持多个Master。  </p>
+<p><img src="/"></p>
+<p>作用：  </p>
+<ul>
+<li>Redis集群支持多个Master，每个Master又可以挂载多个Slave；  </li>
+<li>由于Cluster自带Sentinel的故障转移机制，内置了高可用的支持，无需再去使用哨兵功能；  </li>
+<li>客户端与Redis的节点连接，不再需要连接集群中的所有节点，只需要任意连接集群中的一个可用节点即可；  </li>
+<li>槽位slot负责分配到各个物理服务节点，由对应的集群来负责维护节点、插槽和数据之间的关系。</li>
+</ul>
+<p>集群算法-分片-槽位slot：  </p>
+<ul>
+<li><p>官网：集群的key空间被分成 <em><strong>16384</strong></em>个槽（slots），有效设置了16384个主节点的集群大小上线，但建议的最大节点大小为 <em><strong>1000</strong></em>个节点；集群中的每个节点处理16384个哈希槽的一个子集；  </p>
+</li>
+<li><p>每个key通过CRC16校验后对16384取模来决定放置哪个槽 HASH_SLOT &#x3D; CRC16(key) mod 16394；  </p>
+</li>
+<li><p>优势：方便扩容缩容和数据的分派查找，无论添加删除或改变某个节点的哈希槽的数量都不会造成集群不可用的状态；  </p>
+</li>
+<li><p>槽位映射的解决方案  </p>
+<ol>
+<li>哈希取余分区：hash(key) % N个机器台数；优点：简单粗暴，直接有效，起到负载均衡+分而治之的作用；缺点：需要弹性扩容或故障停机的情况下，原来的取模公式就会发生变化，此时地址经过取余运算的结果将发生很大变化，根据公式获取的服务器也会变得不可控，由于台数数量变化，会导致hash取余全部数据重新洗牌；  </li>
+<li>一致性哈希算法分区：目的是当服务器个数发生变动时，尽量减少影响客户端到服务器的映射关系；构建一致性哈希环[0,2^32-1]、redis服务器IP节点对2^32取模映射到环上的某一个位置、落键规则为从此位置沿环顺时针“行走”，第一台遇到的服务器就是其应该定位到的服务器 <img src="/">  优点：容错性（宕机时受影响的数据仅仅是此服务器到其环空间中前一台服务器之间数据，其它不会受到影响）、扩展性（添加新节点时，不会导致hash取余全部数据重新洗牌）；缺点：数据倾斜问题（节点太少时，容易因为节点分布不均匀而造成数据倾斜，被缓存的对象大部分集中缓存在某一台服务器上的问题）；  </li>
+<li>哈希槽分区：HASH_SLOT &#x3D; CRC16(key) mod 16394；CRC16源码基于c实现    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> io.lettuce.core.cluster.SlotHash;  </span><br><span class="line"></span><br><span class="line">SlotHash.getSlot(<span class="string">&quot;A&quot;</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+  <strong>为什么redis集群的最大槽数是16384个？</strong></li>
+</ol>
+<p>  (1) 如果槽位为65536，发送心跳信息的消息头达8k，发送的心跳包过于庞大。</p>
+<p>  在消息头中最占空间的是myslots[CLUSTER_SLOTS&#x2F;8]。 当槽位为65536时，这块的大小是: 65536÷8÷1024&#x3D;8kb </p>
+<p>  在消息头中最占空间的是myslots[CLUSTER_SLOTS&#x2F;8]。 当槽位为16384时，这块的大小是: 16384÷8÷1024&#x3D;2kb </p>
+<p>  因为每秒钟，redis节点需要发送一定数量的ping消息作为心跳包，如果槽位为65536，这个ping消息的消息头太大了，浪费带宽。</p>
+<p>  (2) redis的集群主节点数量基本不可能超过1000个。</p>
+<p>  集群节点越多，心跳包的消息体内携带的数据越多。如果节点过1000个，也会导致网络拥堵。因此redis作者不建议redis cluster节点数量超过1000个。 那么，对于节点数在1000以内的redis cluster集群，16384个槽位够用了。没有必要拓展到65536个。</p>
+<p>  (3) 槽位越小，节点少的情况下，压缩比高，容易传输</p>
+<p>  Redis主节点的配置信息中它所负责的哈希槽是通过一张bitmap的形式来保存的，在传输过程中会对bitmap进行压缩，但是如果bitmap的填充率slots &#x2F; N很高的话(N表示节点数)，bitmap的压缩率就很低。 如果节点数很少，而哈希槽数量很多的话，bitmap的压缩率就很低。</p>
+</li>
+<li><p>Redis集群不保证强一致性，这意味着在特定的条件下，Redis集群可能会丢掉一些被系统收到的写入请求命令。</p>
+</li>
+</ul>
+<p>集群环境案例步骤：  </p>
+<ol>
+<li>三主三从redis集群配置   <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="string">bind</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span></span><br><span class="line"><span class="string">daemonize</span> <span class="literal">yes</span></span><br><span class="line"><span class="string">protected-mode</span> <span class="literal">no</span></span><br><span class="line"><span class="string">port</span> <span class="number">6381</span></span><br><span class="line"><span class="string">logfile</span> <span class="string">&quot;/myredis/cluster/cluster6381.log&quot;</span></span><br><span class="line"><span class="string">pidfile</span> <span class="string">/myredis/cluster6381.pid</span></span><br><span class="line"><span class="string">dir</span> <span class="string">/myredis/cluster</span></span><br><span class="line"><span class="string">dbfilename</span> <span class="string">dump6381.rdb</span></span><br><span class="line"><span class="string">appendonly</span> <span class="literal">yes</span></span><br><span class="line"><span class="string">appendfilename</span> <span class="string">&quot;appendonly6381.aof&quot;</span></span><br><span class="line"><span class="string">requirepass</span> <span class="number">111111</span></span><br><span class="line"><span class="string">masterauth</span> <span class="number">111111</span></span><br><span class="line"></span><br><span class="line"><span class="string">cluster-enabled</span> <span class="literal">yes</span></span><br><span class="line"><span class="string">cluster-config-file</span> <span class="string">nodes-6381.conf</span></span><br><span class="line"><span class="string">cluster-node-timeout</span> <span class="number">5000</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>构建主从关系命令   <figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">redis-cli -a <span class="number">111111</span> --cluster create --cluster-replicas <span class="number">1</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">111</span>.<span class="number">175</span>:<span class="number">6381</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">111</span>.<span class="number">175</span>:<span class="number">6382</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">111</span>.<span class="number">172</span>:<span class="number">6383</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">111</span>.<span class="number">172</span>:<span class="number">6384</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">111</span>.<span class="number">174</span>:<span class="number">6385</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">111</span>.<span class="number">174</span>:<span class="number">6386</span> </span><br><span class="line">//--cluster-replicas <span class="number">1</span> 表示为每个master创建一个slave节点</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>检验集群状态   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">info replication  </span><br><span class="line">cluster info  </span><br><span class="line">cluster nodes</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>三主三从redis集群读写  <ul>
+<li>一定注意槽位的范围区间，需要路由到位； </li>
+<li>防止路由失效加参数-c：redis-cli -a 11111 -p 6381 -c  </li>
+<li>cluster keyslot 键名称  查看某个key该属于的对应槽位值</li>
+</ul>
+</li>
+<li>主从容错切换迁移  <ul>
+<li>主机宕机，从机上位并正常使用  </li>
+<li>原主机重连，论为从机节点  </li>
+<li>手动故障转移or节点从属关系调整：在从节点上发起转移，使用cluster failover命令</li>
+</ul>
+</li>
+<li>主从扩容  <ul>
+<li>加入原有集群：redis-cli -a 密码 –cluster add-node master新增节点 原来集群里的任意一个节点  </li>
+<li>检查集群情况：redis-cli -a 密码 –cluster check 真实IP地址:端口号  </li>
+<li>重新分派槽号slots：redis-cli -a 密码 –cluster reshard IP地址:端口号  </li>
+<li>重新分配成本太高，所以由原有的旧节点分别匀出相等数量个槽位给新节点，所以新节点的槽位可能不是连续的  </li>
+<li>分配从节点：redis-cli -a 密码 –cluster add-node ip:新slave端口 ip:新master端口 –cluster-slave –cluster-master-id 新主机节点ID</li>
+</ul>
+</li>
+<li>主从缩容  <ul>
+<li>先删除从节点：redis-cli -a 密码 –cluster del-node ip:从机端口 从机节点ID  </li>
+<li>将待删除的主节点槽号清空，重新分配给其他主节点：redis-cli -a 密码 –cluster reshard IP地址:端口号  </li>
+<li>删除主节点：redis-cli -a 密码 –cluster del-node ip:端口 节点ID</li>
+</ul>
+</li>
+</ol>
+<p>不在同一个slot槽位下的多键操作支持不好，如mset、mget等多键操作，通识占位符登场，<br>可以通过{}来定义同一个组的概念，使key中{}内相同内容的键值对放到一个slot槽位去，对照下图类似k1k2k3都映射为x，自然槽位一样  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mset k1&#123;x&#125; v1 k2&#123;x&#125; v2 k3&#123;x&#125; v3  </span><br><span class="line"></span><br><span class="line">mget k1&#123;x&#125; k2&#123;x&#125; k3&#123;x&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>集群常用命令：  </p>
+<ol>
+<li>集群是否完整才能对外提供服务：cluster-require-full-coverage no&#x2F;yes； 默认值 yes , 即需要集群完整性，方可对外提供服务 通常情况，如果这3个小集群中，任何一个（1主1从）挂了，你这个集群对外可提供的数据只有2&#x2F;3了， 整个集群是不完整的， redis 默认在这种情况下，是不会对外提供服务的。  </li>
+<li>cluster countkeysinslot 槽位数字编号：该槽位被占用的key数量。  </li>
+<li>cluster keyslot 键名称：该键应该存在哪个槽位上。</li>
+</ol>
+<h2 id="SpringBoot集成Redis"><a href="#SpringBoot集成Redis" class="headerlink" title="SpringBoot集成Redis"></a>SpringBoot集成Redis</h2>
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> Contents</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis-7"><span class="toc-text">Redis 7</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A5%E9%97%A8%E6%A6%82%E8%BF%B0"><span class="toc-text">入门概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%83%BD%E5%81%9A%E5%95%A5"><span class="toc-text">能做啥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E6%BC%94%E5%8F%98%E5%92%8Credis7%E6%96%B0%E7%89%B9%E6%80%A7"><span class="toc-text">版本演变和redis7新特性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE"><span class="toc-text">安装配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis-10-%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">redis 10 大数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%88String%EF%BC%89"><span class="toc-text">1 字符串（String）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%88%97%E8%A1%A8%EF%BC%88List%EF%BC%89"><span class="toc-text">2 列表（List）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%93%88%E5%B8%8C%E8%A1%A8%EF%BC%88Hash%EF%BC%89"><span class="toc-text">3 哈希表（Hash）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E9%9B%86%E5%90%88%EF%BC%88Set%EF%BC%89"><span class="toc-text">4 集合（Set）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88%EF%BC%88sorted-set%EF%BC%89"><span class="toc-text">5 有序集合（sorted set）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%9C%B0%E7%90%86%E7%A9%BA%E9%97%B4%EF%BC%88GEO%EF%BC%89"><span class="toc-text">6 地理空间（GEO）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E5%9F%BA%E6%95%B0%E7%BB%9F%E8%AE%A1%EF%BC%88HyperLogLog%EF%BC%89"><span class="toc-text">7 基数统计（HyperLogLog）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E4%BD%8D%E5%9B%BE%EF%BC%88bitmap%EF%BC%89"><span class="toc-text">8 位图（bitmap）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E4%BD%8D%E5%9F%9F%EF%BC%88bitfield%EF%BC%89"><span class="toc-text">9 位域（bitfield）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-%E6%B5%81%EF%BC%88Stream%EF%BC%89"><span class="toc-text">10 流（Stream）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%AE%EF%BC%88key%E6%93%8D%E4%BD%9C%EF%BC%89"><span class="toc-text">键（key操作）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">Redis持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RDB-Redis-DataBase"><span class="toc-text">RDB (Redis DataBase)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AOF-Append-Only-File"><span class="toc-text">AOF (Append Only File)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RDB-AOF%E6%B7%B7%E5%90%88%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">RDB-AOF混合持久化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%AF%E7%BC%93%E5%AD%98%E6%A8%A1%E5%BC%8F"><span class="toc-text">纯缓存模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E4%BA%8B%E5%8A%A1"><span class="toc-text">Redis事务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E7%AE%A1%E9%81%93"><span class="toc-text">Redis管道</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85"><span class="toc-text">Redis发布订阅</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E5%A4%8D%E5%88%B6"><span class="toc-text">Redis复制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E5%93%A8%E5%85%B5%EF%BC%88sentinel%EF%BC%89"><span class="toc-text">Redis哨兵（sentinel）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis%E9%9B%86%E7%BE%A4%EF%BC%88cluster%EF%BC%89"><span class="toc-text">Redis集群（cluster）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SpringBoot%E9%9B%86%E6%88%90Redis"><span class="toc-text">SpringBoot集成Redis</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+          <blockquote id="copyright">
+              <p>Original link: <a href="http://example.com/2024/07/04/redis7/">http://example.com/2024/07/04/redis7/</a></p>
+              <p>Copyright Notice: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>Share:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+    <a href="/2024/06/17/offer-ES/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">
+        
+          offer-ES
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+      
+      
+        
+
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> Recent</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/07/04/redis7/">redis7</a>
+          </li>
+        
+          <li>
+            <a href="/2024/06/17/offer-ES/">offer-ES</a>
+          </li>
+        
+          <li>
+            <a href="/2024/04/18/Java-gulimall/">Java-gulimall</a>
+          </li>
+        
+          <li>
+            <a href="/2024/03/11/offer-JVM/">offer-JVM</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/29/offer-SSM/">offer-SSM</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CRS/" style="font-size: 20px;">CRS</a> <a href="/tags/ChatGPT/" style="font-size: 20px;">ChatGPT</a> <a href="/tags/Dialog/" style="font-size: 10px;">Dialog</a> <a href="/tags/JAVA/" style="font-size: 15px;">JAVA</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/LLM/" style="font-size: 10px;">LLM</a> <a href="/tags/PyTorch/" style="font-size: 10px;">PyTorch</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/SSM/" style="font-size: 10px;">SSM</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/flask-vue-mysql/" style="font-size: 10px;">flask,vue,mysql</a>
+    </div>
+  </div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> Archive</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">17</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CRS/" rel="tag">CRS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dialog/" rel="tag">Dialog</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA/" rel="tag">JAVA</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LLM/" rel="tag">LLM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PyTorch/" rel="tag">PyTorch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSM/" rel="tag">SSM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flask-vue-mysql/" rel="tag">flask,vue,mysql</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-link"></i> Blogroll</h3>
+    <div class="widget">
+      <ul>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example1.com/">site-name1</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example2.com/">site-name2</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="http://www.example3.com/">site-name3</a>
+        </li>
+      
+      </ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">Site Map</a>
+        <span> | </span><a href="/atom.xml">Subscribe to this site</a>
+        <span> | </span><a href="/about/">Contact the blogger</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2024 JupiterTop.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+    </div>
+  </div>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+    
+<script src="/localshare/js/social-share.js"></script>
+
+    
+<script src="/localshare/js/qrcode.js"></script>
+
+  
+  
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+
+
+
+
+</body>
+</html>

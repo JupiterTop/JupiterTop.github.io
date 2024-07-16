@@ -1590,7 +1590,7 @@
 
 <p>略</p>
 <h2 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h2><h3 id="泛型的理解"><a href="#泛型的理解" class="headerlink" title="泛型的理解"></a>泛型的理解</h3><ul>
-<li><E> ，泛型参数，使用引用数据类型来赋值。</li>
+<li><E> ，泛型参数，使用引用数据类型来赋值。</E></li>
 </ul>
 <h3 id="泛型在集合、比较器中的使用（重点）"><a href="#泛型在集合、比较器中的使用（重点）" class="headerlink" title="泛型在集合、比较器中的使用（重点）"></a>泛型在集合、比较器中的使用（重点）</h3><ul>
 <li>在集合中使用泛型之前可能存在的问题<br>问题1：类型不安全。因为add()的参数是Object类型，意味着任何类型的对象都可以添加成功<br>问题2：需要使用强转操作，繁琐。还有可能导致ClassCastException异常。</li>
@@ -1598,8 +1598,8 @@
 <li>比较器：Comparable、Comparator</li>
 </ul>
 <h3 id="自定义泛型类-x2F-泛型接口、泛型方法（熟悉）"><a href="#自定义泛型类-x2F-泛型接口、泛型方法（熟悉）" class="headerlink" title="自定义泛型类&#x2F;泛型接口、泛型方法（熟悉）"></a>自定义泛型类&#x2F;泛型接口、泛型方法（熟悉）</h3><ul>
-<li>class Order<T>{ }</li>
-<li>public <E> 返回值类型 方法名(形参列表){}</li>
+<li>class Order<T>{ }</T></li>
+<li>public <E> 返回值类型 方法名(形参列表){}</E></li>
 <li>具体的细节，见IDEA中的笔记。</li>
 </ul>
 <h3 id="泛型在继承上的体现"><a href="#泛型在继承上的体现" class="headerlink" title="泛型在继承上的体现"></a>泛型在继承上的体现</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1. 类SuperA是类A的父类，则G&lt;SuperA&gt; 与 G&lt;A&gt;的关系：G&lt;SuperA&gt; 和 G&lt;A&gt;是并列的两个类，没有任何子父类的关系。</span><br><span class="line"></span><br><span class="line">比如：ArrayList&lt;Object&gt; 、ArrayList&lt;String&gt;没有关系</span><br><span class="line"></span><br><span class="line">2. 类SuperA是类A的父类或接口，SuperA&lt;G&gt; 与 A&lt;G&gt;的关系：SuperA&lt;G&gt; 与A&lt;G&gt; 有继承或实现的关系。</span><br><span class="line">即A&lt;G&gt;的实例可以赋值给SuperA&lt;G&gt;类型的引用（或变量）</span><br><span class="line"></span><br><span class="line">比如：List&lt;String&gt; 与 ArrayList&lt;String&gt;</span><br></pre></td></tr></table></figure>
@@ -1657,7 +1657,7 @@
 <li>常见的链表结构有如下的形式：</li>
 </ul>
 <p><img src="/images/1563448858180-1661445988506.png" alt="1563448858180"></p>
-<img src="images/数据结构-链表.png" alt="数据结构-链表" style="zoom:50%;" />  
+<img src="/2023/04/10/offer-Java/数据结构-链表.png" alt="数据结构-链表" style="zoom:50%;">  
 
 <h4 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h4><ul>
 <li><p>栈（Stack）又称为堆栈或堆叠，是限制仅在表的一端进行插入和删除运算的线性表。</p>
@@ -1688,9 +1688,9 @@
 <li><p>图示：</p>
 </li>
 </ul>
-<img src="images/image-20220826010258638.png" alt="image-20220826010258638" style="zoom:80%;" />
+<img src="/2023/04/10/offer-Java/image-20220826010258638.png" alt="image-20220826010258638" style="zoom:80%;">
 
-<img src="images/数据结构-栈.png" alt="数据结构-栈" style="zoom:50%;" />  
+<img src="/2023/04/10/offer-Java/数据结构-栈.png" alt="数据结构-栈" style="zoom:50%;">  
 
 <h4 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h4><ul>
 <li><p>队列（Queue）是只允许在一端进行插入，而在另一端进行删除的运算受限的线性表。</p>
@@ -1703,12 +1703,12 @@
 </li>
 </ul>
 <p><img src="/images/image-20220826010241172.png" alt="image-20220826010241172"></p>
-<img src="images/数据结构-队列.png" alt="数据结构-队列" style="zoom:50%;" />  
+<img src="/2023/04/10/offer-Java/数据结构-队列.png" alt="数据结构-队列" style="zoom:50%;">  
 
 <h4 id="树与二叉树"><a href="#树与二叉树" class="headerlink" title="树与二叉树"></a>树与二叉树</h4><ol>
 <li>树的理解</li>
 </ol>
-<img src="images/image-20220521111904272.png" alt="image-20220521111904272" style="zoom:67%;" />
+<img src="/2023/04/10/offer-Java/image-20220521111904272.png" alt="image-20220521111904272" style="zoom:67%;">
 
 <p><strong>专有名词解释：</strong></p>
 <p><code>结点</code>：树中的数据元素都称之为结点</p>
@@ -1741,7 +1741,7 @@
 <p>即先后序遍历左子树，然后再后序遍历右子树，最后访问根 结点。后序遍历运算访问二叉树各结点是以左、右、根的顺序进行访问的。</p>
 </li>
 </ul>
-<img src="images/1574575739236-1661447692846.png" alt="1574575739236" style="zoom:80%;" />
+<img src="/2023/04/10/offer-Java/1574575739236-1661447692846.png" alt="1574575739236" style="zoom:80%;">
 
 <p>前序遍历：ABDHIECFG</p>
 <p>中序遍历：HDIBEAFCG</p>
@@ -1749,14 +1749,14 @@
 <ol start="4">
 <li>经典二叉树</li>
 </ol>
-<img src="images/image-20220521153016348.png" alt="image-20220521153016348" style="zoom: 67%;" />
+<img src="/2023/04/10/offer-Java/image-20220521153016348.png" alt="image-20220521153016348" style="zoom: 67%;">
 
 <p>1、<code>满二叉树</code>： 除最后一层无任何子节点外，每一层上的所有结点都有两个子结点的二叉树。 第n层的结点数是2的n-1次方，总的结点个数是2的n次方-1</p>
 <p><img src="/images/1574575163883-1661447692846.png" alt="1574575163883"></p>
 <p>2、<code>完全二叉树</code>： 叶结点只能出现在最底层的两层，且最底层叶结点均处于次底层叶结点的左侧。</p>
 <p><img src="/images/1574575180247-1661447692846.png" alt="1574575180247"></p>
 <p>3、<code>二叉排序/查找/搜索树</code>：即为BST  (binary search&#x2F;sort tree)。满足如下性质：<br>（1）若它的左子树不为空，则左子树上所有结点的值均小于它的根节点的值；<br>（2）若它的右子树上所有结点的值均大于它的根节点的值；<br>（3）它的左、右子树也分别为二叉排序&#x2F;查找&#x2F;搜索树。</p>
-<img src="images/image-20220521145208018.png" alt="image-20220521145208018" style="zoom: 67%;" />
+<img src="/2023/04/10/offer-Java/image-20220521145208018.png" alt="image-20220521145208018" style="zoom: 67%;">
 
 <blockquote>
 <p>对二叉查找树进行中序遍历，得到有序集合。便于检索。</p>
@@ -1765,7 +1765,7 @@
 <blockquote>
 <p>平衡二叉树的目的是为了减少二叉查找树的层次，提高查找速度。平衡二叉树的常用实现有红黑树、AVL、替罪羊树、Treap、伸展树等。</p>
 </blockquote>
-<img src="images/image-20220521150151219.png" alt="image-20220521150151219" style="zoom: 50%;" />
+<img src="/2023/04/10/offer-Java/image-20220521150151219.png" alt="image-20220521150151219" style="zoom: 50%;">
 
 
 
@@ -2169,7 +2169,7 @@
 <p>问API。</p>
 <h4 id="4-反射是怎么实现的？（上海立-网络）"><a href="#4-反射是怎么实现的？（上海立-网络）" class="headerlink" title="4. 反射是怎么实现的？（上海立*网络）"></a>4. 反射是怎么实现的？（上海立*网络）</h4><p>从Class说起。</p>
 <h3 id="Class的理解"><a href="#Class的理解" class="headerlink" title="Class的理解"></a>Class的理解</h3><h4 id="1-Class类的作用？生成Class对象的方法有哪些？-顺"><a href="#1-Class类的作用？生成Class对象的方法有哪些？-顺" class="headerlink" title="1. Class类的作用？生成Class对象的方法有哪些？(顺*)"></a>1. Class类的作用？生成Class对象的方法有哪些？(顺*)</h4><p>反射的源头。 主要有三种。</p>
-<h4 id="2-Class-forName-“全路径”-会调用哪些方法-？-会调用构造方法吗？加载的类会放在哪？（上-银行外包）"><a href="#2-Class-forName-“全路径”-会调用哪些方法-？-会调用构造方法吗？加载的类会放在哪？（上-银行外包）" class="headerlink" title="2. Class.forName(“全路径”) 会调用哪些方法 ？ 会调用构造方法吗？加载的类会放在哪？（上*银行外包）"></a>2. Class.forName(“全路径”) 会调用哪些方法 ？ 会调用构造方法吗？加载的类会放在哪？（上*银行外包）</h4><p>Class.forName() 会执行执行类构造器<clinit>()方法。</p>
+<h4 id="2-Class-forName-“全路径”-会调用哪些方法-？-会调用构造方法吗？加载的类会放在哪？（上-银行外包）"><a href="#2-Class-forName-“全路径”-会调用哪些方法-？-会调用构造方法吗？加载的类会放在哪？（上-银行外包）" class="headerlink" title="2. Class.forName(“全路径”) 会调用哪些方法 ？ 会调用构造方法吗？加载的类会放在哪？（上*银行外包）"></a>2. Class.forName(“全路径”) 会调用哪些方法 ？ 会调用构造方法吗？加载的类会放在哪？（上*银行外包）</h4><p>Class.forName() 会执行执行类构造器<clinit>()方法。</clinit></p>
 <p>不会调用构造方法</p>
 <p>加载的类放在方法区。</p>
 <h3 id="类的加载"><a href="#类的加载" class="headerlink" title="类的加载"></a>类的加载</h3><h4 id="1-类加载流程（汇-通、同-顺、凡-科技）"><a href="#1-类加载流程（汇-通、同-顺、凡-科技）" class="headerlink" title="1. 类加载流程（汇**通、同*顺、凡*科技）"></a>1. 类加载流程（汇**通、同*顺、凡*科技）</h4><p>略</p>
@@ -2368,17 +2368,17 @@
 </ul>
 </li>
 <li>java.lang.Iterable<T><ul>
-<li>public Iterator<T> iterate()</li>
+<li>public Iterator<T> iterate()</T></li>
 </ul>
-</li>
+</T></li>
 <li>java.lang.Comparable<T><ul>
 <li>public int compareTo(T t)</li>
 </ul>
-</li>
+</T></li>
 <li>java.util.Comparator<T><ul>
 <li>public int compare(T t1, T t2)</li>
 </ul>
-</li>
+</T></li>
 </ul>
 <table>
 <thead>
@@ -2446,17 +2446,17 @@
 <td>接收一个long值</td>
 </tr>
 <tr>
-<td>ObjDoubleConsumer<T></td>
+<td>ObjDoubleConsumer<T></T></td>
 <td>void accept(T t, double value)</td>
 <td>接收一个对象和一个double值</td>
 </tr>
 <tr>
-<td>ObjIntConsumer<T></td>
+<td>ObjIntConsumer<T></T></td>
 <td>void accept(T t, int value)</td>
 <td>接收一个对象和一个int值</td>
 </tr>
 <tr>
-<td>ObjLongConsumer<T></td>
+<td>ObjLongConsumer<T></T></td>
 <td>void accept(T t, long value)</td>
 <td>接收一个对象和一个long值</td>
 </tr>
@@ -2503,37 +2503,37 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>UnaryOperator<T></td>
+<td>UnaryOperator<T></T></td>
 <td>T apply(T t)</td>
 <td>接收一个T类型对象，返回一个T类型对象结果</td>
 </tr>
 <tr>
-<td>DoubleFunction<R></td>
+<td>DoubleFunction<R></R></td>
 <td>R apply(double value)</td>
 <td>接收一个double值，返回一个R类型对象</td>
 </tr>
 <tr>
-<td>IntFunction<R></td>
+<td>IntFunction<R></R></td>
 <td>R apply(int value)</td>
 <td>接收一个int值，返回一个R类型对象</td>
 </tr>
 <tr>
-<td>LongFunction<R></td>
+<td>LongFunction<R></R></td>
 <td>R apply(long value)</td>
 <td>接收一个long值，返回一个R类型对象</td>
 </tr>
 <tr>
-<td>ToDoubleFunction<T></td>
+<td>ToDoubleFunction<T></T></td>
 <td>double applyAsDouble(T value)</td>
 <td>接收一个T类型对象，返回一个double</td>
 </tr>
 <tr>
-<td>ToIntFunction<T></td>
+<td>ToIntFunction<T></T></td>
 <td>int applyAsInt(T value)</td>
 <td>接收一个T类型对象，返回一个int</td>
 </tr>
 <tr>
-<td>ToLongFunction<T></td>
+<td>ToLongFunction<T></T></td>
 <td>long applyAsLong(T value)</td>
 <td>接收一个T类型对象，返回一个long</td>
 </tr>
@@ -2588,7 +2588,7 @@
 <td>接收一个T类型和一个U类型对象，返回一个R类型对象结果</td>
 </tr>
 <tr>
-<td>BinaryOperator<T></td>
+<td>BinaryOperator<T></T></td>
 <td>T apply(T t, T u)</td>
 <td>接收两个T类型对象，返回一个T类型对象结果</td>
 </tr>
@@ -2665,7 +2665,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestLambda</span> &#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">		callSomething(()-&gt;System.out.println(<span class="string">&quot;回家吃饭&quot;</span>));</span><br><span class="line">		callSomething(()-&gt;System.out.println(<span class="string">&quot;我爱你&quot;</span>));</span><br><span class="line">		callSomething(()-&gt;System.out.println(<span class="string">&quot;滚蛋&quot;</span>));</span><br><span class="line">		callSomething(()-&gt;System.out.println(<span class="string">&quot;回来&quot;</span>));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">callSomething</span><span class="params">(Call call)</span>&#123;</span><br><span class="line">		call.shout();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Call</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">shout</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>练习2：消费型接口</strong></p>
-<p>代码示例：Consumer<T>接口</p>
+<p>代码示例：Consumer<T>接口</T></p>
 <p>在JDK1.8中Collection集合接口的父接口Iterable接口中增加了一个默认方法：</p>
 <p><code>public default void forEach(Consumer&lt;? super T&gt; action) </code>遍历Collection集合的每个元素，执行“xxx消费型”操作。</p>
 <p>在JDK1.8中Map集合接口中增加了一个默认方法：</p>
@@ -2677,8 +2677,8 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test1</span><span class="params">()</span>&#123;</span><br><span class="line">	List&lt;String&gt; list = Arrays.asList(<span class="string">&quot;hello&quot;</span>,<span class="string">&quot;java&quot;</span>,<span class="string">&quot;lambda&quot;</span>,<span class="string">&quot;atguigu&quot;</span>);</span><br><span class="line">	list.forEach(s -&gt; System.out.println(s));</span><br><span class="line">   &#125;</span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test2</span><span class="params">()</span>&#123;</span><br><span class="line">	HashMap&lt;Integer,String&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">	map.put(<span class="number">1</span>, <span class="string">&quot;hello&quot;</span>);</span><br><span class="line">	map.put(<span class="number">2</span>, <span class="string">&quot;java&quot;</span>);</span><br><span class="line">	map.put(<span class="number">3</span>, <span class="string">&quot;lambda&quot;</span>);</span><br><span class="line">	map.put(<span class="number">4</span>, <span class="string">&quot;atguigu&quot;</span>);</span><br><span class="line">	map.forEach((k,v) -&gt; System.out.println(k+<span class="string">&quot;-&gt;&quot;</span>+v));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>练习3：供给型接口</strong></p>
-<p>代码示例：Supplier<T>接口</p>
-<p>在JDK1.8中增加了StreamAPI，java.util.stream.Stream<T>是一个数据流。这个类型有一个静态方法：</p>
+<p>代码示例：Supplier<T>接口</T></p>
+<p>在JDK1.8中增加了StreamAPI，java.util.stream.Stream<T>是一个数据流。这个类型有一个静态方法：</T></p>
 <p><code>public static &lt;T&gt; Stream&lt;T&gt; generate(Supplier&lt;T&gt; s)</code>可以创建Stream的对象。而又包含一个forEach方法可以遍历流中的元素：<code>public void forEach(Consumer&lt;? super T&gt; action)</code>。</p>
 <p>案例：</p>
 <p>现在请调用Stream的generate方法，来产生一个流对象，并调用Math.random()方法来产生数据，为Supplier函数式接口的形参赋值。最后调用forEach方法遍历流中的数据查看结果。</p>
@@ -2702,8 +2702,8 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestLambda</span> &#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">		HashMap&lt;Integer,Employee&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">		<span class="type">Employee</span> <span class="variable">e1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Employee</span>(<span class="number">1</span>, <span class="string">&quot;张三&quot;</span>, <span class="number">8000</span>);</span><br><span class="line">		<span class="type">Employee</span> <span class="variable">e2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Employee</span>(<span class="number">2</span>, <span class="string">&quot;李四&quot;</span>, <span class="number">9000</span>);</span><br><span class="line">		<span class="type">Employee</span> <span class="variable">e3</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Employee</span>(<span class="number">3</span>, <span class="string">&quot;王五&quot;</span>, <span class="number">10000</span>);</span><br><span class="line">		<span class="type">Employee</span> <span class="variable">e4</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Employee</span>(<span class="number">4</span>, <span class="string">&quot;赵六&quot;</span>, <span class="number">11000</span>);</span><br><span class="line">		<span class="type">Employee</span> <span class="variable">e5</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Employee</span>(<span class="number">5</span>, <span class="string">&quot;钱七&quot;</span>, <span class="number">12000</span>);</span><br><span class="line">		</span><br><span class="line">		map.put(e1.getId(), e1);</span><br><span class="line">		map.put(e2.getId(), e2);</span><br><span class="line">		map.put(e3.getId(), e3);</span><br><span class="line">		map.put(e4.getId(), e4);</span><br><span class="line">		map.put(e5.getId(), e5);</span><br><span class="line">		</span><br><span class="line">		map.forEach((k,v) -&gt; System.out.println(k+<span class="string">&quot;=&quot;</span>+v));</span><br><span class="line">		System.out.println();</span><br><span class="line">		</span><br><span class="line">		map.replaceAll((k,v)-&gt;&#123;</span><br><span class="line">			<span class="keyword">if</span>(v.getSalary()&lt;<span class="number">10000</span>)&#123;</span><br><span class="line">				v.setSalary(<span class="number">10000</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span> v;</span><br><span class="line">		&#125;);</span><br><span class="line">		map.forEach((k,v) -&gt; System.out.println(k+<span class="string">&quot;=&quot;</span>+v));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>练习5：判断型接口</strong></p>
-<p>代码示例：Predicate<T>接口</p>
-<p>JDK1.8时，Collecton<E>接口增加了一下方法，其中一个如下：</p>
+<p>代码示例：Predicate<T>接口</T></p>
+<p>JDK1.8时，Collecton<E>接口增加了一下方法，其中一个如下：</E></p>
 <p><code>public default boolean removeIf(Predicate&lt;? super E&gt; filter)</code> 用于删除集合中满足filter指定的条件判断的。</p>
 <p><code>public default void forEach(Consumer&lt;? super T&gt; action) </code>遍历Collection集合的每个元素，执行“xxx消费型”操作。</p>
 <p>案例：</p>
@@ -2716,8 +2716,8 @@
 <p><strong>练习6：判断型接口</strong></p>
 <p>案例：</p>
 <p>（1）声明一个Employee员工类型，包含编号、姓名、性别，年龄，薪资。</p>
-<p>（2）声明一个EmployeeSerice员工管理类，包含一个ArrayList<Employee>集合的属性all，在EmployeeSerice的构造器中，创建一些员工对象，为all集合初始化。</p>
-<p>（3）在EmployeeSerice员工管理类中，声明一个方法：ArrayList<Employee> get(Predicate<Employee> p)，即将满足p指定的条件的员工，添加到一个新的ArrayList<Employee> 集合中返回。</p>
+<p>（2）声明一个EmployeeSerice员工管理类，包含一个ArrayList<Employee>集合的属性all，在EmployeeSerice的构造器中，创建一些员工对象，为all集合初始化。</Employee></p>
+<p>（3）在EmployeeSerice员工管理类中，声明一个方法：ArrayList<Employee> get(Predicate<Employee> p)，即将满足p指定的条件的员工，添加到一个新的ArrayList<Employee> 集合中返回。</Employee></Employee></Employee></p>
 <p>（4）在测试类中创建EmployeeSerice员工管理类的对象，并调用get方法，分别获取：</p>
 <ul>
 <li>所有员工对象</li>
@@ -2796,9 +2796,9 @@
 <h5 id="创建Stream实例"><a href="#创建Stream实例" class="headerlink" title="创建Stream实例"></a>创建Stream实例</h5><p><strong>方式一：通过集合</strong></p>
 <p>Java8 中的 Collection 接口被扩展，提供了两个获取流的方法：</p>
 <ul>
-<li><p>default Stream<E> stream() : 返回一个顺序流</p>
+<li><p>default Stream<E> stream() : 返回一个顺序流</E></p>
 </li>
-<li><p>default Stream<E> parallelStream() : 返回一个并行流</p>
+<li><p>default Stream<E> parallelStream() : 返回一个并行流</E></p>
 </li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test01</span><span class="params">()</span>&#123;</span><br><span class="line">    List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//JDK1.8中，Collection系列集合增加了方法</span></span><br><span class="line">    Stream&lt;Integer&gt; stream = list.stream();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -2806,7 +2806,7 @@
 <p><strong>方式二：通过数组</strong></p>
 <p>Java8 中的 Arrays 的静态方法 stream() 可以获取数组流：</p>
 <ul>
-<li>static <T> Stream<T> stream(T[] array): 返回一个流</li>
+<li>static <T> Stream<T> stream(T[] array): 返回一个流</T></T></li>
 <li>public static IntStream stream(int[] array)</li>
 <li>public static LongStream stream(long[] array)</li>
 <li>public static DoubleStream stream(double[] array)</li>
@@ -2816,16 +2816,16 @@
 <p><strong>方式三：通过Stream的of()</strong></p>
 <p>可以调用Stream类静态方法 of(), 通过显示值创建一个流。它可以接收任意数量的参数。</p>
 <ul>
-<li>public static<T> Stream<T> of(T… values) : 返回一个流</li>
+<li>public static<T> Stream<T> of(T… values) : 返回一个流</T></T></li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test04</span><span class="params">()</span>&#123;</span><br><span class="line">    Stream&lt;Integer&gt; stream = Stream.of(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>);</span><br><span class="line">    stream.forEach(System.out::println);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>方式四：创建无限流(了解)</strong></p>
 <p>可以使用静态方法 Stream.iterate() 和 Stream.generate(), 创建无限流。</p>
 <ul>
-<li><p>迭代<br>public static<T> Stream<T> iterate(final T seed, final UnaryOperator<T> f) </p>
+<li><p>迭代<br>public static<T> Stream<T> iterate(final T seed, final UnaryOperator<T> f) </T></T></T></p>
 </li>
-<li><p>生成<br>public static<T> Stream<T> generate(Supplier<T> s)</p>
+<li><p>生成<br>public static<T> Stream<T> generate(Supplier<T> s)</T></T></T></p>
 </li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方式四：创建无限流</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test05</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="comment">// 迭代</span></span><br><span class="line">	<span class="comment">// public static&lt;T&gt; Stream&lt;T&gt; iterate(final T seed, final</span></span><br><span class="line">	<span class="comment">// UnaryOperator&lt;T&gt; f)</span></span><br><span class="line">	Stream&lt;Integer&gt; stream = Stream.iterate(<span class="number">0</span>, x -&gt; x + <span class="number">2</span>);</span><br><span class="line">	stream.limit(<span class="number">10</span>).forEach(System.out::println);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 生成</span></span><br><span class="line">	<span class="comment">// public static&lt;T&gt; Stream&lt;T&gt; generate(Supplier&lt;T&gt; s)</span></span><br><span class="line">	Stream&lt;Double&gt; stream1 = Stream.generate(Math::random);</span><br><span class="line">	stream1.limit(<span class="number">10</span>).forEach(System.out::println);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -2967,7 +2967,7 @@
 </tr>
 <tr>
 <td><strong>reduce(BinaryOperator  b)</strong></td>
-<td>可以将流中元素反复结合起来，得到一个值。返回 Optional<T></td>
+<td>可以将流中元素反复结合起来，得到一个值。返回 Optional<T></T></td>
 </tr>
 </tbody></table>
 <p>备注：map 和 reduce 的连接通常称为 map-reduce 模式，因 Google 用它来进行网络搜索而出名。</p>
@@ -2996,7 +2996,7 @@
 </thead>
 <tbody><tr>
 <td><strong>toList</strong></td>
-<td>Collector&lt;T, ?, List<T>&gt;</td>
+<td>Collector&lt;T, ?, List<T>&gt;</T></td>
 <td>把流中元素收集到List</td>
 </tr>
 </tbody></table>
@@ -3012,7 +3012,7 @@
 </thead>
 <tbody><tr>
 <td><strong>toSet</strong></td>
-<td>Collector&lt;T, ?, Set<T>&gt;</td>
+<td>Collector&lt;T, ?, Set<T>&gt;</T></td>
 <td>把流中元素收集到Set</td>
 </tr>
 </tbody></table>
@@ -3124,7 +3124,7 @@
 </thead>
 <tbody><tr>
 <td><strong>maxBy</strong></td>
-<td>Collector&lt;T, ?, Optional<T>&gt;</td>
+<td>Collector&lt;T, ?, Optional<T>&gt;</T></td>
 <td>根据比较器选择最大值</td>
 </tr>
 </tbody></table>
@@ -3140,7 +3140,7 @@
 </thead>
 <tbody><tr>
 <td><strong>minBy</strong></td>
-<td>Collector&lt;T, ?, Optional<T>&gt;</td>
+<td>Collector&lt;T, ?, Optional<T>&gt;</T></td>
 <td>根据比较器选择最小值</td>
 </tr>
 </tbody></table>
@@ -3156,7 +3156,7 @@
 </thead>
 <tbody><tr>
 <td><strong>reducing</strong></td>
-<td>Collector&lt;T, ?, Optional<T>&gt;</td>
+<td>Collector&lt;T, ?, Optional<T>&gt;</T></td>
 <td>从一个作为累加器的初始值开始，利用BinaryOperator与流中元素逐个结合，从而归约成单个值</td>
 </tr>
 </tbody></table>
@@ -3188,7 +3188,7 @@
 </thead>
 <tbody><tr>
 <td><strong>groupingBy</strong></td>
-<td>Collector&lt;T, ?, Map&lt;K, List<T>&gt;&gt;</td>
+<td>Collector&lt;T, ?, Map&lt;K, List<T>&gt;&gt;</T></td>
 <td>根据某属性值对流分组，属性为K，结果为V</td>
 </tr>
 </tbody></table>
@@ -3204,7 +3204,7 @@
 </thead>
 <tbody><tr>
 <td><strong>partitioningBy</strong></td>
-<td>Collector&lt;T, ?, Map&lt;Boolean, List<T>&gt;&gt;</td>
+<td>Collector&lt;T, ?, Map&lt;Boolean, List<T>&gt;&gt;</T></td>
 <td>根据true或false进行分区</td>
 </tr>
 </tbody></table>
@@ -3395,9 +3395,9 @@
 <ul>
 <li><p><code>创建Optional类对象的方法：</code></p>
 </li>
-<li><p>static <T> Optional<T> empty() ：用来创建一个空的Optional实例</p>
+<li><p>static <T> Optional<T> empty() ：用来创建一个空的Optional实例</T></T></p>
 <ul>
-<li>static <T> Optional<T> of(T value) ：用来创建一个Optional实例，value必须非空</li>
+<li>static <T> Optional<T> of(T value) ：用来创建一个Optional实例，value必须非空</T></T></li>
 <li><code>static &lt;T&gt; Optional&lt;T&gt; ofNullable(T value)</code> ：用来创建一个Optional实例，value可能是空，也可能非空</li>
 </ul>
 </li>
@@ -3438,12 +3438,12 @@
 <td>JDK  9</td>
 </tr>
 <tr>
-<td>Optional<T> or(Supplier&lt;? extends Optional&lt;? extends T&gt;&gt; supplier)</td>
+<td>Optional<T> or(Supplier&lt;? extends Optional&lt;? extends T&gt;&gt; supplier)</T></td>
 <td>value非空，返回对应的Optional；value为空，返回形参封装的Optional</td>
 <td>JDK  9</td>
 </tr>
 <tr>
-<td>Stream<T> stream()</td>
+<td>Stream<T> stream()</T></td>
 <td>value非空，返回仅包含此value的Stream；否则，返回一个空的Stream</td>
 <td>JDK  9</td>
 </tr>
@@ -3677,7 +3677,7 @@
 <p>略</p>
 <h4 id="2-什么是函数式接口？有几种函数式接口（阿-巴）"><a href="#2-什么是函数式接口？有几种函数式接口（阿-巴）" class="headerlink" title="2. 什么是函数式接口？有几种函数式接口（阿**巴）"></a>2. 什么是函数式接口？有几种函数式接口（阿**巴）</h4><p>略。</p>
 <p>java.util.function包下定义了丰富的好函数式接口。有4类基础的函数式接口：</p>
-<p>消费型接口：Consumer<T>     void accept(T t)<br>供给型接口：Supplier<T>     T get()<br>函数型接口：Function&lt;T,R&gt;   R apply(T t)<br>判断型接口：Predicate<T>    boolean test(T t)</p>
+<p>消费型接口：Consumer<T>     void accept(T t)<br>供给型接口：Supplier<T>     T get()<br>函数型接口：Function&lt;T,R&gt;   R apply(T t)<br>判断型接口：Predicate<T>    boolean test(T t)</T></T></T></p>
 <h3 id="Stream-API"><a href="#Stream-API" class="headerlink" title="Stream API"></a>Stream API</h3><h4 id="1-创建Stream的方式（阿-巴）"><a href="#1-创建Stream的方式（阿-巴）" class="headerlink" title="1. 创建Stream的方式（阿**巴）"></a>1. 创建Stream的方式（阿**巴）</h4><p>三种。</p>
 <h4 id="2-你讲讲stream表达式是咋用的，干啥的？（中-国际，上海-网络）"><a href="#2-你讲讲stream表达式是咋用的，干啥的？（中-国际，上海-网络）" class="headerlink" title="2. 你讲讲stream表达式是咋用的，干啥的？（中*国际，上海**网络）"></a>2. 你讲讲stream表达式是咋用的，干啥的？（中*国际，上海**网络）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; Stream API 关注的是多个数据的计算（排序、查找、过滤、映射、遍历等），面向CPU的。</span><br><span class="line">  集合关注的数据的存储，面向内存的。</span><br><span class="line">&gt; Stream API 之于集合，类似于SQL之于数据表的查询。</span><br></pre></td></tr></table></figure>
 
@@ -4078,6 +4078,14 @@
       <ul>
         
           <li>
+            <a href="/2024/07/04/redis7/">redis7</a>
+          </li>
+        
+          <li>
+            <a href="/2024/06/17/offer-ES/">offer-ES</a>
+          </li>
+        
+          <li>
             <a href="/2024/04/18/Java-gulimall/">Java-gulimall</a>
           </li>
         
@@ -4087,14 +4095,6 @@
         
           <li>
             <a href="/2023/08/29/offer-SSM/">offer-SSM</a>
-          </li>
-        
-          <li>
-            <a href="/2023/07/18/Prompt-Engineering/">Prompt Engineering</a>
-          </li>
-        
-          <li>
-            <a href="/2023/07/10/offer-redis6/">offer-redis6</a>
           </li>
         
       </ul>
@@ -4119,7 +4119,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> Archive</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">18</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">17</span></li></ul>
     </div>
   </div>
 

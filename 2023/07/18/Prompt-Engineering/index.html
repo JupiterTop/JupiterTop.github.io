@@ -132,7 +132,11 @@
       
         <h1 id="Prompt-Engineering"><a href="#Prompt-Engineering" class="headerlink" title="Prompt Engineering"></a>Prompt Engineering</h1><p>Prompt Engineering, also known as In-Context Prompting, refers to methods for how to communicate with LLM to steer its behavior for desired outcomes without updating the model weights.<br>提示工程，也称为上下文提示，是指如何在不更新模型权重的情况下与LLM通信以引导其行为以获得所需结果的方法。<br>the goal of prompt engineering is about alignment and model steerability.<br>提示工程的核心目标是对齐和模型可控性。  </p>
 <h2 id="Basic-Prompting"><a href="#Basic-Prompting" class="headerlink" title="Basic Prompting"></a>Basic Prompting</h2><h3 id="Zero-Shot"><a href="#Zero-Shot" class="headerlink" title="Zero-Shot"></a>Zero-Shot</h3><p>Zero-shot learning is to simply feed the task text to the model and ask for results:  </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">    Text: i&#x27;ll bet the video game is a lot more fun than the film.</span><br><span class="line">    Sentiment:  </span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### Few-shot  </span><br><span class="line">Few-shot learning presents a set of high-quality demonstrations, each consisting of both input and desired output, on the target task. As the model first sees good examples, it can better understand human intention and criteria for what kinds of answers are wanted. Therefore, few-shot learning often leads to better performance than zero-shot. However, it comes at the cost of more token consumption and may hit the context length limit when input and output text are long.  </span><br><span class="line">但是，它以消耗更多的tokens为代价，并且当输入和输出文本较长时，可能会达到上下文长度限制。  </span><br><span class="line">```  </span><br><span class="line">    Text: (lawrence bounces) all over the stage, dancing, running, sweating, mopping his face and generally displaying the wacky talent that brought him fame in the first place.</span><br><span class="line">    Sentiment: positive</span><br><span class="line"></span><br><span class="line">    Text: despite all evidence to the contrary, this clunker has somehow managed to pose as an actual feature movie, the kind that charges full admission and gets hyped on tv and purports to amuse small children and ostensible adults.</span><br><span class="line">    Sentiment: negative</span><br><span class="line"></span><br><span class="line">    Text: for the first time in years, de niro digs deep emotionally, perhaps because he&#x27;s been stirred by the powerful work of his co-stars.</span><br><span class="line">    Sentiment: positive</span><br><span class="line"></span><br><span class="line">    Text: i&#x27;ll bet the video game is a lot more fun than the film.</span><br><span class="line">    Sentiment:</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Text: i&#x27;ll bet the video game is a lot more fun than the film.</span><br><span class="line">Sentiment:  </span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Few-shot"><a href="#Few-shot" class="headerlink" title="Few-shot"></a>Few-shot</h3><p>Few-shot learning presents a set of high-quality demonstrations, each consisting of both input and desired output, on the target task. As the model first sees good examples, it can better understand human intention and criteria for what kinds of answers are wanted. Therefore, few-shot learning often leads to better performance than zero-shot. However, it comes at the cost of more token consumption and may hit the context length limit when input and output text are long.<br>但是，它以消耗更多的tokens为代价，并且当输入和输出文本较长时，可能会达到上下文长度限制。  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Text: (lawrence bounces) all over the stage, dancing, running, sweating, mopping his face and generally displaying the wacky talent that brought him fame in the first place.</span><br><span class="line">Sentiment: positive</span><br><span class="line"></span><br><span class="line">Text: despite all evidence to the contrary, this clunker has somehow managed to pose as an actual feature movie, the kind that charges full admission and gets hyped on tv and purports to amuse small children and ostensible adults.</span><br><span class="line">Sentiment: negative</span><br><span class="line"></span><br><span class="line">Text: for the first time in years, de niro digs deep emotionally, perhaps because he&#x27;s been stirred by the powerful work of his co-stars.</span><br><span class="line">Sentiment: positive</span><br><span class="line"></span><br><span class="line">Text: i&#x27;ll bet the video game is a lot more fun than the film.</span><br><span class="line">Sentiment:</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <ul>
 <li>choice of prompt format, training examples, and the order of the examples can lead to dramatically different performance</li>
 </ul>
@@ -143,322 +147,331 @@
 <ul>
 <li>When interacting with instruction models, we should describe the task requirement in details, trying to be specific and precise and avoiding say “not do something” but rather specify what to do.具体简洁地指明要做什么</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    Please label the sentiment towards the movie of the given movie review. The sentiment label should be &quot;positive&quot; or &quot;negative&quot;. </span><br><span class="line">    Text: i&#x27;ll bet the video game is a lot more fun than the film. </span><br><span class="line">    Sentiment:</span><br><span class="line"></span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">- Explaining the desired audience is another smart way to give instructions解释所需的受众  </span><br></pre></td></tr></table></figure>
-<pre><code>Describe what is quantum physics to a 6-year-old.
-</code></pre>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- safe content  </span><br></pre></td></tr></table></figure>
-<pre><code>... in language that is safe for work.
-</code></pre>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">few-shot learning with instruction prompting:</span><br><span class="line">&gt; In-Context Instruction Learning  </span><br><span class="line">&gt; https://arxiv.org/abs/2302.14691  </span><br><span class="line"></span><br><span class="line">## Self-Consistency Sampling  </span><br><span class="line">Self-consistency sampling is to sample multiple outputs with temperature &gt; 0 and then selecting the best one out of these candidates. The criteria for selecting the best candidate can vary from task to task. A general solution is to pick majority vote. For tasks that are easy to validate such as a programming question with unit tests, we can simply run through the interpreter and verify the correctness with unit tests.  </span><br><span class="line">对温度为大于0的多个输出进行采样，然后从这些候选输出中选择最佳输出。选择最佳候选人的标准可能因任务而异。一般的解决方案是选择多数票。  </span><br><span class="line"></span><br><span class="line">&gt; Self-Consistency Improves Chain of Thought Reasoning in Language Models</span><br><span class="line">&gt; https://arxiv.org/abs/2203.11171  </span><br><span class="line"></span><br><span class="line">## Chain-of-Thought (CoT)  </span><br><span class="line">Chain-of-thought (CoT) prompting generates a sequence of short sentences to describe reasoning logics step by step, known as reasoning chains or rationales, to eventually lead to the final answer. The benefit of CoT is more pronounced for complicated reasoning tasks, while using large models (e.g. with more than 50B parameters). Simple tasks only benefit slightly from CoT prompting.  </span><br><span class="line"></span><br><span class="line">&gt; Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</span><br><span class="line">&gt; https://arxiv.org/abs/2201.11903  </span><br><span class="line"></span><br><span class="line">### Types of CoT prompts  </span><br><span class="line">1. Few-shot CoT. It is to prompt the model with a few demonstrations, each containing manually written (or model-generated) high-quality reasoning chains.  </span><br></pre></td></tr></table></figure>
-<pre><code>Question: Tom and Elizabeth have a competition to climb a hill. Elizabeth takes 30 minutes to climb the hill. Tom takes four times as long as Elizabeth does to climb the hill. How many hours does it take Tom to climb up the hill?
-Answer: It takes Tom 30*4 = &lt;&lt;30*4=120&gt;&gt;120 minutes to climb the hill.
-It takes Tom 120/60 = &lt;&lt;120/60=2&gt;&gt;2 hours to climb the hill.
-So the answer is 2.
-===
-Question: Jack is a soccer player. He needs to buy two pairs of socks and a pair of soccer shoes. Each pair of socks cost $9.50, and the shoes cost $92. Jack has $40. How much more money does Jack need?
-Answer: The total cost of two pairs of socks is $9.50 x 2 = $&lt;&lt;9.5*2=19&gt;&gt;19.
-The total cost of the socks and the shoes is $19 + $92 = $&lt;&lt;19+92=111&gt;&gt;111.
-Jack need $111 - $40 = $&lt;&lt;111-40=71&gt;&gt;71 more.
-So the answer is 71.
-===
-Question: Marty has 100 centimeters of ribbon that he must cut into 4 equal parts. Each of the cut parts must be divided into 5 equal parts. How long will each final cut be?
-Answer:
-</code></pre>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2. Zero-shot CoT. Use natural language statement like &quot;Let&#x27;s think step by step&quot; to explicitly encourage the model to first generate reasoning chains and then to prompt with &quot;Therefore, the answer is&quot; to produce answers. Or a similar statement &quot;Let&#x27;s work this out it a step by step to be sure we have the right answer&quot;.  </span><br></pre></td></tr></table></figure>
-<pre><code>Question: Marty has 100 centimeters of ribbon that he must cut into 4 equal parts. Each of the cut parts must be divided into 5 equal parts. How long will each final cut be?
-Answer: Let&#39;s think step by step.
-</code></pre>
-<pre><code>&gt; Large Language Models are Zero-Shot Reasoners
-&gt; https://arxiv.org/abs/2205.11916  
-
-&gt; Large Language Models Are Human-Level Prompt Engineers
-&gt; https://arxiv.org/abs/2211.01910  
-
-### Papers  
-
-#### **Chain-of-Thought Prompting Elicits Reasoning in Large Language Models**  
-&gt; Google Research,Brain Team       
-1. Motivation: 
-- scaling up model size alone has not proved sufficient for achieving high performance on challenging tasks such as arithmetic, commonsense, and symbolic reasoning; 
-- First, techniques for arithmetic reasoning can benefit from generating natural language rationales that lead to the final answer;  
-- Second, large language models offer the exciting prospect of in-context few-shot learning via prompting.  
-2. Methods: 
-- ***Chain-of-Thought Prompting***  
-- First, chain of thought, in principle, allows models to decompose multi-step problems into intermediate steps, which means that additional computation can be allocated to problems that require more reasoning steps;   
-- Second, a chain of thought provides an interpretable window into the behavior of the model;    
-- Third, chain-of-thought reasoning can be used for tasks such as math word problems, commonsense reasoning, and symbolic manipulation, and is potentially applicable (at least in principle) to any task that humans can solve via language;  
-- Finally, chain-of-thought reasoning can be readily elicited in sufficiently large off-the-shelf language models simply by including examples of chain of thought sequences into the exemplars of few-shot prompting.
-
-![self-consistency](images/cot/CoT.png)  
-
-3. Experiments:  
-- Arithmetic Reasoning  
-manually composed a set of eight few-shot exemplars with chains of thought for prompting
-![CoT-result1](images/cot/CoT-result1.png)  
-![CoT-result2](images/cot/CoT-result2.png)  
-    1. chain-of-thought prompting does not positively impact performance for small models, and only yields performance gains when used with models of ∼100B parameters.  
-    2. chain-of-thought prompting has larger performance gains for more-complicated problems.
-
-    ![CoT-study1](images/cot/CoT-study1.png)  
-
-    Robustness of Chain of Thought  
-
-    ![CoT-study2](images/cot/CoT-study2.png)
-
-- Commonsense Reasoning  
-![CoT-result3](images/cot/CoT-result3.png) 
-
-- Symbolic Reasoning  
-![CoT-result4](images/cot/CoT-result4.png) 
-
-#### **Large Language Models are Zero-Shot Reasoners**  
-&gt; Tokyo University + Google Research,Brain Team       NeurIPS 2022  
-1. Motivation: 
-- Few-shot-CoT requiring human engineering of multi-step reasoning prompts; 
-- their performance deteriorates if prompt example question types and task question type are unmatched, suggesting high sensitivity to per-task prompt designs;  
-- these successes are often attributed to LLMs’ ability for few-shot learning.  
-2. Methods: 
-- ***Zero-shot-CoT*** : Zero-shot Chain of Thought  
-![Zero-shot-CoT](images/cot/Zero-shot-CoT.png)
-- Two-stage prompting:  
-![Zero-shot-CoT1](images/cot/Zero-shot-CoT1.png)   
-
-3. Experiments:  
-- Zero-shot-CoT vs. Zero-shot  
-![Zero-shot-CoT-result1](images/cot/Zero-shot-CoT-result1.png)  
-
-- Comparison with other baselines  
-![Zero-shot-CoT-result2](images/cot/Zero-shot-CoT-result2.png)  
-
-- Does model size matter for zero-shot reasoning?  
-![Zero-shot-CoT-study2](images/cot/Zero-shot-CoT-study2.png)  
-
-- How does prompt selection affect Zero-shot-CoT?  
-![Zero-shot-CoT-study1](images/cot/Zero-shot-CoT-study1.png)  
-
-- How does prompt selection affect Few-shot-CoT?  
-![Zero-shot-CoT-study3](images/cot/Zero-shot-CoT-study3.png) 
-
-#### **Automatic Chain of Thought Prompting in Large Language Models**
-&gt; Amazon Web Services  
-&gt; code: https://github.com/amazon-research/auto-cot
-1. Motivation: 
-- CoT prompting has two major paradigms. One leverages a simple prompt like “Let’s think step by step” to facilitate step-by-step thinking before answering a question. The other uses a few manual demonstrations one by one, each composed of a question and a reasoning chain that leads to an answer. 
-- The superior performance of the second paradigm hinges on the hand-crafting of task-specific
-demonstrations one by one.  
-- these generated chains by first paradigm often come with mistakes.  
-2. Methods: 
-- ***Auto-CoT*** : samples questions with diversity and generates reasoning chains to construct demonstrations  
-    (1) Retrieval-Q-CoT and Random-Q-CoT  
-        ![Auto-CoT-result1](images/cot/Auto-CoT-result1.png)  
-        - Retrieval-Q-CoT Fails due to Misleading by Similarity  
-            ![Auto-CoT-result2](images/cot/Auto-CoT-result2.png)  
-        - Errors Frequently Fall into the Same Cluster  
-            ![Auto-CoT-result3](images/cot/Auto-CoT-result3.png)  
-    (2) Diversity May Mitigate Misleading by Similarity  
-
-![Auto-CoT](images/cot/Auto-CoT.png)   
-![Auto-CoT1](images/cot/Auto-CoT1.png)  
-
-3. Experiments:  
-- Competitive Performance of Auto-CoT on Ten Datasets  
-![Auto-CoT-result4](images/cot/Auto-CoT-result4.png)  
-
-- Effect of Wrong Demonstrations  
-![Auto-CoT-result5](images/cot/Auto-CoT-result5.png)  
-
-- General Effectiveness Using the Codex LLM  
-![Auto-CoT-result6](images/cot/Auto-CoT-result6.png)  
-
-
-#### **Self-consistency Improves Chain of Thought Reasoning in Language Models**  
-&gt; Google Research,Brain Team     ICLR 2023  
-1. Motivation: 
-- Although language models have demonstrated remarkable success across a range of NLP tasks, their ability to demonstrate reasoning is often seen as a limitation, which cannot be overcome solely by increasing model scale; 
-- The Greedy Decoding of traditional chain-of-thought prompting: the repetitiveness,local-optimality, and the stochasticity of a single sampled generation.  
-2. Methods: 
-- ***self-consistency***,a new decoding strategy.  
-- It first samples a diverse set of reasoning paths instead of only taking the greedy one, and then selects the most consistent answer by marginalizing out the sampled reasoning paths.   
-- Self-consistency leverages the intuition that a complex reasoning problem typically admits multiple different ways of thinking leading to its unique correct answer.    
-
-![self-consistency](images/cot/self.png)  
-
-3. Experiments:  
-- test accuracy over a set of reasoning tasks by using different answer aggregation strategies  
-![self-consistency-study1](images/cot/self-study1.png)  
-
-- Arithmetic Reasoning  
-![self-consistency-result1](images/cot/self-result1.png) 
-
-- Commonsense and Symbolic Reasoning  
-![self-consistency-result2](images/cot/self-result2.png) 
-
-- the num of sampled reasoning paths    
-![self-consistency-study2](images/cot/self-study2.png)  
-
-- Self-Consistency helps when Chain-Of-Thought hurts performance  
-![self-consistency-study3](images/cot/self-study3.png)  
-
-- Self-Consistency is Robust to Sampling Strategies and Scaling    
-![self-consistency-study4](images/cot/self-study4.png)
-
-- Self-Consistency Improves Robustness to Imperfect Prompts    
-![self-consistency-study5](images/cot/self-study5.png)  
-
-#### **Rationale-Augmented Ensembles in Language Models**  
-&gt; Google Research,Brain Team       
-1. Motivation: 
-- existing approaches, which rely on manual prompt engineering, are subject to sub-optimal rationales that may harm performance.
-2. Methods: 
-- ***Rationale-Augmented Ensembles*** , where we identify rationale sampling in the output space as the key component to robustly improve performance.
-![RA-ensembles](images/cot/RA-ensembles.png)
-(1) Optimality of the rationales in few-shot learning  
-   ![RA-ensembles-result1](images/cot/RA-ensembles-result1.png)
-   - the addition of human-written rationales does not always yield better performances;  
-   - the quality of the rationales in the prompts has a significant effect on final performance;  
-   - simply including a rationale does not always improve task performance.  
-
-(2) Rationale-augmented ensembles(that can automatically aggregate across diverse rationales to overcome the brittleness of performance to sub-optimal human-written rationales)  
-    ![RA-ensembles1](images/cot/RA-ensembles1.png)  
-
-3. Experiments:  
-- results for the PaLM-540B model  
-![RA-ensembles-result2](images/cot/RA-ensembles-result2.png)  
-![RA-ensembles-result3](images/cot/RA-ensembles-result3.png)  
-![RA-ensembles-result4](images/cot/RA-ensembles-result4.png)  
-(1) the “output-sampled” version yields better final performance than the “output-greedy” version for almost every task;  
-(2) The “output-sampled” version of each rationale-ensembling method almost always improves performance over standard prompting without rationales, as well as rationale-based few-shot and zero-shot prompting;  
-(3)  rationale-augmented ensembles provide a reliable approach to improving the final task performance of rationale-based few-shot in-context learning. Interpretability of model predictions is also enhanced by the presence of generated rationales in the model outputs.  
-
-- Results on GPT-3  
-![RA-ensembles-result5](images/cot/RA-ensembles-result5.png) 
-
-- Effect of K in K-shot in-context learning &amp; Effect of templates and verbalizers  
-![RA-ensembles-result6](images/cot/RA-ensembles-result6.png) 
-
-#### **Least-to-Most Prompting Enables Complex Reasoning in Large Language Models**  
-&gt; Google Research,Brain Team          ICLR 2023
-1. Motivation: 
-- Chain-of-thought prompting tends to perform poorly on tasks which requires solving problems harder than the exemplars shown in the prompts.
-2. Methods: 
-- ***least-to-most prompting***, to break down a complex problem into a series of simpler subproblems and then solve them in sequence.  
-(1) query the language model to decompose the problem into subproblems;  
-(2) query the language model to sequentially solve the subproblems. The answer to the second subproblem is built on the answer to the first subproblem.  
-![least-to-most](images/cot/least-to-most.png)  
-
-3. Experiments:  
-- SYMBOLIC MANIPULATION  
-![least-to-most-result1](images/cot/least-to-most-result1.png)  
-- COMPOSITIONAL GENERALIZATION  
-![least-to-most-SCAN](images/cot/least-to-most-SCAN.png)  
-![least-to-most-result2](images/cot/least-to-most-result2.png)  
-- MATH REASONING  
-![least-to-most-result3](images/cot/least-to-most-result3.png)  
-![least-to-most-result4](images/cot/least-to-most-result4.png)
-
-
-#### **Compositional Semantic Parsing with Large Language Models**  
-&gt; Google Research + UMass Amherst CICS          
-1. Motivation: 
-- SCAN is an artificial task built upon a synthetic language with a tiny vocabulary and is generated from a small set of grammar rules, and it is unclear whether *least-to-most prompting*&#39;s strong results transfer to more realistic tasks that are based on a larger vocabulary and more complicated grammars.  
-- decomposing a problem is more difficult.  
-- translation of constituents is context-dependent.  
-2. Methods: 
-- ***dynamic least-to-most prompting***  
-    (1) tree-structured decomposition of natural language inputs through LM-predicted syntactic parsing;  通过lm预测的语法解析对自然语言输入进行树结构分解;  
-    ![dynamic-least-to-most1](images/cot/dynamic-least-to-most1.png)  
-
-    (2) use the decomposition to dynamically select exemplars;  使用分解动态选择范例;  
-        - Top-down matching: anonymize the decomposition tree of the input; Starting at the top of the anonymized tree, we use a heuristic approach to find exemplars such that all nodes are covered, prioritizing exemplars that match large subtrees.  
-        - Bottom-up matching: Then, we try to make sure that all leaf phrases are covered by an exemplar. If there is more than one exemplar for a certain phrase, we prefer exemplars where the phrase occurs within a similar anonymized subtree.      
-
-    (3) linearize the decomposition tree and prompt the model to sequentially generate answers to subproblems.   将分解树线性化，并提示模型按顺序生成子问题的答案。  
-
-![dynamic-least-to-most](images/cot/dynamic-least-to-most.png)  
-
-3. Experiments:  
-- CFQ  
-![dynamic-least-to-most-CFQ](images/cot/dynamic-least-to-most-CFQ.png)  
-![dynamic-least-to-most-result1](images/cot/dynamic-least-to-most-result1.png)  
-- COGS  
-![dynamic-least-to-most-result2](images/cot/dynamic-least-to-most-result2.png)   
-- Is dynamic least-to-most more effective than other prompting methods? &amp; How many exemplars are needed in the pool?  
-![dynamic-least-to-most-study1](images/cot/dynamic-least-to-most-study1.png)
-
-#### **Measuring and Narrowing the Compositionality Gap in Language Models**  
-&gt; Paul G. Allen School of Computer Science &amp; Engineering, University of Washington          
-&gt; code : https://github.com/ofirpress/self-ask
-1. Motivation: 
-- SCAN is an artificial task built upon a synthetic language with a tiny vocabulary and is generated from a small set of grammar rules, and it is unclear whether *least-to-most prompting*&#39;s strong results transfer to more realistic tasks that are based on a larger vocabulary and more complicated grammars.  
-- decomposing a problem is more difficult.  
-- translation of constituents is context-dependent.  
-2. Methods: 
-- ***dynamic least-to-most prompting***  
-    (1) tree-structured decomposition of natural language inputs through LM-predicted syntactic parsing;  通过lm预测的语法解析对自然语言输入进行树结构分解;  
-    ![dynamic-least-to-most1](images/cot/dynamic-least-to-most1.png)  
-
-    (2) use the decomposition to dynamically select exemplars;  使用分解动态选择范例;  
-        - Top-down matching: anonymize the decomposition tree of the input; Starting at the top of the anonymized tree, we use a heuristic approach to find exemplars such that all nodes are covered, prioritizing exemplars that match large subtrees.  
-        - Bottom-up matching: Then, we try to make sure that all leaf phrases are covered by an exemplar. If there is more than one exemplar for a certain phrase, we prefer exemplars where the phrase occurs within a similar anonymized subtree.      
-
-    (3) linearize the decomposition tree and prompt the model to sequentially generate answers to subproblems.   将分解树线性化，并提示模型按顺序生成子问题的答案。  
-
-![dynamic-least-to-most](images/cot/dynamic-least-to-most.png)  
-
-3. Experiments:  
-- CFQ  
-![dynamic-least-to-most-CFQ](images/cot/dynamic-least-to-most-CFQ.png)  
-![dynamic-least-to-most-result1](images/cot/dynamic-least-to-most-result1.png)  
-- COGS  
-![dynamic-least-to-most-result2](images/cot/dynamic-least-to-most-result2.png)   
-- Is dynamic least-to-most more effective than other prompting methods? &amp; How many exemplars are needed in the pool?  
-![dynamic-least-to-most-study1](images/cot/dynamic-least-to-most-study1.png)
-
-
-
-#### **STaR: Bootstrapping Reasoning With Reasoning**  
-
-#### **Making Large Language Models Better Reasoners with Step-Aware Verifier**  
-
-#### **Language Models are Multilingual Chain-of-Thought Reasoners**
-
-#### **Chain of Thought Prompting Elicits Knowledge Augmentation**  
-&gt; Tsinghua + Ruc  ACL Findings 2023  
-1. Motivation: 
-- Conventional knowledge-augmented deep learning methods typically employ task-specific approaches to gather external knowledge from various sources; 
-- In contrast, large language models are extensively pre-trained and can serve as a comprehensive source of external knowledge.  
-2. Methods: 
-- ***CoT-KA***, a Chain-of-Thought-based method that augments knowledge for deep learning. CoT-KA avoids the need for additional knowledge retrieval or knowledge reasoning models.  
-- (1) CoT Generation: Generating multiple CoTs for each sample in the train, dev, and test sets.  
-- (2) Input Augmentation: Taking the generated CoTs as the additional knowledge into the original input text for each sample.  
-- (3) Task-relevant Model Training: Fine-tuning a task-relevant model using the CoT-augmented samples.  
-
-![CoT-KA](images/cot/CoT-KA.png)  
-
-3. Experiments:  
-- NLU tasks  
-![CoT-KA-result1](images/cot/CoT-KA-result1.png)  
-
-- NLG tasks  
-![CoT-KA-result2](images/cot/CoT-KA-result2.png) 
-
-- explore the effectiveness of CoT-augmented fine-tuning by simply appending one CoT to the original input.  GPT-3 (text-davinci-002)  
-![CoT-KA-study1](images/cot/CoT-KA-study1.png) 
-
-- Given that the answers within CoTs can potentially be incorrect, we hypothesize that this portion of the CoTs will have a negative effect on the fine-tuning and mislead the model’s prediction.  
-![CoT-KA-study2](images/cot/CoT-KA-study2.png)  
-
-- Knowledge Augmentation Comparison  
-![CoT-KA-study3](images/cot/CoT-KA-study3.png)  
-
-- The Effect of CoT Size  
-![CoT-KA-study4](images/cot/CoT-KA-study4.png)
-
-
-- CoT Selection Strategy  
-![CoT-KA-eq](images/cot/CoT-KA-eq.png)
-![CoT-KA-study5](images/cot/CoT-KA-study5.png)
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Please label the sentiment towards the movie of the given movie review. The sentiment label should be &quot;positive&quot; or &quot;negative&quot;. </span><br><span class="line">Text: i&#x27;ll bet the video game is a lot more fun than the film. </span><br><span class="line">Sentiment:</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>Explaining the desired audience is another smart way to give instructions解释所需的受众  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Describe what is quantum physics to a 6-year-old.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>safe content  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">... in language that is safe for work.</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>few-shot learning with instruction prompting:</p>
+<blockquote>
+<p>In-Context Instruction Learning<br><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2302.14691">https://arxiv.org/abs/2302.14691</a>  </p>
+</blockquote>
+<h2 id="Self-Consistency-Sampling"><a href="#Self-Consistency-Sampling" class="headerlink" title="Self-Consistency Sampling"></a>Self-Consistency Sampling</h2><p>Self-consistency sampling is to sample multiple outputs with temperature &gt; 0 and then selecting the best one out of these candidates. The criteria for selecting the best candidate can vary from task to task. A general solution is to pick majority vote. For tasks that are easy to validate such as a programming question with unit tests, we can simply run through the interpreter and verify the correctness with unit tests.<br>对温度为大于0的多个输出进行采样，然后从这些候选输出中选择最佳输出。选择最佳候选人的标准可能因任务而异。一般的解决方案是选择多数票。  </p>
+<blockquote>
+<p>Self-Consistency Improves Chain of Thought Reasoning in Language Models<br><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2203.11171">https://arxiv.org/abs/2203.11171</a>  </p>
+</blockquote>
+<h2 id="Chain-of-Thought-CoT"><a href="#Chain-of-Thought-CoT" class="headerlink" title="Chain-of-Thought (CoT)"></a>Chain-of-Thought (CoT)</h2><p>Chain-of-thought (CoT) prompting generates a sequence of short sentences to describe reasoning logics step by step, known as reasoning chains or rationales, to eventually lead to the final answer. The benefit of CoT is more pronounced for complicated reasoning tasks, while using large models (e.g. with more than 50B parameters). Simple tasks only benefit slightly from CoT prompting.  </p>
+<blockquote>
+<p>Chain-of-Thought Prompting Elicits Reasoning in Large Language Models<br><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2201.11903">https://arxiv.org/abs/2201.11903</a>  </p>
+</blockquote>
+<h3 id="Types-of-CoT-prompts"><a href="#Types-of-CoT-prompts" class="headerlink" title="Types of CoT prompts"></a>Types of CoT prompts</h3><ol>
+<li><p>Few-shot CoT. It is to prompt the model with a few demonstrations, each containing manually written (or model-generated) high-quality reasoning chains.  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Question: Tom and Elizabeth have a competition to climb a hill. Elizabeth takes 30 minutes to climb the hill. Tom takes four times as long as Elizabeth does to climb the hill. How many hours does it take Tom to climb up the hill?</span><br><span class="line">Answer: It takes Tom 30*4 = &lt;&lt;30*4=120&gt;&gt;120 minutes to climb the hill.</span><br><span class="line">It takes Tom 120/60 = &lt;&lt;120/60=2&gt;&gt;2 hours to climb the hill.</span><br><span class="line">So the answer is 2.</span><br><span class="line">===</span><br><span class="line">Question: Jack is a soccer player. He needs to buy two pairs of socks and a pair of soccer shoes. Each pair of socks cost $9.50, and the shoes cost $92. Jack has $40. How much more money does Jack need?</span><br><span class="line">Answer: The total cost of two pairs of socks is $9.50 x 2 = $&lt;&lt;9.5*2=19&gt;&gt;19.</span><br><span class="line">The total cost of the socks and the shoes is $19 + $92 = $&lt;&lt;19+92=111&gt;&gt;111.</span><br><span class="line">Jack need $111 - $40 = $&lt;&lt;111-40=71&gt;&gt;71 more.</span><br><span class="line">So the answer is 71.</span><br><span class="line">===</span><br><span class="line">Question: Marty has 100 centimeters of ribbon that he must cut into 4 equal parts. Each of the cut parts must be divided into 5 equal parts. How long will each final cut be?</span><br><span class="line">Answer:</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Zero-shot CoT. Use natural language statement like “Let’s think step by step” to explicitly encourage the model to first generate reasoning chains and then to prompt with “Therefore, the answer is” to produce answers. Or a similar statement “Let’s work this out it a step by step to be sure we have the right answer”.  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Question: Marty has 100 centimeters of ribbon that he must cut into 4 equal parts. Each of the cut parts must be divided into 5 equal parts. How long will each final cut be?</span><br><span class="line">Answer: Let&#x27;s think step by step.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Large Language Models are Zero-Shot Reasoners<br><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2205.11916">https://arxiv.org/abs/2205.11916</a></p>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p>Large Language Models Are Human-Level Prompt Engineers<br><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2211.01910">https://arxiv.org/abs/2211.01910</a>  </p>
+</blockquote>
+<h3 id="Papers"><a href="#Papers" class="headerlink" title="Papers"></a>Papers</h3><h4 id="Chain-of-Thought-Prompting-Elicits-Reasoning-in-Large-Language-Models"><a href="#Chain-of-Thought-Prompting-Elicits-Reasoning-in-Large-Language-Models" class="headerlink" title="Chain-of-Thought Prompting Elicits Reasoning in Large Language Models"></a><strong>Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</strong></h4><blockquote>
+<p>Google Research,Brain Team       </p>
+</blockquote>
+<ol>
+<li>Motivation:</li>
+</ol>
+<ul>
+<li>scaling up model size alone has not proved sufficient for achieving high performance on challenging tasks such as arithmetic, commonsense, and symbolic reasoning; </li>
+<li>First, techniques for arithmetic reasoning can benefit from generating natural language rationales that lead to the final answer;  </li>
+<li>Second, large language models offer the exciting prospect of in-context few-shot learning via prompting.</li>
+</ul>
+<ol start="2">
+<li>Methods:</li>
+</ol>
+<ul>
+<li><em><strong>Chain-of-Thought Prompting</strong></em>  </li>
+<li>First, chain of thought, in principle, allows models to decompose multi-step problems into intermediate steps, which means that additional computation can be allocated to problems that require more reasoning steps;   </li>
+<li>Second, a chain of thought provides an interpretable window into the behavior of the model;    </li>
+<li>Third, chain-of-thought reasoning can be used for tasks such as math word problems, commonsense reasoning, and symbolic manipulation, and is potentially applicable (at least in principle) to any task that humans can solve via language;  </li>
+<li>Finally, chain-of-thought reasoning can be readily elicited in sufficiently large off-the-shelf language models simply by including examples of chain of thought sequences into the exemplars of few-shot prompting.</li>
+</ul>
+<p><img src="/images/cot/CoT.png" alt="self-consistency">  </p>
+<ol start="3">
+<li>Experiments:</li>
+</ol>
+<ul>
+<li><p>Arithmetic Reasoning<br>manually composed a set of eight few-shot exemplars with chains of thought for prompting<br><img src="/images/cot/CoT-result1.png" alt="CoT-result1"><br><img src="/images/cot/CoT-result2.png" alt="CoT-result2">  </p>
+<ol>
+<li>chain-of-thought prompting does not positively impact performance for small models, and only yields performance gains when used with models of ∼100B parameters.  </li>
+<li>chain-of-thought prompting has larger performance gains for more-complicated problems.</li>
+</ol>
+<p>  <img src="/images/cot/CoT-study1.png" alt="CoT-study1">  </p>
+<p>  Robustness of Chain of Thought  </p>
+<p>  <img src="/images/cot/CoT-study2.png" alt="CoT-study2"></p>
+</li>
+<li><p>Commonsense Reasoning<br><img src="/images/cot/CoT-result3.png" alt="CoT-result3"> </p>
+</li>
+<li><p>Symbolic Reasoning<br><img src="/images/cot/CoT-result4.png" alt="CoT-result4"></p>
+</li>
+</ul>
+<h4 id="Large-Language-Models-are-Zero-Shot-Reasoners"><a href="#Large-Language-Models-are-Zero-Shot-Reasoners" class="headerlink" title="Large Language Models are Zero-Shot Reasoners"></a><strong>Large Language Models are Zero-Shot Reasoners</strong></h4><blockquote>
+<p>Tokyo University + Google Research,Brain Team       NeurIPS 2022  </p>
+</blockquote>
+<ol>
+<li>Motivation:</li>
+</ol>
+<ul>
+<li>Few-shot-CoT requiring human engineering of multi-step reasoning prompts; </li>
+<li>their performance deteriorates if prompt example question types and task question type are unmatched, suggesting high sensitivity to per-task prompt designs;  </li>
+<li>these successes are often attributed to LLMs’ ability for few-shot learning.</li>
+</ul>
+<ol start="2">
+<li>Methods:</li>
+</ol>
+<ul>
+<li><em><strong>Zero-shot-CoT</strong></em> : Zero-shot Chain of Thought<br><img src="/images/cot/Zero-shot-CoT.png" alt="Zero-shot-CoT"></li>
+<li>Two-stage prompting:<br><img src="/images/cot/Zero-shot-CoT1.png" alt="Zero-shot-CoT1"></li>
+</ul>
+<ol start="3">
+<li>Experiments:</li>
+</ol>
+<ul>
+<li><p>Zero-shot-CoT vs. Zero-shot<br><img src="/images/cot/Zero-shot-CoT-result1.png" alt="Zero-shot-CoT-result1">  </p>
+</li>
+<li><p>Comparison with other baselines<br><img src="/images/cot/Zero-shot-CoT-result2.png" alt="Zero-shot-CoT-result2">  </p>
+</li>
+<li><p>Does model size matter for zero-shot reasoning?<br><img src="/images/cot/Zero-shot-CoT-study2.png" alt="Zero-shot-CoT-study2">  </p>
+</li>
+<li><p>How does prompt selection affect Zero-shot-CoT?<br><img src="/images/cot/Zero-shot-CoT-study1.png" alt="Zero-shot-CoT-study1">  </p>
+</li>
+<li><p>How does prompt selection affect Few-shot-CoT?<br><img src="/images/cot/Zero-shot-CoT-study3.png" alt="Zero-shot-CoT-study3"></p>
+</li>
+</ul>
+<h4 id="Automatic-Chain-of-Thought-Prompting-in-Large-Language-Models"><a href="#Automatic-Chain-of-Thought-Prompting-in-Large-Language-Models" class="headerlink" title="Automatic Chain of Thought Prompting in Large Language Models"></a><strong>Automatic Chain of Thought Prompting in Large Language Models</strong></h4><blockquote>
+<p>Amazon Web Services<br>code: <a target="_blank" rel="noopener" href="https://github.com/amazon-research/auto-cot">https://github.com/amazon-research/auto-cot</a></p>
+</blockquote>
+<ol>
+<li>Motivation:</li>
+</ol>
+<ul>
+<li>CoT prompting has two major paradigms. One leverages a simple prompt like “Let’s think step by step” to facilitate step-by-step thinking before answering a question. The other uses a few manual demonstrations one by one, each composed of a question and a reasoning chain that leads to an answer. </li>
+<li>The superior performance of the second paradigm hinges on the hand-crafting of task-specific<br>demonstrations one by one.  </li>
+<li>these generated chains by first paradigm often come with mistakes.</li>
+</ul>
+<ol start="2">
+<li>Methods:</li>
+</ol>
+<ul>
+<li><em><strong>Auto-CoT</strong></em> : samples questions with diversity and generates reasoning chains to construct demonstrations<br>  (1) Retrieval-Q-CoT and Random-Q-CoT<br>  <img src="/images/cot/Auto-CoT-result1.png" alt="Auto-CoT-result1"><br>  - Retrieval-Q-CoT Fails due to Misleading by Similarity<br>      <img src="/images/cot/Auto-CoT-result2.png" alt="Auto-CoT-result2"><br>  - Errors Frequently Fall into the Same Cluster<br>      <img src="/images/cot/Auto-CoT-result3.png" alt="Auto-CoT-result3"><br>  (2) Diversity May Mitigate Misleading by Similarity</li>
+</ul>
+<p><img src="/images/cot/Auto-CoT.png" alt="Auto-CoT"><br><img src="/images/cot/Auto-CoT1.png" alt="Auto-CoT1">  </p>
+<ol start="3">
+<li>Experiments:</li>
+</ol>
+<ul>
+<li><p>Competitive Performance of Auto-CoT on Ten Datasets<br><img src="/images/cot/Auto-CoT-result4.png" alt="Auto-CoT-result4">  </p>
+</li>
+<li><p>Effect of Wrong Demonstrations<br><img src="/images/cot/Auto-CoT-result5.png" alt="Auto-CoT-result5">  </p>
+</li>
+<li><p>General Effectiveness Using the Codex LLM<br><img src="/images/cot/Auto-CoT-result6.png" alt="Auto-CoT-result6"></p>
+</li>
+</ul>
+<h4 id="Self-consistency-Improves-Chain-of-Thought-Reasoning-in-Language-Models"><a href="#Self-consistency-Improves-Chain-of-Thought-Reasoning-in-Language-Models" class="headerlink" title="Self-consistency Improves Chain of Thought Reasoning in Language Models"></a><strong>Self-consistency Improves Chain of Thought Reasoning in Language Models</strong></h4><blockquote>
+<p>Google Research,Brain Team     ICLR 2023  </p>
+</blockquote>
+<ol>
+<li>Motivation:</li>
+</ol>
+<ul>
+<li>Although language models have demonstrated remarkable success across a range of NLP tasks, their ability to demonstrate reasoning is often seen as a limitation, which cannot be overcome solely by increasing model scale; </li>
+<li>The Greedy Decoding of traditional chain-of-thought prompting: the repetitiveness,local-optimality, and the stochasticity of a single sampled generation.</li>
+</ul>
+<ol start="2">
+<li>Methods:</li>
+</ol>
+<ul>
+<li><em><strong>self-consistency</strong></em>,a new decoding strategy.  </li>
+<li>It first samples a diverse set of reasoning paths instead of only taking the greedy one, and then selects the most consistent answer by marginalizing out the sampled reasoning paths.   </li>
+<li>Self-consistency leverages the intuition that a complex reasoning problem typically admits multiple different ways of thinking leading to its unique correct answer.</li>
+</ul>
+<p><img src="/images/cot/self.png" alt="self-consistency">  </p>
+<ol start="3">
+<li>Experiments:</li>
+</ol>
+<ul>
+<li><p>test accuracy over a set of reasoning tasks by using different answer aggregation strategies<br><img src="/images/cot/self-study1.png" alt="self-consistency-study1">  </p>
+</li>
+<li><p>Arithmetic Reasoning<br><img src="/images/cot/self-result1.png" alt="self-consistency-result1"> </p>
+</li>
+<li><p>Commonsense and Symbolic Reasoning<br><img src="/images/cot/self-result2.png" alt="self-consistency-result2"> </p>
+</li>
+<li><p>the num of sampled reasoning paths<br><img src="/images/cot/self-study2.png" alt="self-consistency-study2">  </p>
+</li>
+<li><p>Self-Consistency helps when Chain-Of-Thought hurts performance<br><img src="/images/cot/self-study3.png" alt="self-consistency-study3">  </p>
+</li>
+<li><p>Self-Consistency is Robust to Sampling Strategies and Scaling<br><img src="/images/cot/self-study4.png" alt="self-consistency-study4"></p>
+</li>
+<li><p>Self-Consistency Improves Robustness to Imperfect Prompts<br><img src="/images/cot/self-study5.png" alt="self-consistency-study5"></p>
+</li>
+</ul>
+<h4 id="Rationale-Augmented-Ensembles-in-Language-Models"><a href="#Rationale-Augmented-Ensembles-in-Language-Models" class="headerlink" title="Rationale-Augmented Ensembles in Language Models"></a><strong>Rationale-Augmented Ensembles in Language Models</strong></h4><blockquote>
+<p>Google Research,Brain Team       </p>
+</blockquote>
+<ol>
+<li>Motivation:</li>
+</ol>
+<ul>
+<li>existing approaches, which rely on manual prompt engineering, are subject to sub-optimal rationales that may harm performance.</li>
+</ul>
+<ol start="2">
+<li>Methods:</li>
+</ol>
+<ul>
+<li><em><strong>Rationale-Augmented Ensembles</strong></em> , where we identify rationale sampling in the output space as the key component to robustly improve performance.<br><img src="/images/cot/RA-ensembles.png" alt="RA-ensembles"><br>(1) Optimality of the rationales in few-shot learning<br> <img src="/images/cot/RA-ensembles-result1.png" alt="RA-ensembles-result1"><ul>
+<li>the addition of human-written rationales does not always yield better performances;  </li>
+<li>the quality of the rationales in the prompts has a significant effect on final performance;  </li>
+<li>simply including a rationale does not always improve task performance.</li>
+</ul>
+</li>
+</ul>
+<p>(2) Rationale-augmented ensembles(that can automatically aggregate across diverse rationales to overcome the brittleness of performance to sub-optimal human-written rationales)<br>    <img src="/images/cot/RA-ensembles1.png" alt="RA-ensembles1">  </p>
+<ol start="3">
+<li>Experiments:</li>
+</ol>
+<ul>
+<li><p>results for the PaLM-540B model<br><img src="/images/cot/RA-ensembles-result2.png" alt="RA-ensembles-result2"><br><img src="/images/cot/RA-ensembles-result3.png" alt="RA-ensembles-result3"><br><img src="/images/cot/RA-ensembles-result4.png" alt="RA-ensembles-result4"><br>(1) the “output-sampled” version yields better final performance than the “output-greedy” version for almost every task;<br>(2) The “output-sampled” version of each rationale-ensembling method almost always improves performance over standard prompting without rationales, as well as rationale-based few-shot and zero-shot prompting;<br>(3)  rationale-augmented ensembles provide a reliable approach to improving the final task performance of rationale-based few-shot in-context learning. Interpretability of model predictions is also enhanced by the presence of generated rationales in the model outputs.  </p>
+</li>
+<li><p>Results on GPT-3<br><img src="/images/cot/RA-ensembles-result5.png" alt="RA-ensembles-result5"> </p>
+</li>
+<li><p>Effect of K in K-shot in-context learning &amp; Effect of templates and verbalizers<br><img src="/images/cot/RA-ensembles-result6.png" alt="RA-ensembles-result6"></p>
+</li>
+</ul>
+<h4 id="Least-to-Most-Prompting-Enables-Complex-Reasoning-in-Large-Language-Models"><a href="#Least-to-Most-Prompting-Enables-Complex-Reasoning-in-Large-Language-Models" class="headerlink" title="Least-to-Most Prompting Enables Complex Reasoning in Large Language Models"></a><strong>Least-to-Most Prompting Enables Complex Reasoning in Large Language Models</strong></h4><blockquote>
+<p>Google Research,Brain Team          ICLR 2023</p>
+</blockquote>
+<ol>
+<li>Motivation:</li>
+</ol>
+<ul>
+<li>Chain-of-thought prompting tends to perform poorly on tasks which requires solving problems harder than the exemplars shown in the prompts.</li>
+</ul>
+<ol start="2">
+<li>Methods:</li>
+</ol>
+<ul>
+<li><em><strong>least-to-most prompting</strong></em>, to break down a complex problem into a series of simpler subproblems and then solve them in sequence.<br>(1) query the language model to decompose the problem into subproblems;<br>(2) query the language model to sequentially solve the subproblems. The answer to the second subproblem is built on the answer to the first subproblem.<br><img src="/images/cot/least-to-most.png" alt="least-to-most"></li>
+</ul>
+<ol start="3">
+<li>Experiments:</li>
+</ol>
+<ul>
+<li>SYMBOLIC MANIPULATION<br><img src="/images/cot/least-to-most-result1.png" alt="least-to-most-result1">  </li>
+<li>COMPOSITIONAL GENERALIZATION<br><img src="/images/cot/least-to-most-SCAN.png" alt="least-to-most-SCAN"><br><img src="/images/cot/least-to-most-result2.png" alt="least-to-most-result2">  </li>
+<li>MATH REASONING<br><img src="/images/cot/least-to-most-result3.png" alt="least-to-most-result3"><br><img src="/images/cot/least-to-most-result4.png" alt="least-to-most-result4"></li>
+</ul>
+<h4 id="Compositional-Semantic-Parsing-with-Large-Language-Models"><a href="#Compositional-Semantic-Parsing-with-Large-Language-Models" class="headerlink" title="Compositional Semantic Parsing with Large Language Models"></a><strong>Compositional Semantic Parsing with Large Language Models</strong></h4><blockquote>
+<p>Google Research + UMass Amherst CICS          </p>
+</blockquote>
+<ol>
+<li>Motivation:</li>
+</ol>
+<ul>
+<li>SCAN is an artificial task built upon a synthetic language with a tiny vocabulary and is generated from a small set of grammar rules, and it is unclear whether <em>least-to-most prompting</em>‘s strong results transfer to more realistic tasks that are based on a larger vocabulary and more complicated grammars.  </li>
+<li>decomposing a problem is more difficult.  </li>
+<li>translation of constituents is context-dependent.</li>
+</ul>
+<ol start="2">
+<li>Methods:</li>
+</ol>
+<ul>
+<li><p><em><strong>dynamic least-to-most prompting</strong></em><br>  (1) tree-structured decomposition of natural language inputs through LM-predicted syntactic parsing;  通过lm预测的语法解析对自然语言输入进行树结构分解;<br>  <img src="/images/cot/dynamic-least-to-most1.png" alt="dynamic-least-to-most1">  </p>
+<p>  (2) use the decomposition to dynamically select exemplars;  使用分解动态选择范例;<br>  - Top-down matching: anonymize the decomposition tree of the input; Starting at the top of the anonymized tree, we use a heuristic approach to find exemplars such that all nodes are covered, prioritizing exemplars that match large subtrees.<br>  - Bottom-up matching: Then, we try to make sure that all leaf phrases are covered by an exemplar. If there is more than one exemplar for a certain phrase, we prefer exemplars where the phrase occurs within a similar anonymized subtree.<br>  (3) linearize the decomposition tree and prompt the model to sequentially generate answers to subproblems.   将分解树线性化，并提示模型按顺序生成子问题的答案。</p>
+</li>
+</ul>
+<p><img src="/images/cot/dynamic-least-to-most.png" alt="dynamic-least-to-most">  </p>
+<ol start="3">
+<li>Experiments:</li>
+</ol>
+<ul>
+<li>CFQ<br><img src="/images/cot/dynamic-least-to-most-CFQ.png" alt="dynamic-least-to-most-CFQ"><br><img src="/images/cot/dynamic-least-to-most-result1.png" alt="dynamic-least-to-most-result1">  </li>
+<li>COGS<br><img src="/images/cot/dynamic-least-to-most-result2.png" alt="dynamic-least-to-most-result2">   </li>
+<li>Is dynamic least-to-most more effective than other prompting methods? &amp; How many exemplars are needed in the pool?<br><img src="/images/cot/dynamic-least-to-most-study1.png" alt="dynamic-least-to-most-study1"></li>
+</ul>
+<h4 id="Measuring-and-Narrowing-the-Compositionality-Gap-in-Language-Models"><a href="#Measuring-and-Narrowing-the-Compositionality-Gap-in-Language-Models" class="headerlink" title="Measuring and Narrowing the Compositionality Gap in Language Models"></a><strong>Measuring and Narrowing the Compositionality Gap in Language Models</strong></h4><blockquote>
+<p>Paul G. Allen School of Computer Science &amp; Engineering, University of Washington<br>code : <a target="_blank" rel="noopener" href="https://github.com/ofirpress/self-ask">https://github.com/ofirpress/self-ask</a></p>
+</blockquote>
+<ol>
+<li>Motivation:</li>
+</ol>
+<ul>
+<li>SCAN is an artificial task built upon a synthetic language with a tiny vocabulary and is generated from a small set of grammar rules, and it is unclear whether <em>least-to-most prompting</em>‘s strong results transfer to more realistic tasks that are based on a larger vocabulary and more complicated grammars.  </li>
+<li>decomposing a problem is more difficult.  </li>
+<li>translation of constituents is context-dependent.</li>
+</ul>
+<ol start="2">
+<li>Methods:</li>
+</ol>
+<ul>
+<li><p><em><strong>dynamic least-to-most prompting</strong></em><br>  (1) tree-structured decomposition of natural language inputs through LM-predicted syntactic parsing;  通过lm预测的语法解析对自然语言输入进行树结构分解;<br>  <img src="/images/cot/dynamic-least-to-most1.png" alt="dynamic-least-to-most1">  </p>
+<p>  (2) use the decomposition to dynamically select exemplars;  使用分解动态选择范例;<br>  - Top-down matching: anonymize the decomposition tree of the input; Starting at the top of the anonymized tree, we use a heuristic approach to find exemplars such that all nodes are covered, prioritizing exemplars that match large subtrees.<br>  - Bottom-up matching: Then, we try to make sure that all leaf phrases are covered by an exemplar. If there is more than one exemplar for a certain phrase, we prefer exemplars where the phrase occurs within a similar anonymized subtree.<br>  (3) linearize the decomposition tree and prompt the model to sequentially generate answers to subproblems.   将分解树线性化，并提示模型按顺序生成子问题的答案。</p>
+</li>
+</ul>
+<p><img src="/images/cot/dynamic-least-to-most.png" alt="dynamic-least-to-most">  </p>
+<ol start="3">
+<li>Experiments:</li>
+</ol>
+<ul>
+<li>CFQ<br><img src="/images/cot/dynamic-least-to-most-CFQ.png" alt="dynamic-least-to-most-CFQ"><br><img src="/images/cot/dynamic-least-to-most-result1.png" alt="dynamic-least-to-most-result1">  </li>
+<li>COGS<br><img src="/images/cot/dynamic-least-to-most-result2.png" alt="dynamic-least-to-most-result2">   </li>
+<li>Is dynamic least-to-most more effective than other prompting methods? &amp; How many exemplars are needed in the pool?<br><img src="/images/cot/dynamic-least-to-most-study1.png" alt="dynamic-least-to-most-study1"></li>
+</ul>
+<h4 id="STaR-Bootstrapping-Reasoning-With-Reasoning"><a href="#STaR-Bootstrapping-Reasoning-With-Reasoning" class="headerlink" title="STaR: Bootstrapping Reasoning With Reasoning"></a><strong>STaR: Bootstrapping Reasoning With Reasoning</strong></h4><h4 id="Making-Large-Language-Models-Better-Reasoners-with-Step-Aware-Verifier"><a href="#Making-Large-Language-Models-Better-Reasoners-with-Step-Aware-Verifier" class="headerlink" title="Making Large Language Models Better Reasoners with Step-Aware Verifier"></a><strong>Making Large Language Models Better Reasoners with Step-Aware Verifier</strong></h4><h4 id="Language-Models-are-Multilingual-Chain-of-Thought-Reasoners"><a href="#Language-Models-are-Multilingual-Chain-of-Thought-Reasoners" class="headerlink" title="Language Models are Multilingual Chain-of-Thought Reasoners"></a><strong>Language Models are Multilingual Chain-of-Thought Reasoners</strong></h4><h4 id="Chain-of-Thought-Prompting-Elicits-Knowledge-Augmentation"><a href="#Chain-of-Thought-Prompting-Elicits-Knowledge-Augmentation" class="headerlink" title="Chain of Thought Prompting Elicits Knowledge Augmentation"></a><strong>Chain of Thought Prompting Elicits Knowledge Augmentation</strong></h4><blockquote>
+<p>Tsinghua + Ruc  ACL Findings 2023  </p>
+</blockquote>
+<ol>
+<li>Motivation:</li>
+</ol>
+<ul>
+<li>Conventional knowledge-augmented deep learning methods typically employ task-specific approaches to gather external knowledge from various sources; </li>
+<li>In contrast, large language models are extensively pre-trained and can serve as a comprehensive source of external knowledge.</li>
+</ul>
+<ol start="2">
+<li>Methods:</li>
+</ol>
+<ul>
+<li><em><strong>CoT-KA</strong></em>, a Chain-of-Thought-based method that augments knowledge for deep learning. CoT-KA avoids the need for additional knowledge retrieval or knowledge reasoning models.  </li>
+<li>(1) CoT Generation: Generating multiple CoTs for each sample in the train, dev, and test sets.  </li>
+<li>(2) Input Augmentation: Taking the generated CoTs as the additional knowledge into the original input text for each sample.  </li>
+<li>(3) Task-relevant Model Training: Fine-tuning a task-relevant model using the CoT-augmented samples.</li>
+</ul>
+<p><img src="/images/cot/CoT-KA.png" alt="CoT-KA">  </p>
+<ol start="3">
+<li>Experiments:</li>
+</ol>
+<ul>
+<li><p>NLU tasks<br><img src="/images/cot/CoT-KA-result1.png" alt="CoT-KA-result1">  </p>
+</li>
+<li><p>NLG tasks<br><img src="/images/cot/CoT-KA-result2.png" alt="CoT-KA-result2"> </p>
+</li>
+<li><p>explore the effectiveness of CoT-augmented fine-tuning by simply appending one CoT to the original input.  GPT-3 (text-davinci-002)<br><img src="/images/cot/CoT-KA-study1.png" alt="CoT-KA-study1"> </p>
+</li>
+<li><p>Given that the answers within CoTs can potentially be incorrect, we hypothesize that this portion of the CoTs will have a negative effect on the fine-tuning and mislead the model’s prediction.<br><img src="/images/cot/CoT-KA-study2.png" alt="CoT-KA-study2">  </p>
+</li>
+<li><p>Knowledge Augmentation Comparison<br><img src="/images/cot/CoT-KA-study3.png" alt="CoT-KA-study3">  </p>
+</li>
+<li><p>The Effect of CoT Size<br><img src="/images/cot/CoT-KA-study4.png" alt="CoT-KA-study4"></p>
+</li>
+<li><p>CoT Selection Strategy<br><img src="/images/cot/CoT-KA-eq.png" alt="CoT-KA-eq"><br><img src="/images/cot/CoT-KA-study5.png" alt="CoT-KA-study5"></p>
+</li>
+</ul>
 
         
             <div id="toc-article">
@@ -466,7 +479,7 @@ demonstrations one by one.
   <div class="widget-wrap" id="toc-wrap">
     <h3 class="widget-title"><i class="fa fa-toc"></i> Contents</h3>
     <div class="widget">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Prompt-Engineering"><span class="toc-text">Prompt Engineering</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Basic-Prompting"><span class="toc-text">Basic Prompting</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Zero-Shot"><span class="toc-text">Zero-Shot</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Tips-for-Example-Selection"><span class="toc-text">Tips for Example Selection</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Tips-for-Example-Ordering"><span class="toc-text">Tips for Example Ordering</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Instruction-Prompting"><span class="toc-text">Instruction Prompting</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Prompt-Engineering"><span class="toc-text">Prompt Engineering</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Basic-Prompting"><span class="toc-text">Basic Prompting</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Zero-Shot"><span class="toc-text">Zero-Shot</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Few-shot"><span class="toc-text">Few-shot</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Tips-for-Example-Selection"><span class="toc-text">Tips for Example Selection</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Tips-for-Example-Ordering"><span class="toc-text">Tips for Example Ordering</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Instruction-Prompting"><span class="toc-text">Instruction Prompting</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Self-Consistency-Sampling"><span class="toc-text">Self-Consistency Sampling</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chain-of-Thought-CoT"><span class="toc-text">Chain-of-Thought (CoT)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Types-of-CoT-prompts"><span class="toc-text">Types of CoT prompts</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Papers"><span class="toc-text">Papers</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Chain-of-Thought-Prompting-Elicits-Reasoning-in-Large-Language-Models"><span class="toc-text">Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Large-Language-Models-are-Zero-Shot-Reasoners"><span class="toc-text">Large Language Models are Zero-Shot Reasoners</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Automatic-Chain-of-Thought-Prompting-in-Large-Language-Models"><span class="toc-text">Automatic Chain of Thought Prompting in Large Language Models</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Self-consistency-Improves-Chain-of-Thought-Reasoning-in-Language-Models"><span class="toc-text">Self-consistency Improves Chain of Thought Reasoning in Language Models</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Rationale-Augmented-Ensembles-in-Language-Models"><span class="toc-text">Rationale-Augmented Ensembles in Language Models</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Least-to-Most-Prompting-Enables-Complex-Reasoning-in-Large-Language-Models"><span class="toc-text">Least-to-Most Prompting Enables Complex Reasoning in Large Language Models</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Compositional-Semantic-Parsing-with-Large-Language-Models"><span class="toc-text">Compositional Semantic Parsing with Large Language Models</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Measuring-and-Narrowing-the-Compositionality-Gap-in-Language-Models"><span class="toc-text">Measuring and Narrowing the Compositionality Gap in Language Models</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#STaR-Bootstrapping-Reasoning-With-Reasoning"><span class="toc-text">STaR: Bootstrapping Reasoning With Reasoning</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Making-Large-Language-Models-Better-Reasoners-with-Step-Aware-Verifier"><span class="toc-text">Making Large Language Models Better Reasoners with Step-Aware Verifier</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Language-Models-are-Multilingual-Chain-of-Thought-Reasoners"><span class="toc-text">Language Models are Multilingual Chain-of-Thought Reasoners</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Chain-of-Thought-Prompting-Elicits-Knowledge-Augmentation"><span class="toc-text">Chain of Thought Prompting Elicits Knowledge Augmentation</span></a></li></ol></li></ol></li></ol></li></ol>
     </div>
   </div>
 
@@ -549,6 +562,14 @@ demonstrations one by one.
       <ul>
         
           <li>
+            <a href="/2024/07/04/redis7/">redis7</a>
+          </li>
+        
+          <li>
+            <a href="/2024/06/17/offer-ES/">offer-ES</a>
+          </li>
+        
+          <li>
             <a href="/2024/04/18/Java-gulimall/">Java-gulimall</a>
           </li>
         
@@ -558,14 +579,6 @@ demonstrations one by one.
         
           <li>
             <a href="/2023/08/29/offer-SSM/">offer-SSM</a>
-          </li>
-        
-          <li>
-            <a href="/2023/07/18/Prompt-Engineering/">Prompt Engineering</a>
-          </li>
-        
-          <li>
-            <a href="/2023/07/10/offer-redis6/">offer-redis6</a>
           </li>
         
       </ul>
@@ -590,7 +603,7 @@ demonstrations one by one.
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> Archive</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">18</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">17</span></li></ul>
     </div>
   </div>
 
