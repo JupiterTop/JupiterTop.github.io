@@ -511,7 +511,7 @@
 </ol>
 <pre><code>&lt;!-- collaborators and configuration for this bean go here --&gt;
 </code></pre>
-  
+  </bean>
 
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 此处要添加一些约束，配置文件的标签并不是随意命名 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="string"><span class="tag">    https://www.springframework.org/schema/beans/spring-beans.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;...&quot;</span> [<span class="attr">1</span>] <span class="attr">class</span>=<span class="string">&quot;...&quot;</span> [<span class="attr">2</span>]&gt;</span>  </span><br><span class="line">    <span class="comment">&lt;!-- collaborators and configuration for this bean go here --&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;...&quot;</span> <span class="attr">class</span>=<span class="string">&quot;...&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- collaborators and configuration for this bean go here --&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- more bean definitions go here --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
@@ -1721,7 +1721,7 @@ d.  如果没有接口,类进行接值
 <li>实体类类型：Employee、Department、……</li>
 <li>集合类型：List、Set、Map、……</li>
 <li>数组类型：int[]、String[]、……</li>
-<li>复合类型：List<Employee>、实体类中包含集合……</Employee></li>
+<li>复合类型：List<Employee>、实体类中包含集合……</li>
 </ul>
 </li>
 </ul>
@@ -3725,7 +3725,7 @@ MyBatis 创建一个预处理语句（PreparedStatement）参数，在 JDBC 中�
 </tr>
 </thead>
 <tbody><tr>
-<td>Wrapper<T></T></td>
+<td>Wrapper<T></td>
 <td>wrapper</td>
 <td>实体对象封装操作类（可以为 null）</td>
 </tr>
@@ -3761,7 +3761,7 @@ MyBatis 创建一个预处理语句（PreparedStatement）参数，在 JDBC 中�
 <td>实体对象 (set 条件值,可为 null)</td>
 </tr>
 <tr>
-<td>Wrapper<T></T></td>
+<td>Wrapper<T></td>
 <td>updateWrapper</td>
 <td>实体对象封装操作类（可以为 null,里面的 entity 用于生成 where 语句）</td>
 </tr>
@@ -3784,7 +3784,7 @@ MyBatis 创建一个预处理语句（PreparedStatement）参数，在 JDBC 中�
 <td>主键 ID</td>
 </tr>
 <tr>
-<td>Wrapper<T></T></td>
+<td>Wrapper<T></td>
 <td>queryWrapper</td>
 <td>实体对象封装操作类（可以为 null）</td>
 </tr>
@@ -3799,7 +3799,7 @@ MyBatis 创建一个预处理语句（PreparedStatement）参数，在 JDBC 中�
 <td>表字段 map 对象</td>
 </tr>
 <tr>
-<td>IPage<T></T></td>
+<td>IPage<T></td>
 <td>page</td>
 <td>分页查询条件（可以为 RowBounds.DEFAULT）</td>
 </tr>
