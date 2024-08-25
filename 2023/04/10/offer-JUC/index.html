@@ -747,7 +747,38 @@
 <li>StampedLock 的悲观读锁和写锁都不支持条件变量(Condition),这个也需要注意；</li>
 <li>使用 StampedLock一定不要调用中断操作,即不要调用interrupt()方法。</li>
 </ul>
-<h3 id="23-Java对象内存布局和对象头"><a href="#23-Java对象内存布局和对象头" class="headerlink" title="23. Java对象内存布局和对象头"></a>23. Java对象内存布局和对象头</h3><h3 id="24-Synchronized与锁升级"><a href="#24-Synchronized与锁升级" class="headerlink" title="24. Synchronized与锁升级"></a>24. Synchronized与锁升级</h3>
+<h3 id="23-Java对象内存布局和对象头"><a href="#23-Java对象内存布局和对象头" class="headerlink" title="23. Java对象内存布局和对象头"></a>23. Java对象内存布局和对象头</h3><p><strong>Object object &#x3D; new Object()谈谈你对这句话的理解？</strong>  </p>
+<ul>
+<li>位置所在——–&gt;JVM堆-&gt;新生区-&gt;伊甸园区  </li>
+<li>构成布局——–&gt;对象头+实例数据+对齐填充  </li>
+<li>对象头（在64位系统中，Mark Word占了8个字节，类型指针占了8个字节，一共是16个字节）  </li>
+<li>对象标记（Mark Word）默认存储对象的HashCode、分代年龄和锁标志等信息。  </li>
+<li>类元信息（类型指针）：对象指向它的类元数据的指针，虚拟机通过这个指针来确定这个对象哪个类的实例。  </li>
+<li>实例数据：存放类的属性（Field）数据信息，包括父类的属性信息。  </li>
+<li>对齐填充：虚拟机要求对象起始地址必须是8字节的整数倍，填充数据不是必须存在的，仅仅是为了字节对齐，这部分内存按8字节补充对齐。  </li>
+<li>ClassLayout.parseInstance(new Object()).toPrintable()</li>
+</ul>
+<p><strong>有关压缩指针</strong>  </p>
+<ul>
+<li>Java -XX:+PrintCommandLineFlags -version 查看当前虚拟机信息  </li>
+<li>默认开启压缩指针，开启后将上述类型指针压缩为4字节，以节约空间  </li>
+<li>手动关闭压缩指针： -XX: -UseCompressedClassPointers</li>
+</ul>
+<h3 id="24-Synchronized与锁升级"><a href="#24-Synchronized与锁升级" class="headerlink" title="24. Synchronized与锁升级"></a>24. Synchronized与锁升级</h3><ul>
+<li><strong>Java5</strong>之前，只有Synchronized，这个是操作系统级别的重量级操作，用户态和内核态之间的频繁转换，假如锁的竞争比较激烈的话，性能下降；  </li>
+<li><strong>Java6</strong>之后为了减少获得锁和释放锁所带来的性能消耗，引入了轻量级锁和偏向锁。</li>
+</ul>
+<p><img src="/../images/JUC/syncUpdate.png">  </p>
+<p>锁升级功能主要依赖MarkWord中锁标志位和释放偏向锁标志位。<br>    - 偏向锁：MarkWord存储的是偏向的线程ID；<br>    - 轻量锁：MarkWord存储的是指向线程栈中Lock Record的指针；<br>    - 重量锁：MarkWord存储的是指向堆中的monitor对象（系统互斥量指针）。  </p>
+<p><strong>偏向锁</strong><br>单线程竞争，当一段同步代码一直被同一个线程多次访问，由于只有一个线程那么该线程在后续访问时便会自动获得锁。当有另外一个线程逐步来竞争锁的时候，就不能再使用偏向锁了，要升级为轻量级锁，使用的是等到竞争出现才释放锁的机制。竞争线程尝试CAS更新对象头失败，会等到全局安全点（此时不会执行任何代码）撤销偏向锁，同时检查持有偏向锁的线程是否还在执行：<br>    1. 第一个线程正在执行Synchronized方法（处于同步块），它还没有执行完，其他线程来抢夺，该偏向锁会被取消掉并出现锁升级，此时轻量级锁由原来持有偏向锁的线程持有，继续执行同步代码块，而正在竞争的线程会自动进入自旋等待获得该轻量级锁<br>    2. 第一个线程执行完Synchronized（退出同步块），则将对象头设置为无所状态并撤销偏向锁，重新偏向。<br>Java15以后逐步废弃偏向锁，需要手动开启——-&gt;维护成本高。  </p>
+<p><strong>轻量级锁</strong><br>多线程竞争，但是任意时候最多只有一个线程竞争；<br>有线程来参与锁的竞争，但是获取锁的冲突时间极短———-&gt;本质是自旋锁CAS；<br>自旋一定程度和次数（Java6是默认10次；Java8 之后是自适应自旋锁——意味着自旋的次数不是固定不变的）；<br>轻量锁和偏向锁的区别：<br>    - 争夺轻量锁失败时，自旋尝试抢占锁；<br>    - 轻量级锁每次退出同步块都需要释放锁，而偏向锁是在竞争发生时才释放锁。  </p>
+<p><strong>重量级锁</strong><br>有大量线程参与锁的竞争，冲突性很高；<br>Java中synchronized的重量级锁，是基于进入和退出Monitor对象实现的。在编译时会将同步块的开始位置插入monitor enter指令，在结東位置插入monitor exit指令。<br>当线程执行到monitor enter指令时，会尝试获取对象所对应的Monitor所有权，如果获取到了，即获取到了锁，会在Monitor的owner中存放当前线程的id，这样它将处于锁定状态，除非退出同步块，否则其他线程无法获取到这个Monitor。  </p>
+<p><strong>锁升级后，hashcode去哪儿了？</strong><br>当一个对象已经计算过一致性哈希码后，它就再也无法进入偏向锁状态了；而当一个对象当前正处于偏向锁状态，有收到需要计算其一致性哈希码请求时，它的偏向状态会被立即撤销，并且锁会膨胀为重量级锁。在重量级锁的实现重，对象头指向了重量级锁的位置，代表重量级锁的ObjectMonitor类里有字段可以记录非加锁状态（标志位为01）下的Mark Word，其中存储了原来的哈希码。升级为轻量级锁时，JVM会在当前线程的栈帧中创建一个锁记录（Lock Record）空间，用于存储锁对象的Mark Word拷贝，该拷贝中可以包含identity hash code，释放锁后会将这些信息写回对象头。  </p>
+<p><strong>锁消除</strong><br>从JIT（Just In Time Compiler 即时编译器）角度看想相当于无视他，synchronized(o)不存在了；这个锁对象并没有被共用扩散到其他线程使用；极端的说就是根本没有加锁对象的底层机器码，消除了锁的使用。  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">m1</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">//锁消除问题，JIT会无视它，synchronized(o)每次new出来的，都不存在了，非正常的</span></span><br><span class="line">    <span class="type">Object</span> <span class="variable">o</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">    <span class="keyword">synchronized</span> (o) &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;-----------hello LockClearUpDemo&quot;</span> + <span class="string">&quot;\t&quot;</span> + o.hashCode() + <span class="string">&quot;\t&quot;</span> + object.hashCode());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>锁粗化</strong><br>假如方法中首尾相接，前后相邻的都是同一个锁对象，那JIT编译器会把这几个synchronized块合并为一个大块；加粗加大范围，一次申请锁使用即可，避免次次的申请和释放锁，提高了性能。  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (objectLock) &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;111111111111&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">synchronized</span> (objectLock) &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;222222222222&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">synchronized</span> (objectLock) &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;333333333333&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">synchronized</span> (objectLock) &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;444444444444&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//底层JIT的锁粗化优化</span></span><br><span class="line">            <span class="keyword">synchronized</span> (objectLock) &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;111111111111&quot;</span>);</span><br><span class="line">                System.out.println(<span class="string">&quot;222222222222&quot;</span>);</span><br><span class="line">                System.out.println(<span class="string">&quot;333333333333&quot;</span>);</span><br><span class="line">                System.out.println(<span class="string">&quot;444444444444&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, <span class="string">&quot;t1&quot;</span>).start();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
         
             <div id="toc-article">
                 
