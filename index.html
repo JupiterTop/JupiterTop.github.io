@@ -83,6 +83,429 @@
 
       <div class="outer">
         <section id="main">
+  <article id="post-offer-微服务" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2024/09/04/offer-%E5%BE%AE%E6%9C%8D%E5%8A%A1/">offer-微服务</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2024-09-04T13:04:23.000Z" itemprop="datePublished">2024年09月04日</time>
+</span>
+      
+      
+      
+<a href="/2024/09/04/offer-%E5%BE%AE%E6%9C%8D%E5%8A%A1/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Guestbook
+</a>
+
+
+      
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="从单体架构到微服务"><a href="#从单体架构到微服务" class="headerlink" title="从单体架构到微服务"></a>从单体架构到微服务</h1><h2 id="单体架构"><a href="#单体架构" class="headerlink" title="单体架构"></a>单体架构</h2><p>单体架构（monolithic structure）：顾名思义，整个项目中所有功能模块都在一个工程中开发；项目部署时需要对所有模块一起编译、打包；项目的架构设计、开发模式都非常简单。<br>问题：<br>    1. 团队协作成本高；<br>    2. 系统发布效率低：任何模块变更都需要发布整个系统；<br>    3. 系统可用性差：单体架构各个功能模块是作为一个服务部署，相互之间会互相影响，一些热点功能会耗尽系统资源，导致其它服务低可用。  </p>
+<h2 id="微服务架构"><a href="#微服务架构" class="headerlink" title="微服务架构"></a>微服务架构</h2><p>首先是服务化，就是将单体架构中的功能模块从单体应用中拆分出来，独立部署为多个服务。同时要满足下面的一些特点：</p>
+<ul>
+<li>单一职责：一个微服务负责一部分业务功能，并且其核心数据不依赖于其它模块。  </li>
+<li>团队自治：每个微服务都有自己独立的开发、测试、发布、运维人员，团队人员规模不超过10人。  </li>
+<li>服务自治：每个微服务都独立打包部署，访问自己独立的数据库。并且要做好服务隔离，避免对其它服务产生影响。<br>微服务架构解决了单体架构存在的问题，特别适合大型互联网项目的开发。<br>拆分原则：  </li>
+<li>高内聚：每个微服务的职责要尽量单一，包含的业务相互关联度高、完整度高。  </li>
+<li>低耦合：每个微服务的功能要相对独立，尽量减少对其它微服务的依赖，或者依赖接口的稳定性要强。</li>
+</ul>
+<p>拆分方式：  </p>
+<ul>
+<li>纵向拆分：按照项目的功能模块来拆分  </li>
+<li>横向拆分：看各个功能模块之间有没有公共的业务部分，如果有将其抽取出来作为通用服务。提高业务的复用性，避免重复开发。同时通用业务一般接口稳定性较强，也不会使服务之间过分耦合。</li>
+</ul>
+<h1 id="SpringCloud"><a href="#SpringCloud" class="headerlink" title="SpringCloud"></a>SpringCloud</h1><p>SpringCloud框架可以说是目前Java领域最全面的微服务组件的集合了。而且SpringCloud依托于SpringBoot的自动装配能力，大大降低了其项目搭建、组件使用的成本。Alibaba的微服务产品SpringCloudAlibaba目前也成为了SpringCloud组件中的一员。<br><img src="/../images/SpringCloud/1.png">  </p>
+<h2 id="服务调用"><a href="#服务调用" class="headerlink" title="服务调用"></a>服务调用</h2><p>在拆分的时候，我们发现一个问题：就是购物车业务中需要查询商品信息，但商品信息查询的逻辑全部迁移到了item-service服务，导致我们无法查询。<br>解决方案：把原本本地方法调用，改造成跨微服务的远程调用（RPC，即Remote Produce Call）。  </p>
+<ol>
+<li>用Java代码发送Http的请求<br>Spring给我们提供了一个RestTemplate的API，可以方便的实现Http请求的发送。<br><img src="/../images/SpringCloud/2.png"></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 将RestTemplate注册为一个Bean</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RemoteCallConfig</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> RestTemplate <span class="title function_">restTemplate</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">RestTemplate</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/SpringCloud/3.png">  </p>
+<p>可能出现的问题：<br>假如商品微服务被调用较多，为了应对更高的并发，我们进行了多实例部署；此时，每个item-service的实例其IP或端口不同，  </p>
+<ul>
+<li>item-service这么多实例，cart-service如何知道每一个实例的地址？</li>
+<li>http请求要写url地址，cart-service服务到底该调用哪个实例呢？</li>
+<li>如果在运行过程中，某一个item-service实例宕机，cart-service依然在调用该怎么办？</li>
+<li>如果并发太高，item-service临时多部署了N台实例，cart-service如何知道新实例的地址？</li>
+</ul>
+<h2 id="服务注册与发现"><a href="#服务注册与发现" class="headerlink" title="服务注册与发现"></a>服务注册与发现</h2><p><img src="/../images/SpringCloud/4.png"><br>流程如下：</p>
+<ul>
+<li>服务启动时就会注册自己的服务信息（服务名、IP、端口）到注册中心</li>
+<li>调用者可以从注册中心订阅想要的服务，获取服务对应的实例列表（1个服务可能多实例部署）</li>
+<li>调用者自己对实例列表负载均衡，挑选一个实例</li>
+<li>调用者向该实例发起远程调用</li>
+</ul>
+<p>当服务提供者的实例宕机或者启动新实例时，调用者如何得知呢？  </p>
+<ul>
+<li>服务提供者会定期向注册中心发送请求，报告自己的健康状态（心跳请求）</li>
+<li>当注册中心长时间收不到提供者的心跳时，会认为该实例宕机，将其从服务的实例列表中剔除</li>
+<li>当服务有新实例启动时，会发送注册服务请求，其信息会被记录在注册中心的服务实例列表</li>
+<li>当注册中心服务列表变更时，会主动通知微服务，更新本地服务列表</li>
+</ul>
+<h3 id="Nacos注册中心"><a href="#Nacos注册中心" class="headerlink" title="Nacos注册中心"></a>Nacos注册中心</h3><p>一些开源的注册中心框架：  </p>
+<ul>
+<li>Eureka：Netflix公司出品，目前被集成在SpringCloud当中，一般用于Java应用</li>
+<li>Nacos：Alibaba公司出品，目前被集成在SpringCloudAlibaba中，一般用于Java应用</li>
+<li>Consul：HashiCorp公司出品，目前集成在SpringCloud中，不限制微服务语言</li>
+</ul>
+<p>nacos默认端口说明：  </p>
+<ul>
+<li>8848 是用于客户端与服务通信的主要端口。</li>
+<li>9848 是 gRPC 端口，用于与 Nacos 的 gRPC 通信（如果需要）。</li>
+<li>9849 是 Raft 端口，用于 Nacos 集群中节点之间的通信（如果运行集群模式）。</li>
+</ul>
+<h4 id="服务注册"><a href="#服务注册" class="headerlink" title="服务注册"></a>服务注册</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">&lt;!--nacos 服务注册发现--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">item-service</span> <span class="comment"># 服务名称</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">server-addr:</span> <span class="number">192.168</span><span class="number">.150</span><span class="number">.101</span><span class="string">:8848</span> <span class="comment"># nacos地址</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="服务发现"><a href="#服务发现" class="headerlink" title="服务发现"></a>服务发现</h4><p>服务调用者必须利用负载均衡的算法，从多个实例中挑选一个去访问。服务发现需要用到一个工具，DiscoveryClient，SpringCloud已经帮我们自动装配，我们可以直接注入使用。  </p>
+<p>原：<br><img src="/../images/SpringCloud/3.png">   </p>
+<p>现：<br><img src="/../images/SpringCloud/5.png">   </p>
+<p>问题：远程调用的代码太复杂</p>
+<h2 id="OpenFeign"><a href="#OpenFeign" class="headerlink" title="OpenFeign"></a>OpenFeign</h2><p>利用RestTemplate实现的服务远程调用方式，与原本的本地方法调用差异太大，编程时的体验也不统一。为了使远程调用像本地方法调用一样简单，需要使用<strong>OpenFeign</strong>组件。OpenFeign就利用SpringMVC的相关注解来声明4个参数（请求方式、请求路径、请求参数、返回值类型），然后基于动态代理帮我们生成远程调用的代码，而无需我们手动再编写，非常方便。  </p>
+<ol>
+<li>引入依赖</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">&lt;!--openFeign--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-openfeign<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--负载均衡器--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-loadbalancer<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>启用OpenFeign<br>在调用者的启动类上添加“@EnableFeignClients”注解，启动OpenFeign功能。  </p>
+</li>
+<li><p>编写OpenFeign客户端  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@FeignClient(&quot;item-service&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">ItemClient</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/items&quot;)</span></span><br><span class="line">    List&lt;ItemDTO&gt; <span class="title function_">queryItemByIds</span><span class="params">(<span class="meta">@RequestParam(&quot;ids&quot;)</span> Collection&lt;Long&gt; ids)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>@FeignClient(“item-service”) ：声明服务名称</li>
+<li>@GetMapping ：声明请求方式</li>
+<li>@GetMapping(“&#x2F;items”) ：声明请求路径</li>
+<li>@RequestParam(“ids”) Collection&lt;Long&gt; ids ：声明请求参数</li>
+<li>List&lt;ItemDTO&gt; ：返回值类型</li>
+</ul>
+</li>
+</ol>
+<p>有了上述信息，OpenFeign就可以利用动态代理帮我们实现这个方法，并且向 <a target="_blank" rel="noopener" href="http://item-service/items">http://item-service/items</a> 发送一个GET请求，携带ids为请求参数，并自动将返回值处理为List&lt;ItemDTO&gt;。  </p>
+<ol start="4">
+<li><p>使用FeignClient<br> 原：<br> <img src="/../images/SpringCloud/5.png">  </p>
+<p> 现：<br> <img src="/../images/SpringCloud/6.png">  </p>
+<p> feign替我们完成了服务拉取、负载均衡、发送http请求的所有工作。</p>
+</li>
+</ol>
+<h3 id="Feigb底层实现"><a href="#Feigb底层实现" class="headerlink" title="Feigb底层实现"></a>Feigb底层实现</h3><p>Feign底层发起http请求，依赖于其它的框架。其底层支持的http客户端实现包括：</p>
+<ul>
+<li>HttpURLConnection：默认实现，不支持连接池</li>
+<li>Apache HttpClient ：支持连接池</li>
+<li>OKHttp：支持连接池</li>
+</ul>
+<p>因此我们通常会使用带有连接池的客户端来代替默认的HttpURLConnection。比如，我们使用OK Http。  </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">&lt;!--OK http 的依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.github.openfeign<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>feign-okhttp<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">feign:</span></span><br><span class="line">  <span class="attr">okhttp:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span> <span class="comment"># 开启OKHttp功能</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="OpenFeign最佳实践"><a href="#OpenFeign最佳实践" class="headerlink" title="OpenFeign最佳实践"></a>OpenFeign最佳实践</h3><p>场景：trade-service和cart-service一样需要远程调用item-service中的根据id批量查询商品功能。如果在trade-service中再次定义ItemClient接口，就重复编码了。  </p>
+<p>思路：  </p>
+<ul>
+<li>思路1：抽取到微服务之外的公共module</li>
+<li>思路2：每个微服务自己抽取一个module</li>
+</ul>
+<p><img src="/../images/SpringCloud/7.png">   </p>
+<p>注意修改Feign注解，以防扫描不到Clients：  </p>
+<ul>
+<li>方式1：声明扫描包，@EnableFeignClients(basePackages&#x3D;”com.xxx.api.client”)  </li>
+<li>方式2：声明要用的FeignClient，@EnableFeignClients(clients&#x3D;{ItemClient.class})</li>
+</ul>
+<h3 id="日志配置"><a href="#日志配置" class="headerlink" title="日志配置"></a>日志配置</h3><p>OpenFeign只会在FeignClient所在包的日志级别为DEBUG时，才会输出日志。而且其日志级别有4级：</p>
+<ul>
+<li>NONE：不记录任何日志信息，这是默认值。</li>
+<li>BASIC：仅记录请求的方法，URL以及响应状态码和执行时间</li>
+<li>HEADERS：在BASIC的基础上，额外记录了请求和响应的头信息</li>
+<li>FULL：记录所有请求和响应的明细，包括头信息、请求体、元数据。<br>Feign默认的日志级别就是NONE，所以默认我们看不到请求日志。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.hmall.api.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> feign.Logger;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DefaultFeignConfig</span> &#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> Logger.Level <span class="title function_">feignLogLevel</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Logger.Level.FULL;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>接下来，要让日志级别生效，还需要配置这个类。有两种方式：</p>
+<ul>
+<li>局部生效：在某个FeignClient中配置，只对当前FeignClient生效  <blockquote>
+<p>@FeignClient(value &#x3D; “item-service”, configuration &#x3D; DefaultFeignConfig.class)</p>
+</blockquote>
+</li>
+<li>全局生效：在@EnableFeignClients中配置，针对所有FeignClient生效。  <blockquote>
+<p>@EnableFeignClients(defaultConfiguration &#x3D; DefaultFeignConfig.class)</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="网关路由"><a href="#网关路由" class="headerlink" title="网关路由"></a>网关路由</h2><p>场景：  </p>
+<ol>
+<li>由于每个微服务都有不同的地址或端口，入口不同，与前端联调的时候请求不同数据时要访问不同的入口，需要维护多个入口地址，麻烦；前端无法调用nacos，无法实时更新服务列表。  </li>
+<li>单体架构时我们只需要完成一次用户登录、身份校验，就可以在所有业务中获取到用户信息。而微服务拆分后，每个微服务都独立部署，这就存在一些问题。每个微服务都需要编写登录校验、用户信息获取的功能吗？当微服务之间调用时，该如何传递用户信息？</li>
+</ol>
+<p>数据在网络间传输，从一个网络传输到另一网络时就需要经过<strong>网关</strong>来做数据的路由和转发以及数据安全的校验。网关本身也是一个独立的微服务，因此也需要创建一个模块开发功能。  </p>
+<p>在SpringCloud当中，提供了两种网关实现方案：  </p>
+<ul>
+<li>Netflix Zuul：早期实现，目前已经淘汰  </li>
+<li><strong>SpringCloudGateway</strong>：基于Spring的WebFlux技术，完全支持响应式编程，吞吐能力更强</li>
+</ul>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">gateway</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">server-addr:</span> <span class="number">192.168</span><span class="number">.150</span><span class="number">.101</span><span class="string">:8848</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">item</span> <span class="comment"># 路由规则id，自定义，唯一</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://item-service</span> <span class="comment"># 路由的目标服务，lb代表负载均衡，会从注册中心拉取服务列表</span></span><br><span class="line">          <span class="attr">predicates:</span> <span class="comment"># 路由断言，判断当前请求是否符合当前规则，符合则路由到目标服务</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/items/**,/search/**</span> <span class="comment"># 这里是以请求路径作为判断规则</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">cart</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://cart-service</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/carts/**</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">user</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://user-service</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/users/**,/addresses/**</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">trade</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://trade-service</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/orders/**</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">pay</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://pay-service</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/pay-orders/**</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>四个属性含义如下：<br>    - id：路由的唯一标示<br>    - predicates：路由断言，其实就是匹配条件<br>    - filters：路由过滤条件<br>    - uri：路由目标地址，lb:&#x2F;&#x2F;代表负载均衡，从注册中心获取目标微服务的实例列表，并且负载均衡选择一个访问。  </p>
+<p>predicates：<br><img src="/../images/SpringCloud/8.png">  </p>
+<h3 id="网关登录校验"><a href="#网关登录校验" class="headerlink" title="网关登录校验"></a>网关登录校验</h3><p>既然网关是所有微服务的入口，一切请求都需要先经过网关。我们完全可以把登录校验的工作放到网关去做，这样之前说的问题就解决了：  </p>
+<ul>
+<li>只需要在网关和用户服务保存秘钥</li>
+<li>只需要在网关开发登录校验功能</li>
+</ul>
+<p><img src="/../images/SpringCloud/9.png">  </p>
+<p>不过，这里存在几个问题：  </p>
+<ul>
+<li>网关路由是配置的，请求转发是Gateway内部代码，我们如何在转发之前做登录校验？</li>
+<li>网关校验JWT之后，如何将用户信息传递给微服务？</li>
+<li>微服务之间也会相互调用，这种调用不经过网关，又该如何传递用户信息？</li>
+</ul>
+<h4 id="网关过滤器"><a href="#网关过滤器" class="headerlink" title="网关过滤器"></a>网关过滤器</h4><p>Gateway内部工作的基本原理：<br><img src="/../images/SpringCloud/10.png">  </p>
+<ol>
+<li>客户端请求进入网关后由HandlerMapping对请求做判断，找到与当前请求匹配的路由规则（Route），然后将请求交给WebHandler去处理。</li>
+<li>WebHandler则会加载当前路由下需要执行的过滤器链（Filter chain），然后按照顺序逐一执行过滤器（后面称为Filter）。</li>
+<li>图中Filter被虚线分为左右两部分，是因为Filter内部的逻辑分为pre和post两部分，分别会在请求路由到微服务之前和之后被执行。</li>
+<li>只有所有Filter的pre逻辑都依次顺序执行通过后，请求才会被路由到微服务。</li>
+<li>微服务返回结果后，再倒序执行Filter的post逻辑。</li>
+<li>最终把响应结果返回。</li>
+</ol>
+<p>最终请求转发是有一个名为NettyRoutingFilter的过滤器来执行的，而且这个过滤器是整个过滤器链中顺序最靠后的一个。如果我们能够定义一个过滤器，在其中实现登录校验逻辑，并且将过滤器执行顺序定义到NettyRoutingFilter之前，这就符合需求了。  </p>
+<p>网关过滤器链中的过滤器有两种：</p>
+<ul>
+<li>GatewayFilter：路由过滤器，作用范围比较灵活，可以是任意指定的路由Route. </li>
+<li>GlobalFilter：全局过滤器，作用范围是所有路由，不可配置。</li>
+</ul>
+<p>过滤器链之外还有一种过滤器，HttpHeadersFilter，用来处理传递到下游微服务的请求头。<br>Gateway内置的GatewayFilter过滤器使用起来非常简单，无需编码，只要在yaml文件中简单配置即可。而且其作用范围也很灵活，配置在哪个Route下，就作用于哪个Route.<br>例如，有一个过滤器叫做AddRequestHeaderGatewayFilterFacotry，顾明思议，就是添加请求头的过滤器，可以给请求添加一个请求头并传递到下游微服务。<br>使用的使用只需要在application.yaml中这样配置：  </p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">test_route</span></span><br><span class="line">        <span class="attr">uri:</span> <span class="string">lb://test-service</span></span><br><span class="line">        <span class="attr">predicates:</span></span><br><span class="line">          <span class="string">-Path=/test/**</span></span><br><span class="line">        <span class="attr">filters:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">AddRequestHeader=key,</span> <span class="string">value</span> <span class="comment"># 逗号之前是请求头的key，逗号之后是value</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果想要让过滤器作用于所有的路由，则可以这样配置：  </p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">default-filters:</span> <span class="comment"># default-filters下的过滤器可以作用于所有路由</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">AddRequestHeader=key,</span> <span class="string">value</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">test_route</span></span><br><span class="line">        <span class="attr">uri:</span> <span class="string">lb://test-service</span></span><br><span class="line">        <span class="attr">predicates:</span></span><br><span class="line">          <span class="string">-Path=/test/**</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="自定义过滤器"><a href="#自定义过滤器" class="headerlink" title="自定义过滤器"></a>自定义过滤器</h4><ol>
+<li>自定义GatewayFilter<br>自定义GatewayFilter不是直接实现GatewayFilter，而是实现AbstractGatewayFilterFactory。注意该类的名称一定要以GatewayFilterFactory为后缀！这种过滤器还可以支持动态配置参数，不过实现起来比较复杂。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PrintAnyGatewayFilterFactory</span> <span class="keyword">extends</span> <span class="title class_">AbstractGatewayFilterFactory</span>&lt;Object&gt; &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> GatewayFilter <span class="title function_">apply</span><span class="params">(Object config)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">GatewayFilter</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> Mono&lt;Void&gt; <span class="title function_">filter</span><span class="params">(ServerWebExchange exchange, GatewayFilterChain chain)</span> &#123;</span><br><span class="line">                <span class="comment">// 获取请求</span></span><br><span class="line">                <span class="type">ServerHttpRequest</span> <span class="variable">request</span> <span class="operator">=</span> exchange.getRequest();</span><br><span class="line">                <span class="comment">// 编写过滤器逻辑</span></span><br><span class="line">                System.out.println(<span class="string">&quot;过滤器执行了&quot;</span>);</span><br><span class="line">                <span class="comment">// 放行</span></span><br><span class="line">                <span class="keyword">return</span> chain.filter(exchange);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">default-filters:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">PrintAny</span> <span class="comment"># 此处直接以自定义的GatewayFilterFactory类名称前缀类声明过滤器</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>自定义GlobalFilter<br>自定义GlobalFilter则简单很多，直接实现GlobalFilter即可，而且也无法设置动态参数。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PrintAnyGlobalFilter</span> <span class="keyword">implements</span> <span class="title class_">GlobalFilter</span>, Ordered &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Mono&lt;Void&gt; <span class="title function_">filter</span><span class="params">(ServerWebExchange exchange, GatewayFilterChain chain)</span> &#123;</span><br><span class="line">        <span class="comment">// 编写过滤器逻辑</span></span><br><span class="line">        System.out.println(<span class="string">&quot;未登录，无法访问&quot;</span>);</span><br><span class="line">        <span class="comment">// 放行</span></span><br><span class="line">        <span class="comment">// return chain.filter(exchange);</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 拦截</span></span><br><span class="line">        <span class="type">ServerHttpResponse</span> <span class="variable">response</span> <span class="operator">=</span> exchange.getResponse();</span><br><span class="line">        response.setRawStatusCode(<span class="number">401</span>);</span><br><span class="line">        <span class="keyword">return</span> response.setComplete();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getOrder</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 过滤器执行顺序，值越小，优先级越高</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="登录校验过滤器"><a href="#登录校验过滤器" class="headerlink" title="登录校验过滤器"></a>登录校验过滤器</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@RequiredArgsConstructor</span></span><br><span class="line"><span class="meta">@EnableConfigurationProperties(AuthProperties.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AuthGlobalFilter</span> <span class="keyword">implements</span> <span class="title class_">GlobalFilter</span>, Ordered &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> JwtTool jwtTool;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> AuthProperties authProperties;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">AntPathMatcher</span> <span class="variable">antPathMatcher</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AntPathMatcher</span>();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Mono&lt;Void&gt; <span class="title function_">filter</span><span class="params">(ServerWebExchange exchange, GatewayFilterChain chain)</span> &#123;</span><br><span class="line">        <span class="comment">// 1.获取Request</span></span><br><span class="line">        <span class="type">ServerHttpRequest</span> <span class="variable">request</span> <span class="operator">=</span> exchange.getRequest();</span><br><span class="line">        <span class="comment">// 2.判断是否不需要拦截</span></span><br><span class="line">        <span class="keyword">if</span>(isExclude(request.getPath().toString()))&#123;</span><br><span class="line">            <span class="comment">// 无需拦截，直接放行</span></span><br><span class="line">            <span class="keyword">return</span> chain.filter(exchange);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 3.获取请求头中的token</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">token</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        List&lt;String&gt; headers = request.getHeaders().get(<span class="string">&quot;authorization&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (!CollUtils.isEmpty(headers)) &#123;</span><br><span class="line">            token = headers.get(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 4.校验并解析token</span></span><br><span class="line">        <span class="type">Long</span> <span class="variable">userId</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            userId = jwtTool.parseToken(token);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (UnauthorizedException e) &#123;</span><br><span class="line">            <span class="comment">// 如果无效，拦截</span></span><br><span class="line">            <span class="type">ServerHttpResponse</span> <span class="variable">response</span> <span class="operator">=</span> exchange.getResponse();</span><br><span class="line">            response.setRawStatusCode(<span class="number">401</span>);</span><br><span class="line">            <span class="keyword">return</span> response.setComplete();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// TODO 5.如果有效，传递用户信息</span></span><br><span class="line">        System.out.println(<span class="string">&quot;userId = &quot;</span> + userId);</span><br><span class="line">        <span class="comment">// 6.放行</span></span><br><span class="line">        <span class="keyword">return</span> chain.filter(exchange);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isExclude</span><span class="params">(String antPath)</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (String pathPattern : authProperties.getExcludePaths()) &#123;</span><br><span class="line">            <span class="keyword">if</span>(antPathMatcher.match(pathPattern, antPath))&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getOrder</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>由于网关发送请求到微服务依然采用的是Http请求，因此我们可以将用户信息以请求头的方式传递到下游微服务。然后微服务可以从请求头中获取登录用户信息。考虑到微服务内部可能很多地方都需要用到登录用户信息，因此我们可以利用SpringMVC的拦截器来实现登录用户信息获取，并存入ThreadLocal，方便后续使用。  </p>
+<p><img src="/../images/SpringCloud/11.png">  </p>
+<p><img src="/../images/SpringCloud/12.png">  </p>
+<p>由于每个微服务都有获取登录用户的需求，因此拦截器我们直接写在hm-common中，并写好自动装配。这样微服务只需要引入hm-common就可以直接具备拦截器功能，无需重复编写。  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserInfoInterceptor</span> <span class="keyword">implements</span> <span class="title class_">HandlerInterceptor</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="comment">// 1.获取请求头中的用户信息</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">userInfo</span> <span class="operator">=</span> request.getHeader(<span class="string">&quot;user-info&quot;</span>);</span><br><span class="line">        <span class="comment">// 2.判断是否为空</span></span><br><span class="line">        <span class="keyword">if</span> (StrUtil.isNotBlank(userInfo)) &#123;</span><br><span class="line">            <span class="comment">// 不为空，保存到ThreadLocal</span></span><br><span class="line">                UserContext.setUser(Long.valueOf(userInfo));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 3.放行</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterCompletion</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="comment">// 移除用户</span></span><br><span class="line">        UserContext.removeUser();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnClass(DispatcherServlet.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MvcConfig</span> <span class="keyword">implements</span> <span class="title class_">WebMvcConfigurer</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> &#123;</span><br><span class="line">        registry.addInterceptor(<span class="keyword">new</span> <span class="title class_">UserInfoInterceptor</span>());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>不过，需要注意的是，这个配置类默认是不会生效的，因为它所在的包是com.hmall.common.config，与其它微服务的扫描包不一致，无法被扫描到，因此无法生效。<br>基于SpringBoot的自动装配原理，我们要将其添加到resources目录下的META-INF&#x2F;spring.factories文件中:  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">org.springframework.boot.autoconfigure.EnableAutoConfiguration=\</span><br><span class="line">  com.hmall.common.config.MyBatisConfig,\</span><br><span class="line">  com.hmall.common.config.MvcConfig</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>下单的过程中，需要调用商品服务扣减库存，调用购物车服务清理用户购物车。而清理购物车时必须知道当前登录的用户身份。但是，订单服务调用购物车时并没有传递用户信息，购物车服务无法知道当前用户是谁！</p>
+<p>由于微服务获取用户信息是通过拦截器在请求头中读取，因此要想实现微服务之间的用户信息传递，就必须在微服务发起调用时把用户信息存入请求头。微服务之间调用是基于OpenFeign来实现的，并不是我们自己发送的请求。我们如何才能让每一个由OpenFeign发起的请求自动携带登录用户信息呢？<br>这里要借助Feign中提供的一个拦截器接口：feign.RequestInterceptor  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> RequestInterceptor <span class="title function_">userInfoRequestInterceptor</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">RequestInterceptor</span>() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">apply</span><span class="params">(RequestTemplate template)</span> &#123;</span><br><span class="line">            <span class="comment">// 获取登录用户</span></span><br><span class="line">            <span class="type">Long</span> <span class="variable">userId</span> <span class="operator">=</span> UserContext.getUser();</span><br><span class="line">            <span class="keyword">if</span>(userId == <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="comment">// 如果为空则直接跳过</span></span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 如果不为空则放入请求头中，传递给下游微服务</span></span><br><span class="line">            template.header(<span class="string">&quot;user-info&quot;</span>, userId.toString());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="配置管理"><a href="#配置管理" class="headerlink" title="配置管理"></a>配置管理</h2><p>场景：  </p>
+<ul>
+<li>网关路由在配置文件中写死了，如果变更必须重启微服务</li>
+<li>某些业务配置在配置文件中写死了，每次修改都要重启服务</li>
+<li>每个微服务都有很多重复的配置，维护成本高</li>
+</ul>
+<p>解决：<br>微服务共享的配置可以统一交给Nacos保存和管理，在Nacos控制台修改配置后，Nacos会将配置变更推送给相关的微服务，并且无需重启即可生效，实现配置热更新。  </p>
+<h3 id="配置共享"><a href="#配置共享" class="headerlink" title="配置共享"></a>配置共享</h3><p>可以把微服务共享的配置抽取到Nacos中统一管理，这样就不需要每个微服务都重复配置了。分为两步：  </p>
+<ul>
+<li>在Nacos中添加共享配置</li>
+<li>微服务拉取配置</li>
+</ul>
+<p>需要注意的是，读取Nacos配置是SpringCloud上下文（ApplicationContext）初始化时处理的，发生在项目的引导阶段。然后才会初始化SpringBoot上下文，去读取application.yaml。<br>也就是说引导阶段，application.yaml文件尚未读取，根本不知道nacos 地址，该如何去加载nacos中的配置文件呢？</p>
+<p>SpringCloud在初始化上下文的时候会先读取一个名为bootstrap.yaml(或者bootstrap.properties)的文件，如果我们将nacos地址配置到bootstrap.yaml中，那么在项目引导阶段就可以读取nacos中的配置了。  </p>
+<p><img src="/../images/SpringCloud/13.png">  </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">&lt;!--nacos配置管理--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-config<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--读取bootstrap文件--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-bootstrap<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">cart-service</span> <span class="comment"># 服务名称</span></span><br><span class="line">  <span class="attr">profiles:</span></span><br><span class="line">    <span class="attr">active:</span> <span class="string">dev</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">server-addr:</span> <span class="number">192.168</span><span class="number">.150</span><span class="number">.101</span> <span class="comment"># nacos地址</span></span><br><span class="line">      <span class="attr">config:</span></span><br><span class="line">        <span class="attr">file-extension:</span> <span class="string">yaml</span> <span class="comment"># 文件后缀名</span></span><br><span class="line">        <span class="attr">shared-configs:</span> <span class="comment"># 共享配置</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">dataId:</span> <span class="string">shared-jdbc.yaml</span> <span class="comment"># 共享mybatis配置</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">dataId:</span> <span class="string">shared-log.yaml</span> <span class="comment"># 共享日志配置</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">dataId:</span> <span class="string">shared-swagger.yaml</span> <span class="comment"># 共享日志配置</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="配置热更新"><a href="#配置热更新" class="headerlink" title="配置热更新"></a>配置热更新</h3><h3 id="动态路由"><a href="#动态路由" class="headerlink" title="动态路由"></a>动态路由</h3><h2 id="微服务保护"><a href="#微服务保护" class="headerlink" title="微服务保护"></a>微服务保护</h2><p>问题：  </p>
+<ol>
+<li><p>业务健壮性：例如在之前的查询购物车列表业务中，购物车服务需要查询最新的商品信息，与购物车数据做对比，提醒用户。大家设想一下，如果商品服务查询时发生故障，查询购物车列表在调用商品服 务时，是不是也会异常？从而导致购物车查询失败。但从业务角度来说，为了提升用户体验，即便是商品查询失败，购物车列表也应该正确展示出来，哪怕是不包含最新的商品信息。  </p>
+</li>
+<li><p>级联失败或雪崩问题：还是查询购物车的业务，假如商品服务业务并发较高，占用过多Tomcat连接。可能会导致商品服务的所有接口响应时间增加，延迟变高，甚至是长时间阻塞直至查询失败。此时查询购物车业务需要查询并等待商品查询结果，从而导致查询购物车列表业务的响应时间也变长，甚至也阻塞直至无法访问。而此时如果查询购物车的请求较多，可能导致购物车服务的Tomcat连接占用较多，所有接口的响应时间都会增加，整个服务性能很差，甚至不可用。</p>
+</li>
+</ol>
+<h3 id="服务保护方案"><a href="#服务保护方案" class="headerlink" title="服务保护方案"></a>服务保护方案</h3><ul>
+<li>请求限流：限制或控制接口访问的并发流量，避免服务因流量激增而出现故障。  </li>
+<li>线程隔离：为了避免某个接口故障或压力过大导致整个服务不可用，我们可以限定每个接口可以使用的资源范围，也就是将其“隔离”起来。  </li>
+<li>服务熔断：编写服务降级逻辑；异常统计和熔断（统计服务提供方的异常比例，当比例过高表明该接口会影响到其它服务，应该拒绝调用该接口，而是直接走降级逻辑）。<br>这些方案或多或少都会导致服务的体验上略有下降，比如请求限流，降低了并发上限；线程隔离，降低了可用资源数量；服务熔断，降低了服务的完整度，部分服务变的不可用或弱可用。因此这些方案都属于服务降级的方案。但通过这些方案，服务的健壮性得到了提升。</li>
+</ul>
+<h3 id="Sentinel"><a href="#Sentinel" class="headerlink" title="Sentinel"></a>Sentinel</h3><p>Sentinel是阿里巴巴开源的一款服务保护框架，目前已经加入SpringCloudAlibaba中。  </p>
+<ol>
+<li><p>引入依赖  </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">&lt;!--sentinel--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-sentinel<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置控制台  </p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span> </span><br><span class="line">    <span class="attr">sentinel:</span></span><br><span class="line">      <span class="attr">transport:</span></span><br><span class="line">        <span class="attr">dashboard:</span> <span class="string">localhost:8090</span></span><br><span class="line">      <span class="attr">http-method-specify:</span> <span class="literal">true</span> <span class="comment"># 开启请求方式前缀</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>簇点链路菜单<br>所谓簇点链路，就是单机调用链路，是一次请求进入服务后经过的每一个被Sentinel监控的资源。默认情况下，Sentinel会监控SpringMVC的每一个Endpoint（接口）。<br>因此，我们看到&#x2F;carts这个接口路径就是其中一个簇点，我们可以对其进行限流、熔断、隔离等保护措施。<br>SpringMVC接口是按照Restful风格设计，因此购物车的查询、删除、修改等接口全部都是&#x2F;carts路径。默认情况下Sentinel会把路径作为簇点资源的名称，无法区分路径相同但请求方式不同的接口，查询、删除、修改等都被识别为一个簇点资源，这显然是不合适的。<br>打开Sentinel的请求方式前缀，把请求方式 + 请求路径作为簇点资源名。</p>
+</li>
+</ol>
+<h3 id="请求限流"><a href="#请求限流" class="headerlink" title="请求限流"></a>请求限流</h3><p>最大QPS</p>
+<h3 id="线程隔离"><a href="#线程隔离" class="headerlink" title="线程隔离"></a>线程隔离</h3><p>限流可以降低服务器压力，尽量减少因并发流量引起的服务故障的概率，但并不能完全避免服务故障。一旦某个服务出现故障，我们必须隔离对这个服务的调用，避免发生雪崩。  </p>
+<ol>
+<li>为了开启远程调用feignclient作为簇点，可以被流量监控。开启Feign的sentinel功能。  <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">feign:</span></span><br><span class="line">  <span class="attr">sentinel:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span> <span class="comment"># 开启feign对sentinel的支持</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>默认情况下SpringBoot项目的tomcat最大线程数是200，允许的最大连接是8492。  </p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8082</span></span><br><span class="line">  <span class="attr">tomcat:</span></span><br><span class="line">    <span class="attr">threads:</span></span><br><span class="line">      <span class="attr">max:</span> <span class="number">50</span> <span class="comment"># 允许的最大线程数</span></span><br><span class="line">    <span class="attr">accept-count:</span> <span class="number">50</span> <span class="comment"># 最大排队等待数量</span></span><br><span class="line">    <span class="attr">max-connections:</span> <span class="number">100</span> <span class="comment"># 允许的最大连接</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="服务熔断"><a href="#服务熔断" class="headerlink" title="服务熔断"></a>服务熔断</h3><p>触发限流或熔断后的请求不一定要直接报错，也可以返回一些默认数据或者友好提示，用户体验会更好。<br>给FeignClient编写失败后的降级逻辑有两种方式：  </p>
+<ul>
+<li>方式一：FallbackClass，无法对远程调用的异常做处理  </li>
+<li>方式二：FallbackFactory，可以对远程调用的异常做处理，我们一般选择这种方式。</li>
+</ul>
+<ol>
+<li>定义降级处理类，实现FallbackFactory</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ItemClientFallback</span> <span class="keyword">implements</span> <span class="title class_">FallbackFactory</span>&lt;ItemClient&gt; &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> ItemClient <span class="title function_">create</span><span class="params">(Throwable cause)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ItemClient</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> List&lt;ItemDTO&gt; <span class="title function_">queryItemByIds</span><span class="params">(Collection&lt;Long&gt; ids)</span> &#123;</span><br><span class="line">                log.error(<span class="string">&quot;远程调用ItemClient#queryItemByIds方法出现异常，参数：&#123;&#125;&quot;</span>, ids, cause);</span><br><span class="line">                <span class="comment">// 查询购物车允许失败，查询失败，返回空集合</span></span><br><span class="line">                <span class="keyword">return</span> CollUtils.emptyList();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">deductStock</span><span class="params">(List&lt;OrderDetailDTO&gt; items)</span> &#123;</span><br><span class="line">                <span class="comment">// 库存扣减业务需要触发事务回滚，查询失败，抛出异常</span></span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BizIllegalException</span>(cause);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>将Fallback注册为一个Bean  </p>
+</li>
+<li><p><img src="/../images/SpringCloud/14.png"></p>
+</li>
+</ol>
+<p>Sentinel中的<strong>断路器</strong>不仅可以统计某个接口的慢请求比例，还可以统计异常请求比例。当这些比例超出阈值时，就会熔断该接口，即拦截访问该接口的一切请求，降级处理；当该接口恢复正常时，再放行对于该接口的请求。  </p>
+<h2 id="分布式事务"><a href="#分布式事务" class="headerlink" title="分布式事务"></a>分布式事务</h2><p><img src="/../images/SpringCloud/15.png">  </p>
+<p>参与事务的多个子业务在不同的微服务，跨越了不同的数据库，事务并未遵循ACID的原则。</p>
+<h3 id="Seata"><a href="#Seata" class="headerlink" title="Seata"></a>Seata</h3><p>阿里巴巴在2019年开源的Seata。<br>其实分布式事务产生的一个重要原因，就是参与事务的多个分支事务互相无感知，不知道彼此的执行状态。因此解决分布式事务的思想非常简单：<br>就是找一个统一的事务协调者，与多个分支事务通信，检测每个分支事务的执行状态，保证全局事务下的每一个分支事务同时成功或失败即可。大多数的分布式事务框架都是基于这个理论来实现的。  </p>
+<p>在Seata的事务管理中有三个重要的角色：  </p>
+<ul>
+<li>TC (Transaction Coordinator) - 事务协调者：维护全局和分支事务的状态，协调全局事务提交或回滚。 </li>
+<li>TM (Transaction Manager) - 事务管理器：定义全局事务的范围、开始全局事务、提交或回滚全局事务。 </li>
+<li>RM (Resource Manager) - 资源管理器：管理分支事务，与TC交谈以注册分支事务和报告分支事务的状态，并驱动分支事务提交或回滚。</li>
+</ul>
+<p><img src="/../images/SpringCloud/16.png">  </p>
+<p>其中，TM和RM可以理解为Seata的客户端部分，引入到参与事务的微服务依赖中即可。将来TM和RM就会协助微服务，实现本地分支事务与TC之间交互，实现事务的提交或回滚。而TC服务则是事务协调中心，是一个独立的微服务，需要单独部署。  </p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">seata:</span></span><br><span class="line">  <span class="attr">registry:</span> <span class="comment"># TC服务注册中心的配置，微服务根据这些信息去注册中心获取tc服务地址</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">nacos</span> <span class="comment"># 注册中心类型 nacos</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">server-addr:</span> <span class="number">192.168</span><span class="number">.150</span><span class="number">.101</span><span class="string">:8848</span> <span class="comment"># nacos地址</span></span><br><span class="line">      <span class="attr">namespace:</span> <span class="string">&quot;&quot;</span> <span class="comment"># namespace，默认为空</span></span><br><span class="line">      <span class="attr">group:</span> <span class="string">DEFAULT_GROUP</span> <span class="comment"># 分组，默认是DEFAULT_GROUP</span></span><br><span class="line">      <span class="attr">application:</span> <span class="string">seata-server</span> <span class="comment"># seata服务名称</span></span><br><span class="line">      <span class="attr">username:</span> <span class="string">nacos</span></span><br><span class="line">      <span class="attr">password:</span> <span class="string">nacos</span></span><br><span class="line">  <span class="attr">tx-service-group:</span> <span class="string">hmall</span> <span class="comment"># 事务组名称</span></span><br><span class="line">  <span class="attr">service:</span></span><br><span class="line">    <span class="attr">vgroup-mapping:</span> <span class="comment"># 事务组与tc集群的映射关系</span></span><br><span class="line">      <span class="attr">hmall:</span> <span class="string">&quot;default&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>将@Transactional注解改为Seata提供的@GlobalTransactional。@GlobalTransactional注解就是在标记事务的起点，将来TM就会基于这个方法判断全局事务范围，初始化全局事务。<br>Seata支持四种不同的分布式事务解决方案：</p>
+<ul>
+<li>XA</li>
+<li>TCC</li>
+<li>AT</li>
+<li>SAGA</li>
+</ul>
+<h4 id="XA模式"><a href="#XA模式" class="headerlink" title="XA模式"></a>XA模式</h4><p>一阶段：</p>
+<ul>
+<li>事务协调者通知每个事务参与者执行本地事务</li>
+<li>本地事务执行完成后报告事务执行状态给事务协调者，此时事务不提交，继续持有数据库锁</li>
+</ul>
+<p><img src="/../images/SpringCloud/17.png">  </p>
+<p>二阶段：</p>
+<ul>
+<li>事务协调者基于一阶段的报告来判断下一步操作</li>
+<li>如果一阶段都成功，则通知所有事务参与者，提交事务</li>
+<li>如果一阶段任意一个参与者失败，则通知所有事务参与者回滚事务</li>
+</ul>
+<p><img src="/../images/SpringCloud/18.png">  </p>
+<p>Seata的XA模型：<br><img src="/../images/SpringCloud/19.png"><br>RM一阶段的工作：</p>
+<ol>
+<li>注册分支事务到TC</li>
+<li>执行分支业务sql但不提交</li>
+<li>报告执行状态到TC</li>
+</ol>
+<p>TC二阶段的工作：</p>
+<ol>
+<li>TC检测各分支事务执行状态</li>
+<li>如果都成功，通知所有RM提交事务</li>
+<li>如果有失败，通知所有RM回滚事务</li>
+</ol>
+<p>RM二阶段的工作：</p>
+<ul>
+<li>接收TC指令，提交或回滚事务</li>
+</ul>
+<p>优缺点：<br>XA模式的优点是什么？</p>
+<ul>
+<li>事务的强一致性，满足ACID原则</li>
+<li>常用数据库都支持，实现简单，并且没有代码侵入</li>
+</ul>
+<p>XA模式的缺点是什么？</p>
+<ul>
+<li>因为一阶段需要锁定数据库资源，等待二阶段结束才释放，性能较差</li>
+<li>依赖关系型数据库实现事务</li>
+</ul>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">seata:</span></span><br><span class="line">  <span class="attr">data-source-proxy-mode:</span> <span class="string">XA</span>  <span class="comment"># 不添加默认是AT</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="AT模式"><a href="#AT模式" class="headerlink" title="AT模式"></a>AT模式</h4><p>AT模式同样是分阶段提交的事务模型，不过缺弥补了XA模型中资源锁定周期过长的缺陷。<br><img src="/../images/SpringCloud/20.png">  </p>
+<p>阶段一RM的工作：</p>
+<ul>
+<li>注册分支事务</li>
+<li>记录undo-log（数据快照）</li>
+<li>执行业务sql并提交</li>
+<li>报告事务状态<br>阶段二提交时RM的工作：</li>
+<li>删除undo-log即可<br>阶段二回滚时RM的工作：</li>
+<li>根据undo-log恢复数据到更新前</li>
+</ul>
+<p>简述AT模式与XA模式最大的区别是什么？</p>
+<ul>
+<li>XA模式一阶段不提交事务，锁定资源；AT模式一阶段直接提交，不锁定资源。</li>
+<li>XA模式依赖数据库机制实现回滚；AT模式利用数据快照实现数据回滚。</li>
+<li>XA模式强一致；AT模式最终一致</li>
+</ul>
+<p>可见，AT模式使用起来更加简单，无业务侵入，性能更好。因此企业90%的分布式事务都可以用AT模式来解决。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Original link: <a href="http://example.com/index.html">http://example.com/index.html</a></p>
+              <p>Copyright Notice: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>Share:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
   <article id="post-redis7" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -1118,7 +1541,7 @@
 <ol>
 <li>减少重复依赖：当多个项目依赖同一个库时，Maven 可以自动下载并且只下载一次该库。这样可以减少项目的构建时间和磁盘空间。</li>
 <li>自动管理依赖: Maven 可以自动管理依赖项，使用依赖传递，简化了依赖项的管理，使项目构建更加可靠和一致。</li>
-<li>确保依赖版本正确性：通过依赖传递的依赖，之间都不会存在版本兼容性问题，确实依赖的版本正确性！</li>
+<li>确保依赖版本正确性：通过依赖传递的依赖，之间都不会存在版本兼容性问题，确保依赖的版本正确性！</li>
 </ol>
 <p><strong>依赖冲突</strong>：发现已经存在依赖（重复依赖）会终止依赖传递，避免循环依赖和重复依赖的问题。</p>
 <p>maven自动解决依赖冲突问题能力，会按照自己的原则，进行重复依赖选择。同时也提供了手动解决的冲突的方式，不过不推荐！  </p>
@@ -1252,7 +1675,12 @@
 <ul>
 <li>父工程</li>
 </ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.wzh.maven<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pro03-maven-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 当前工程作为父工程，它要去管理子工程，所以打包方式必须是 pom --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">packaging</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"></span><br><span class="line">```    </span><br><span class="line"></span><br><span class="line">- 子工程</span><br><span class="line"></span><br><span class="line">```XML</span><br><span class="line"><span class="comment">&lt;!-- 使用parent标签指定当前工程的父工程 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 父工程的坐标 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.wzh.maven<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pro03-maven-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 子工程的坐标 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 如果子工程坐标中的groupId和version与父工程一致，那么可以省略 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- &lt;groupId&gt;com.wzh.maven&lt;/groupId&gt; --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pro04-maven-module<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt; --&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.wzh.maven<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pro03-maven-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 当前工程作为父工程，它要去管理子工程，所以打包方式必须是 pom --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">packaging</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>子工程</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 使用parent标签指定当前工程的父工程 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 父工程的坐标 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.wzh.maven<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pro03-maven-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 子工程的坐标 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 如果子工程坐标中的groupId和version与父工程一致，那么可以省略 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- &lt;groupId&gt;com.wzh.maven&lt;/groupId&gt; --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>pro04-maven-module<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt; --&gt;</span></span><br></pre></td></tr></table></figure>
 <ol start="4">
 <li>父工程依赖统一管理</li>
 </ol>
@@ -1265,7 +1693,7 @@
 </ul>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 子工程引用父工程中的依赖信息时，可以把版本号去掉。  --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 把版本号去掉就表示子工程中这个依赖的版本由父工程决定。 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 具体来说是由父工程的dependencyManagement来决定。 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-beans<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-context<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-expression<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-aop<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="4-2-Maven工程聚合关系"><a href="#4-2-Maven工程聚合关系" class="headerlink" title="4.2 Maven工程聚合关系"></a>4.2 Maven工程聚合关系</h3><ol>
+<h3 id="Maven工程聚合关系"><a href="#Maven工程聚合关系" class="headerlink" title="Maven工程聚合关系"></a>Maven工程聚合关系</h3><ol>
 <li>聚合概念<br> Maven 聚合是指将多个项目组织到一个父级项目中，通过触发父工程的构建,统一按顺序触发子工程构建的过程!!</li>
 <li>聚合作用<ul>
 <li>统一管理子项目构建：通过聚合，可以将多个子项目组织在一起，方便管理和维护。</li>
@@ -1281,28 +1709,28 @@
 <h1 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h1><p>版本：6.0.6<br>Ioc和AOP以及TX  </p>
 <h2 id="技术体系结构"><a href="#技术体系结构" class="headerlink" title="技术体系结构"></a>技术体系结构</h2><h3 id="总体技术体系"><a href="#总体技术体系" class="headerlink" title="总体技术体系"></a>总体技术体系</h3><ul>
 <li><p>单一架构<br>  一个项目，一个工程，导出为一个war包，在一个Tomcat上运行。也叫all in one。</p>
-<p>  <img src="https://secure2.wostatic.cn/static/bnm9zUQo34z7FgXA9vAmfm/image.png?auth_key=1693531582-7KzFWvBjJon49AyMCfovQ3-0-68846d6ce2c12394a63a3d936bd449f6"></p>
+<p>  <img src="/../images/SSM/s1.png"></p>
 <p>  单一架构，项目主要应用技术框架为：Spring , SpringMVC , Mybatis</p>
 </li>
 <li><p>分布式架构</p>
 <p>  一个项目（对应 IDEA 中的一个 project），拆分成很多个模块，每个模块是一个 IDEA 中的一个 module。每一个工程都是运行在自己的 Tomcat 上。模块之间可以互相调用。每一个模块内部可以看成是一个单一架构的应用。</p>
-<p>  <img src="https://secure2.wostatic.cn/static/9NxDdZATsg76FfXNgskTFE/image.png?auth_key=1693531582-2u26pffegJQqxFyG1vEyeS-0-5828684078e841582896df530a22d4fd"></p>
+<p>  <img src="/../images/SSM/s2.png"></p>
 <p>  分布式架构，项目主要应用技术框架：SpringBoot (SSM), SpringCloud , 中间件等  </p>
 </li>
 <li><p>框架概念和理解<br>框架( Framework )是一个集成了基本结构、规范、设计模式、编程语言和程序库等基础组件的软件系统，它可以用来构建更高级别的应用程序。框架的设计和实现旨在解决特定领域中的常见问题，帮助开发人员更高效、更稳定地实现软件开发目标。  </p>
 <ul>
 <li>优点：1）提高开发效率；2）降低开发成本；3）提高应用程序的稳定性；4）提供标准化的解决方案。  </li>
-<li>缺点：1）学习成本高；2）降低开发成本；3）版本变更和兼容性问题；4）架构风险。</li>
+<li>缺点：1）学习成本高；2）可能存在局限性；3）版本变更和兼容性问题；4）架构风险。</li>
 </ul>
 </li>
 </ul>
 <p>站在文件结构的角度理解框架，可以将框架总结：<strong>框架 &#x3D; jar包+配置文件</strong>  </p>
 <h2 id="SpringFramework介绍"><a href="#SpringFramework介绍" class="headerlink" title="SpringFramework介绍"></a>SpringFramework介绍</h2><h3 id="Spring和SpringFramework概念"><a href="#Spring和SpringFramework概念" class="headerlink" title="Spring和SpringFramework概念"></a>Spring和SpringFramework概念</h3><ul>
-<li>广义的Spring：Spring技术栈（全家桶），以 Spring Framework 为基础  </li>
+<li>广义的Spring：以 Spring Framework 为基础的 Spring 技术栈（全家桶）  </li>
 <li>狭义的Spring：Spring Framework</li>
 </ul>
 <h3 id="SpringFramework主要功能模块"><a href="#SpringFramework主要功能模块" class="headerlink" title="SpringFramework主要功能模块"></a>SpringFramework主要功能模块</h3><p>  SpringFramework框架结构图：</p>
-<p>  <img src="https://secure-bigfile.wostatic.cn/static/5D6E8yWCFE2pUa3koBp4ra/image.png?auth_key=1693532411-nhedVYatGsqnnMKjeo1F8S-0-6090260de02b68fc43b405c6d4765515"></p>
+<p>  <img src="/../images/SSM/s3.png"></p>
 <table>
 <thead>
 <tr>
@@ -1417,7 +1845,7 @@
 <ul>
 <li><p><strong>SpringIoC容器管理配置方式</strong></p>
 <p>  Spring IoC 容器使用多种形式的配置元数据。此配置元数据表示您作为应用程序开发人员如何告诉 Spring 容器实例化、配置和组装应用程序中的对象。</p>
-<p>  <img src="https://secure2.wostatic.cn/static/mFt9PQ2ggCqB193CC57AKi/image.png"></p>
+<p>  <img src="/../images/SSM/s4.png"></p>
 <p>  Spring框架提供了多种配置方式：XML配置方式、注解方式和Java配置类方式</p>
 <ol>
 <li>XML配置方式：是Spring框架最早的配置方式之一，通过在XML文件中定义Bean及其依赖关系、Bean的作用域等信息，让Spring IoC容器来管理Bean之间的依赖关系。该方式从Spring框架的第一版开始提供支持。</li>
@@ -1454,7 +1882,7 @@
 
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 此处要添加一些约束，配置文件的标签并不是随意命名 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="string"><span class="tag">    https://www.springframework.org/schema/beans/spring-beans.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;...&quot;</span> [<span class="attr">1</span>] <span class="attr">class</span>=<span class="string">&quot;...&quot;</span> [<span class="attr">2</span>]&gt;</span>  </span><br><span class="line">    <span class="comment">&lt;!-- collaborators and configuration for this bean go here --&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;...&quot;</span> <span class="attr">class</span>=<span class="string">&quot;...&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- collaborators and configuration for this bean go here --&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- more bean definitions go here --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<pre><code>  Spring IoC 容器管理一个或多个组件。这些 组件是使用你提供给容器的配置元数据（例如，以 XML `&lt;bean/&gt;` 定义的形式）创建的。
+<pre><code>  Spring IoC 容器管理一个或多个组件。这些组件是使用你提供给容器的配置元数据（例如，以 XML `&lt;bean/&gt;` 定义的形式）创建的。
 
   &lt;bean /&gt; 标签 == 组件信息声明
 
@@ -1526,7 +1954,7 @@
 <li>基于构造函数的依赖注入（多构造参数解析）</li>
 </ol>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserDao</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserService</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> UserDao userDao;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> age;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">UserService</span><span class="params">(<span class="type">int</span> age , String name ,UserDao userDao)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.userDao = userDao;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 场景1: 多参数，可以按照相应构造函数的顺序注入数据 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;userService&quot;</span> <span class="attr">class</span>=<span class="string">&quot;x.y.UserService&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- value直接注入基本类型值 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span>  <span class="attr">value</span>=<span class="string">&quot;18&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span>  <span class="attr">value</span>=<span class="string">&quot;赵伟风&quot;</span>/&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span>  <span class="attr">ref</span>=<span class="string">&quot;userDao&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 被引用类bean声明 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;userDao&quot;</span> <span class="attr">class</span>=<span class="string">&quot;x.y.UserDao&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 场景2: 多参数，可以按照相应构造函数的名称注入数据 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;userService&quot;</span> <span class="attr">class</span>=<span class="string">&quot;x.y.UserService&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- value直接注入基本类型值 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;赵伟风&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">&quot;userDao&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;userDao&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span>  <span class="attr">value</span>=<span class="string">&quot;18&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 被引用类bean声明 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;userDao&quot;</span> <span class="attr">class</span>=<span class="string">&quot;x.y.UserDao&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 场景2: 多参数，可以按照相应构造函数的角标注入数据 </span></span><br><span class="line"><span class="comment">           index从0开始 构造函数(0,1,2....)</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;userService&quot;</span> <span class="attr">class</span>=<span class="string">&quot;x.y.UserService&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- value直接注入基本类型值 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">&quot;1&quot;</span> <span class="attr">value</span>=<span class="string">&quot;赵伟风&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">&quot;2&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;userDao&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">&quot;0&quot;</span>  <span class="attr">value</span>=<span class="string">&quot;18&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 被引用类bean声明 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;userDao&quot;</span> <span class="attr">class</span>=<span class="string">&quot;x.y.UserDao&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 场景1: 多参数，可以按照相应构造函数的顺序注入数据 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;userService&quot;</span> <span class="attr">class</span>=<span class="string">&quot;x.y.UserService&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- value直接注入基本类型值 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span>  <span class="attr">value</span>=<span class="string">&quot;18&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span>  <span class="attr">value</span>=<span class="string">&quot;赵伟风&quot;</span>/&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span>  <span class="attr">ref</span>=<span class="string">&quot;userDao&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 被引用类bean声明 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;userDao&quot;</span> <span class="attr">class</span>=<span class="string">&quot;x.y.UserDao&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 场景2: 多参数，可以按照相应构造函数的名称注入数据 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;userService&quot;</span> <span class="attr">class</span>=<span class="string">&quot;x.y.UserService&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- value直接注入基本类型值 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span> <span class="attr">value</span>=<span class="string">&quot;赵伟风&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">&quot;userDao&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;userDao&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">&quot;age&quot;</span>  <span class="attr">value</span>=<span class="string">&quot;18&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 被引用类bean声明 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;userDao&quot;</span> <span class="attr">class</span>=<span class="string">&quot;x.y.UserDao&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 场景3: 多参数，可以按照相应构造函数的角标注入数据 </span></span><br><span class="line"><span class="comment">           index从0开始 构造函数(0,1,2....)</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;userService&quot;</span> <span class="attr">class</span>=<span class="string">&quot;x.y.UserService&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- value直接注入基本类型值 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">&quot;1&quot;</span> <span class="attr">value</span>=<span class="string">&quot;赵伟风&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">&quot;2&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;userDao&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">index</span>=<span class="string">&quot;0&quot;</span>  <span class="attr">value</span>=<span class="string">&quot;18&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 被引用类bean声明 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;userDao&quot;</span> <span class="attr">class</span>=<span class="string">&quot;x.y.UserDao&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <pre><code>        - constructor-arg标签：指定构造参数和对应的值
         - constructor-arg标签：name属性指定参数名、index属性指定参数角标、value属性指定普通属性值
 </code></pre>
@@ -1542,14 +1970,14 @@
 <h4 id="IoC容器创建和使用"><a href="#IoC容器创建和使用" class="headerlink" title="IoC容器创建和使用"></a>IoC容器创建和使用</h4><ol>
 <li>容器实例化</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//方式1:实例化并且指定配置文件</span></span><br><span class="line"><span class="comment">//参数：String...locations 传入一个或者多个配置文件</span></span><br><span class="line"><span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> </span><br><span class="line">           <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(<span class="string">&quot;services.xml&quot;</span>, <span class="string">&quot;daos.xml&quot;</span>);</span><br><span class="line">           </span><br><span class="line"><span class="comment">//方式2:先实例化，再指定配置文件，最后刷新容器触发Bean实例化动作 [springmvc源码和contextLoadListener源码方式]  </span></span><br><span class="line"><span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> </span><br><span class="line">           <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>();   </span><br><span class="line"><span class="comment">//设置配置配置文件,方法参数为可变参数,可以设置一个或者多个配置</span></span><br><span class="line">iocContainer1.setConfigLocations(<span class="string">&quot;services.xml&quot;</span>, <span class="string">&quot;daos.xml&quot;</span>);</span><br><span class="line"><span class="comment">//后配置的文件,需要调用refresh方法,触发刷新配置</span></span><br><span class="line">iocContainer1.refresh();           </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//方式1:实例化并且指定配置文件</span></span><br><span class="line"><span class="comment">//参数：String...locations 传入一个或者多个配置文件</span></span><br><span class="line"><span class="type">ApplicationContext</span> <span class="variable">context</span> <span class="operator">=</span> </span><br><span class="line">           <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(<span class="string">&quot;services.xml&quot;</span>, <span class="string">&quot;daos.xml&quot;</span>);</span><br><span class="line">           </span><br><span class="line"><span class="comment">//方式2:先实例化，再指定配置文件，最后刷新容器触发Bean实例化动作 [springmvc源码和contextLoadListener源码方式]  </span></span><br><span class="line"><span class="type">ApplicationContext</span> <span class="variable">iocContainer1</span> <span class="operator">=</span> </span><br><span class="line">           <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>();   </span><br><span class="line"><span class="comment">//设置配置文件,方法参数为可变参数,可以设置一个或者多个配置</span></span><br><span class="line">iocContainer1.setConfigLocations(<span class="string">&quot;services.xml&quot;</span>, <span class="string">&quot;daos.xml&quot;</span>);</span><br><span class="line"><span class="comment">//后配置的文件,需要调用refresh方法,触发刷新配置</span></span><br><span class="line">iocContainer1.refresh();           </span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <ol start="2">
 <li>Bean对象读取</li>
 </ol>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//方式1: 根据id获取</span></span><br><span class="line"><span class="comment">//没有指定类型,返回为Object,需要类型转化!</span></span><br><span class="line"><span class="type">HappyComponent</span> <span class="variable">happyComponent</span> <span class="operator">=</span> </span><br><span class="line">        (HappyComponent) iocContainer.getBean(<span class="string">&quot;bean的id标识&quot;</span>);</span><br><span class="line">        </span><br><span class="line"><span class="comment">//使用组件对象        </span></span><br><span class="line">happyComponent.doWork();</span><br><span class="line"></span><br><span class="line"><span class="comment">//方式2: 根据类型获取</span></span><br><span class="line"><span class="comment">//根据类型获取,但是要求,同类型(当前类,或者之类,或者接口的实现类)只能有一个对象交给IoC容器管理</span></span><br><span class="line"><span class="comment">//配置两个或者以上出现: org.springframework.beans.factory.NoUniqueBeanDefinitionException 问题</span></span><br><span class="line"><span class="type">HappyComponent</span> <span class="variable">happyComponent</span> <span class="operator">=</span> iocContainer.getBean(HappyComponent.class);</span><br><span class="line">happyComponent.doWork();</span><br><span class="line"></span><br><span class="line"><span class="comment">//方式3: 根据id和类型获取</span></span><br><span class="line"><span class="type">HappyComponent</span> <span class="variable">happyComponent</span> <span class="operator">=</span> iocContainer.getBean(<span class="string">&quot;bean的id标识&quot;</span>, HappyComponent.class);</span><br><span class="line">happyComponent.doWork();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h4 id="高级特性：组件（Bean）作用域和周期方法配置"><a href="#高级特性：组件（Bean）作用域和周期方法配置" class="headerlink" title="高级特性：组件（Bean）作用域和周期方法配置"></a>高级特性：组件（Bean）作用域和周期方法配置</h4><ol>
-<li>组件周期方法配置<br>我们可以在组件类中定义方法，然后当IoC容器实例化和销毁组件对象的时候进行调用！这两个方法我们成为生命周期方法！类似于Servlet的init&#x2F;destroy方法,我们可以在周期方法完成初始化和释放资源等工作。</li>
+<li>组件周期方法配置<br>我们可以在组件类中定义方法，然后当IoC容器实例化和销毁组件对象的时候进行调用！这两个方法我们称为生命周期方法！类似于Servlet的init&#x2F;destroy方法,我们可以在周期方法完成初始化和释放资源等工作。</li>
 </ol>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BeanOne</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//周期方法要求： 方法命名随意，但是要求方法必须是 public void 无形参列表</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 初始化逻辑</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BeanTwo</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">cleanup</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 释放资源逻辑</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ol start="2">
@@ -1660,7 +2088,7 @@
 </ol>
 <h4 id="基于XML方式整合三层架构组件"><a href="#基于XML方式整合三层架构组件" class="headerlink" title="基于XML方式整合三层架构组件"></a>基于XML方式整合三层架构组件</h4>  <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">  <span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:context</span>=<span class="string">&quot;http://www.springframework.org/schema/context&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 导入外部属性文件 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:property-placeholder</span> <span class="attr">location</span>=<span class="string">&quot;classpath:jdbc.properties&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 配置数据源 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;druidDataSource&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.alibaba.druid.pool.DruidDataSource&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;url&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;wzh.url&#125;&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driverClassName&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;wzh.driver&#125;&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;wzh.username&#125;&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;wzh.password&#125;&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 配置 JdbcTemplate --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;jdbcTemplate&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.jdbc.core.JdbcTemplate&quot;</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 装配数据源 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;druidDataSource&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- dao 配置 di JdbcTemplate --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;studentDao&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.wzh.dao.impl.StudentDaoImpl&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;jdbcTemplate&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;jdbcTemplate&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- service 配置 di dao --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;studentService&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.wzh.service.impl.StudentServiceImpl&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;studentDao&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;studentDao&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- controller 配置 di service --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;studentController&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.wzh.controller.StudentController&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;studentService&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;studentService&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br><span class="line">  </span><br></pre></td></tr></table></figure>
 
-<h4 id="XMLIoC方式问题总结"><a href="#XMLIoC方式问题总结" class="headerlink" title="XMLIoC方式问题总结"></a>XMLIoC方式问题总结</h4><pre><code>1. 注入的属性必须添加setter方法、代码结构乱！
+<h4 id="XML-IoC方式问题总结"><a href="#XML-IoC方式问题总结" class="headerlink" title="XML-IoC方式问题总结"></a>XML-IoC方式问题总结</h4><pre><code>1. 注入的属性必须添加setter方法、代码结构乱！
 2. 配置文件和Java代码分离、编写不是很方便！
 3. XML配置文件解析效率低  
 </code></pre>
@@ -1792,6 +2220,7 @@
 </li>
 </ol>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service(&quot;smallDog&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SoldierService</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> SoldierDao soldierDao;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">getMessage</span><span class="params">()</span> &#123;</span><br><span class="line">        soldierDao.getMessage();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <pre><code>      2. 构造器  
       3. setXxx()方法
 
@@ -1828,7 +2257,7 @@
 <li><code>@SafeVarargs</code>: 标识一个有安全性警告的可变参数方法。</li>
 <li><code>@FunctionalInterface</code>: 标识一个接口只有一个抽象方法，可以作为lambda表达式的目标。</li>
 </ul>
-<ol>
+<ol start="2">
 <li>JSR-250: 这个JSR主要用于在Java EE 5中定义一些支持注解。该JSR主要定义了一些用于进行对象管理的注解，包括：</li>
 </ol>
 <ul>
@@ -1838,14 +2267,14 @@
 <li><code>@Resource.AuthenticationType</code>: 标识注入的资源的身份验证类型。</li>
 <li><code>@Resource.AuthenticationType</code>: 标识注入的资源的默认名称。</li>
 </ul>
-<ol>
+<ol start="3">
 <li>JSR-269: 这个JSR主要是Java SE 6中引入的一种支持编译时元数据处理的框架，即使用注解来处理Java源文件。该JSR定义了一些可以用注解标记的注解处理器，用于生成一些元数据，常用的注解有：</li>
 </ol>
 <ul>
 <li><code>@SupportedAnnotationTypes</code>: 标识注解处理器所处理的注解类型。</li>
 <li><code>@SupportedSourceVersion</code>: 标识注解处理器支持的Java源码版本。</li>
 </ul>
-<ol>
+<ol start="4">
 <li>JSR-330: 该JSR主要为Java应用程序定义了一个依赖注入的标准，即Java依赖注入标准（javax.inject）。在此规范中定义了多种注解，包括：</li>
 </ol>
 <ul>
@@ -1853,7 +2282,7 @@
 <li><code>@Inject</code>: 标识一个需要被注入的依赖组件。</li>
 <li><code>@Singleton</code>: 标识一个组件的生命周期只有一个唯一的实例。</li>
 </ul>
-<ol>
+<ol start="5">
 <li>JSR-250: 这个JSR主要是Java EE 5中定义一些支持注解。该JSR包含了一些支持注解，可以用于对Java EE组件进行管理，包括：</li>
 </ol>
 <ul>
@@ -1897,7 +2326,7 @@
 
 <h3 id="基于配置类方式管理-Bean"><a href="#基于配置类方式管理-Bean" class="headerlink" title="基于配置类方式管理 Bean"></a>基于配置类方式管理 Bean</h3><h4 id="完全注解开发理解"><a href="#完全注解开发理解" class="headerlink" title="完全注解开发理解"></a>完全注解开发理解</h4><p>  Spring 完全注解配置（Fully Annotation-based Configuration）是指通过 Java配置类 代码来配置 Spring 应用程序，使用注解来替代原本在 XML 配置文件中的配置。相对于 XML 配置，完全注解配置具有更强的类型安全性和更好的可读性。</p>
 <p>  <strong>两种方式思维转化</strong>：</p>
-<p>  <img src="https://secure2.wostatic.cn/static/uhRgky6LmFBAaYDJfS5SEm/image.png"></p>
+<p>  <img src="/../images/SSM/s5.png"></p>
 <h4 id="配置类和扫描注解"><a href="#配置类和扫描注解" class="headerlink" title="配置类和扫描注解"></a>配置类和扫描注解</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//标注当前类是配置类，替代application.xml    </span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="comment">//使用注解读取外部配置，替代 &lt;context:property-placeholder标签</span></span><br><span class="line"><span class="meta">@PropertySource(&quot;classpath:application.properties&quot;)</span></span><br><span class="line"><span class="comment">//使用@ComponentScan注解,可以配置扫描包,替代&lt;context:component-scan标签</span></span><br><span class="line"><span class="meta">@ComponentScan(value = &#123;&quot;com.wzh.components&quot;&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyConfiguration</span> &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <pre><code>测试创建IoC容器
@@ -2192,7 +2621,7 @@
 <ul>
 <li>第三位：方法返回值</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> String <span class="keyword">void</span> 直接描述返回值类型</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> String <span class="keyword">void</span> 直接描述返回值类型</span><br></pre></td></tr></table></figure>
 
 <pre><code>注意：
 
@@ -2209,14 +2638,15 @@
 <ul>
 <li>第五位：指定类名称</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">固定名称: UserService</span><br><span class="line">任意类名: *</span><br><span class="line">部分任意: com..service.impl.*Impl</span><br><span class="line">任意包任意类: *..*</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<pre><code>  - 第六位：指定方法名称
-</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">固定名称: UserService</span><br><span class="line">任意类名: *</span><br><span class="line">部分任意: com..service.impl.*Impl</span><br><span class="line">任意包任意类: *..*</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第六位：指定方法名称</li>
+</ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">语法和类名一致</span><br><span class="line">任意访问修饰符,任意类的任意方法: * *..*.*</span><br></pre></td></tr></table></figure>
 <ul>
 <li>第七位：方法参数</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">第七位: 方法的参数描述</span><br><span class="line">      具体值: (String,<span class="type">int</span>) != (<span class="type">int</span>,String) 没有参数 ()</span><br><span class="line">      模糊值: 任意参数 有 或者 没有 (..)  ..任意参数的意识</span><br><span class="line">      部分具体和模糊:</span><br><span class="line">        第一个参数是字符串的方法 (String..)</span><br><span class="line">        最后一个参数是字符串 (..String)</span><br><span class="line">        字符串开头,<span class="type">int</span>结尾 (String..<span class="type">int</span>)</span><br><span class="line">        包含<span class="type">int</span>类型(..<span class="type">int</span>..)</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">第七位: 方法的参数描述</span><br><span class="line">      具体值: (String,<span class="type">int</span>) != (<span class="type">int</span>,String) 没有参数 ()</span><br><span class="line">      模糊值: 任意参数 有 或者 没有 (..)  ..任意参数的意思</span><br><span class="line">      部分具体和模糊:</span><br><span class="line">        第一个参数是字符串的方法 (String..)</span><br><span class="line">        最后一个参数是字符串 (..String)</span><br><span class="line">        字符串开头,<span class="type">int</span>结尾 (String..<span class="type">int</span>)</span><br><span class="line">        包含<span class="type">int</span>类型(..<span class="type">int</span>..)</span><br></pre></td></tr></table></figure>
 
 <h4 id="重用（提取）切点表达式"><a href="#重用（提取）切点表达式" class="headerlink" title="重用（提取）切点表达式"></a>重用（提取）切点表达式</h4><ol>
 <li>重用切点表达式优点</li>
@@ -2236,9 +2666,11 @@
 </ol>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 切入点表达式重用</span></span><br><span class="line"><span class="meta">@Pointcut(&quot;execution(public int com.wzh.aop.api.Calculator.add(int,int)))</span><span class="string">&quot;)</span></span><br><span class="line"><span class="string">public void declarPointCut() &#123;&#125;</span></span><br></pre></td></tr></table></figure>
 
+
+
 <pre><code>  注意：提取切点注解使用@Pointcut(切点表达式) ， 需要添加到一个无参数无返回值方法上即可！
 
-  引用
+引用
 </code></pre>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Before(value = &quot;declarPointCut()&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">printLogBeforeCoreOperation</span><span class="params">(JoinPoint joinPoint)</span> &#123;</span><br></pre></td></tr></table></figure>
 <ol start="3">
@@ -2635,7 +3067,7 @@ d.  如果没有接口,类进行接值
 </ul>
 </li>
 </ul>
-<p>  我们可以在mybatis的配置文件使用<strong>settings标签</strong>设置，输出运过程SQL日志！</p>
+<p>  我们可以在mybatis的配置文件使用<strong>settings标签</strong>设置，输出运行过程SQL日志！</p>
 <p>  通过查看日志，我们可以判定#{} 和 ${}的输出效果！<br>  日志配置：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- SLF4J 选择slf4j输出！ --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">&quot;logImpl&quot;</span> <span class="attr">value</span>=<span class="string">&quot;SLF4J&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
@@ -2925,10 +3357,13 @@ resultType = &quot;全限定符 ｜ 别名 ｜ 如果是返回集合类型，写
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 编写具体的SQL语句，使用id属性唯一的标记一条SQL语句 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- resultType属性：指定封装查询结果的Java实体类的全类名 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;selectEmployee&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;com.atguigu.mybatis.entity.Employee&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Mybatis负责把SQL语句中的#&#123;&#125;部分替换成“?”占位符 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 给每一个字段设置一个别名，让别名和Java实体类中属性名一致 --&gt;</span></span><br><span class="line">select emp_id empId,emp_name empName,emp_salary empSalary from t_emp where emp_id=#&#123;maomi&#125;</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p>关于实体类属性的约定：getXxx()方法、setXxx()方法把方法名中的get或set去掉，首字母小写。<br>2. 全局配置自动识别驼峰式命名规则</p>
+<p>关于实体类属性的约定：getXxx()方法、setXxx()方法把方法名中的get或set去掉，首字母小写。  </p>
 </blockquote>
-<pre><code>在Mybatis全局配置文件加入如下配置：
-</code></pre>
+<ol start="2">
+<li><p>全局配置自动识别驼峰式命名规则</p>
+<p> 在Mybatis全局配置文件加入如下配置：</p>
+</li>
+</ol>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 使用settings对Mybatis全局进行设置 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 将xxx_xxx这样的列名自动映射到xxXxx这样驼峰式命名的属性名 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">setting</span> <span class="attr">name</span>=<span class="string">&quot;mapUnderscoreToCamelCase&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>  SQL语句中可以不使用别名</p>
@@ -4792,19 +5227,21 @@ MyBatis 创建一个预处理语句（PreparedStatement）参数，在 JDBC 中�
 
 <pre><code>使用MyBatis-Plus的条件构造器，你可以构建灵活、高效的查询条件，而不需要手动编写复杂的 SQL 语句。它提供了许多方法来支持各种条件操作符，并且可以通过链式调用来组合多个条件。这样可以简化查询的编写过程，并提高开发效率。
 </code></pre>
-<h4 id="条件构造器继承结构"><a href="#条件构造器继承结构" class="headerlink" title="条件构造器继承结构"></a>条件构造器继承结构</h4><pre><code>条件构造器类结构：
-
-![](/images/SSM/mp-1.png)
-
-Wrapper ： 条件构造抽象类，最顶端父类
-
-- AbstractWrapper ： 用于查询条件封装，生成 sql 的 where 条件
-    - QueryWrapper ： 查询/删除条件封装
-    - UpdateWrapper ： 修改条件封装
-    - AbstractLambdaWrapper ： 使用Lambda 语法
-        - LambdaQueryWrapper ：用于Lambda语法使用的查询Wrapper
-        - LambdaUpdateWrapper ： Lambda 更新封装Wrapper
-</code></pre>
+<h4 id="条件构造器继承结构"><a href="#条件构造器继承结构" class="headerlink" title="条件构造器继承结构"></a>条件构造器继承结构</h4><p>  条件构造器类结构：</p>
+<p>  <img src="/../images/SSM/mp-1.png"></p>
+<p>  Wrapper ： 条件构造抽象类，最顶端父类</p>
+<ul>
+<li>AbstractWrapper ： 用于查询条件封装，生成 sql 的 where 条件<ul>
+<li>QueryWrapper ： 查询&#x2F;删除条件封装</li>
+<li>UpdateWrapper ： 修改条件封装</li>
+<li>AbstractLambdaWrapper ： 使用Lambda 语法<ul>
+<li>LambdaQueryWrapper ：用于Lambda语法使用的查询Wrapper</li>
+<li>LambdaUpdateWrapper ： Lambda 更新封装Wrapper</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <h4 id="基于QueryWrapper-组装条件"><a href="#基于QueryWrapper-组装条件" class="headerlink" title="基于QueryWrapper 组装条件"></a>基于QueryWrapper 组装条件</h4><pre><code>组装查询条件：
 </code></pre>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test01</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="comment">//查询用户名包含a，年龄在20到30之间，并且邮箱不为null的用户信息</span></span><br><span class="line">    <span class="comment">//SELECT id,username AS name,age,email,is_deleted FROM t_user WHERE is_deleted=0 AND (username LIKE ? AND age BETWEEN ? AND ? AND email IS NOT NULL)</span></span><br><span class="line">    QueryWrapper&lt;User&gt; queryWrapper = <span class="keyword">new</span> <span class="title class_">QueryWrapper</span>&lt;&gt;();</span><br><span class="line">    queryWrapper.like(<span class="string">&quot;username&quot;</span>, <span class="string">&quot;a&quot;</span>)</span><br><span class="line">            .between(<span class="string">&quot;age&quot;</span>, <span class="number">20</span>, <span class="number">30</span>)</span><br><span class="line">            .isNotNull(<span class="string">&quot;email&quot;</span>);</span><br><span class="line">    List&lt;User&gt; list = userMapper.selectList(queryWrapper);</span><br><span class="line">    list.forEach(System.out::println);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -4843,10 +5280,10 @@ Wrapper ： 条件构造抽象类，最顶端父类
 
   
 </code></pre>
-<h4 id="基于LambdaQueryWrapper组装条件"><a href="#基于LambdaQueryWrapper组装条件" class="headerlink" title="基于LambdaQueryWrapper组装条件"></a>基于LambdaQueryWrapper组装条件</h4><pre><code>1. **LambdaQueryWrapper对比QueryWrapper优势**
-
-QueryWrapper 示例代码：
-</code></pre>
+<h4 id="基于LambdaQueryWrapper组装条件"><a href="#基于LambdaQueryWrapper组装条件" class="headerlink" title="基于LambdaQueryWrapper组装条件"></a>基于LambdaQueryWrapper组装条件</h4><ol>
+<li><strong>LambdaQueryWrapper对比QueryWrapper优势</strong></li>
+</ol>
+<p>  QueryWrapper 示例代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">QueryWrapper&lt;User&gt; queryWrapper = <span class="keyword">new</span> <span class="title class_">QueryWrapper</span>&lt;&gt;();</span><br><span class="line">queryWrapper.eq(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;John&quot;</span>)</span><br><span class="line">  .ge(<span class="string">&quot;age&quot;</span>, <span class="number">18</span>)</span><br><span class="line">  .orderByDesc(<span class="string">&quot;create_time&quot;</span>)</span><br><span class="line">  .last(<span class="string">&quot;limit 10&quot;</span>);</span><br><span class="line">List&lt;User&gt; userList = userMapper.selectList(queryWrapper);</span><br></pre></td></tr></table></figure>
 
 <pre><code>LambdaQueryWrapper 示例代码：
@@ -6195,213 +6632,6 @@ Web容器：
 </article>
 
 
-  <article id="post-Dialog-Papers" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/04/27/Dialog-Papers/">Dialog Papers</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2023-04-27T09:05:08.000Z" itemprop="datePublished">2023年04月27日</time>
-</span>
-      
-      
-      
-<a href="/2023/04/27/Dialog-Papers/#comments" class="article-comment-link">
-  
-  <i class="fa fa-commt"></i>
-  Guestbook
-</a>
-
-
-      
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="1-Target-Guided-Open-Domain-Conversation-ACL-2019"><a href="#1-Target-Guided-Open-Domain-Conversation-ACL-2019" class="headerlink" title="1 Target-Guided Open-Domain Conversation(ACL 2019)"></a>1 Target-Guided Open-Domain Conversation(ACL 2019)</h1><blockquote>
-<p>code: <a target="_blank" rel="noopener" href="https://github.com/squareRoot3/Target-Guided-Conversation">https://github.com/squareRoot3/Target-Guided-Conversation</a>  </p>
-</blockquote>
-<ul>
-<li>motivation:  we want a conversational system to chat naturally with human and proactively guide the conversation to a designated target subject</li>
-</ul>
-<p><img src="/./images/dialog/1.png">  </p>
-<ul>
-<li>approach:   <ol>
-<li>propose a structured approach that introduces coarse-grained keywords to control the intended content of system responses.  </li>
-<li>then attain smooth conversation transition through turn-level supervised learning, and drive the conversation towards the target with<br>  discourse-level constraints. </li>
-<li>further derive a keyword-augmented conversation dataset for the study.</li>
-</ol>
-</li>
-</ul>
-<p><img src="/./images/dialog/2.png">  </p>
-<p>divide-and-conquer approach  </p>
-<h2 id="Turn-level-Keyword-Transition"><a href="#Turn-level-Keyword-Transition" class="headerlink" title="Turn-level Keyword Transition"></a>Turn-level Keyword Transition</h2><p>this module aims to predict keywords of the next response that is appropriate in the conversation context. This part is agnostic to the end target,and therefore aligns with the conventional chitchat objective. We thus can use any open-ended chat data with extracted utterance keywords to<br>learn the prediction module in a supervised manner.  </p>
-<h3 id="Pairwise-PMI-based-Transition"><a href="#Pairwise-PMI-based-Transition" class="headerlink" title="Pairwise PMI-based Transition"></a>Pairwise PMI-based Transition</h3><p>given two keywords wi and wj , computes likeliness of wj → wi:  </p>
-<blockquote>
-<p>PMI(wi, wj ) &#x3D; log p(wi|wj )&#x2F;p(wi)  </p>
-</blockquote>
-<p>where p(wi|wj ) is the ratio of transitioning to wi in the next turn given wj in the current turn, and p(wi) is the ratio of wi occurrence.  </p>
-<ul>
-<li>The approach enjoys simplicity and interpretability, yet can suffer from data sparsity and perform poorly with a priori unseen transition pairs.</li>
-</ul>
-<h3 id="Neural-based-Prediction"><a href="#Neural-based-Prediction" class="headerlink" title="Neural-based Prediction"></a>Neural-based Prediction</h3><p>first use a recurrent network to encode the conversation history, and feed the resulting features to a prediction layer to obtain a distribution over keywords for the next turn.The network is learned by maximizing the likelihood of observed keywords in the data.   </p>
-<ul>
-<li>The neural approach is straightforward, but can rely on a large amount of data for learning.</li>
-</ul>
-<h3 id="Hybrid-Kernel-based-Method"><a href="#Hybrid-Kernel-based-Method" class="headerlink" title="Hybrid Kernel-based Method*"></a>Hybrid Kernel-based Method*</h3><p>given a pair of a current keyword and a candidate next keyword, by first measuring the cosine similarity of their normalized word embeddings, and feeding the quantity to a kernel layer consisting of K RBF kernels.The output of the kernel layer is a K-dimension kernel feature vector, which is then fed to a single-unit dense layer for a candidate score.The score is finally normalized across all candidate keywords to yield the candidate probability distribution.  </p>
-<h2 id="Discourse-level-Target-Guided-Strategy"><a href="#Discourse-level-Target-Guided-Strategy" class="headerlink" title="Discourse-level Target-Guided Strategy"></a>Discourse-level Target-Guided Strategy</h2><p>This module aims to fulfill the end target by proactively driving the discussion topic forward in the course of the conversation.</p>
-<ol>
-<li>constrain that the keyword of each turn must move strictly closer to the end target compared to those of preceding turns.  </li>
-<li>use cosine similarity between normalized word embeddings as the measure of keyword closeness.  </li>
-<li>the above constraint first collects a set of valid candidates, and the turn-level transition module samples or picks the most likely one the from the set according to the keyword distribution.</li>
-</ol>
-<ul>
-<li>the predicted keyword for next response can be both a smooth transition and an effective step towards the target.</li>
-</ul>
-<h2 id="Keyword-augmented-Response-Retrieval"><a href="#Keyword-augmented-Response-Retrieval" class="headerlink" title="Keyword-augmented Response Retrieval"></a>Keyword-augmented Response Retrieval</h2><p>The final module in the system aims to produce a response conditioning on both the conversation history and the predicted keyword.  </p>
-<ul>
-<li>retrieval-based approach* or generation-based method</li>
-</ul>
-<h2 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h2><p>the PersonaChat corpus:  </p>
-<ul>
-<li>The conversations cover a broadrange of topics such as work, family, personal interest, etc; and the discussion topics change frequently during the course of the conversations.These properties make the conversations particularly suitable for learning smooth, natural transitions at each turn.  </li>
-<li>without end targets and do not exhibit target-guided behaviors</li>
-</ul>
-<p>*apply a rule-based keyword extractor which combines TF-IDF and Part-Of Speech features for scoring word salience  </p>
-<p><img src="/./images/dialog/3.png">   </p>
-<h2 id="Case-Study"><a href="#Case-Study" class="headerlink" title="Case Study"></a>Case Study</h2><p><img src="/./images/dialog/4.png">   </p>
-<h1 id="2-Target-Guided-Open-Domain-Conversation-Planning-COLING-2022"><a href="#2-Target-Guided-Open-Domain-Conversation-Planning-COLING-2022" class="headerlink" title="2 Target-Guided Open-Domain Conversation Planning (COLING 2022)"></a>2 Target-Guided Open-Domain Conversation Planning (COLING 2022)</h1><blockquote>
-<p>code:<a target="_blank" rel="noopener" href="https://github.com/y-kishinami/TGCP">https://github.com/y-kishinami/TGCP</a></p>
-</blockquote>
-<ul>
-<li><p>motivation: Prior studies addressing target-oriented conversational tasks lack a crucial notion that has been intensively studied in the context of goaloriented artificial intelligence agents, namely,<em><strong>planning</strong></em>  </p>
-</li>
-<li><p>contributions:</p>
-</li>
-</ul>
-<ol>
-<li>propose the TGCP task as a framework to assess the prerequisite ability of a model for goal-oriented conversation planning</li>
-</ol>
-<p><img src="/./images/dialog/5.png">  </p>
-<ol start="2">
-<li>conduct a set of experiments on the TGCP framework using<br>several existing retrieval-based neural models and recently proposed strong generative neural models of conversational agents</li>
-</ol>
-<p><img src="/./images/dialog/6.png">  </p>
-<ol start="3">
-<li>Our experimental results reveal the challenges facing current technology</li>
-</ol>
-<p><img src="/./images/dialog/7.png">   </p>
-<ul>
-<li>Using TGCP, we revealed that the dialogue models with current technology have difficulty planning conversations to achieve given goals while ensuring the naturalness of the conversation.  </li>
-<li>The experimental results also showed that refining the subgoal strategies for generative models might be an effective method to overcome this trade-off.</li>
-</ul>
-<h1 id="3-Conversational-Graph-Grounded-Policy-Learning-for-Open-Domain-Conversation-Generation-ACL-2020"><a href="#3-Conversational-Graph-Grounded-Policy-Learning-for-Open-Domain-Conversation-Generation-ACL-2020" class="headerlink" title="3 Conversational Graph Grounded Policy Learning for Open-Domain Conversation Generation(ACL 2020)"></a>3 Conversational Graph Grounded Policy Learning for Open-Domain Conversation Generation(ACL 2020)</h1><ul>
-<li>motivation:  utterance-level methods tend to produce less coherent multi-turn dialogs since it is quite challenging to learn semantic transitions in a dialog flow merely from dialog data without the help of prior information  </li>
-<li>approach：propose to represent prior information about dialog transitions as a graph and learn a graph grounded dialog policy, aimed at fostering a more coherent and controllable dialog.  <ol>
-<li>a Conversational Graph (CG) that captures both localappropriateness and global-coherence information,</li>
-<li>a reinforcement learning (RL) based policy，model that learns to leverage the CG to foster a more coherent dialog.</li>
-</ol>
-</li>
-</ul>
-<p><img src="/./images/dialog/9.png">  </p>
-<h2 id="Conversational-Graph-CG"><a href="#Conversational-Graph-CG" class="headerlink" title="Conversational Graph (CG)"></a>Conversational Graph (CG)</h2><p>use vertices to represent utterance content, and edges to represent dialog transitions between utterances：</p>
-<ol>
-<li>a what-vertex that contains a keyword  </li>
-<li>a how-vertex that contains a responding mechanism (from a multi-mapping based generator) to capture rich variability of expressions<br>also use this multi-mapping based method to build edges between two what-vertices to capture the local-appropriateness between the two keywords as a message and a response respectively</li>
-</ol>
-<p><img src="/./images/dialog/10.png">  </p>
-<ul>
-<li>Given a user message, to obtain candidate actions, the NLU module attempts to retrieve contextually relevant subgraphs from CG.   </li>
-<li>The state&#x2F;action module maintains candidate actions, history keywords that selected by policy at previous turns or mentioned by user, and the message.   </li>
-<li>The policy module learns to select a response keyword and a<br>responding mechanism from the above subgraphs.</li>
-<li>The NLG module first encodes the message into a representation using a message encoder and the selected mechanism, and then employs a Seq2BF<br>model (Mou et al., 2016) to produce a response with the above representation and the selected keyword as input.</li>
-</ul>
-<h2 id="Background-Multi-mapping-Generator-for-NLG"><a href="#Background-Multi-mapping-Generator-for-NLG" class="headerlink" title="Background: Multi-mapping Generator for NLG"></a>Background: Multi-mapping Generator for NLG</h2><p><img src="/./images/dialog/11.png">  </p>
-<h2 id="CG-Construction"><a href="#CG-Construction" class="headerlink" title="CG Construction"></a>CG Construction</h2><p>Given a dialog corpus D, we construct the CG with three steps: </p>
-<ol>
-<li>what-vertex construction:use a rule-based keyword extractor to obtain salient keywords from utterances in D</li>
-<li>how-vertex construction: a set of responding mechanisms from the generator</li>
-<li>edge construction:  <ul>
-<li>One is to join two what-vertices:selecting top five keywords decoded (decoding length is 1) by each responding mechanism</li>
-<li>the other is to join a what-vertex and a how-vertex:use the ground-truth response to select the most suitable mechanism for each keyword.select top five mechanisms that are frequently selected for vw’s keyword</li>
-</ul>
-</li>
-</ol>
-<h2 id="NLU"><a href="#NLU" class="headerlink" title="NLU"></a>NLU</h2><p>To obtain subgraphs to provide high-quality candidate actions:</p>
-<ol>
-<li>extract keywords in the last utterance of the context (message) using the same tool in CG construction  </li>
-<li>link each keyword to the CG through exact string matching, to obtain multiple hit what-vertices  </li>
-<li>retrieve a subgraph for each keyword, and use vertices (exclude hit what-vertices) in these subgraphs as candidate actions</li>
-</ol>
-<h2 id="State-x2F-Action"><a href="#State-x2F-Action" class="headerlink" title="State&#x2F;Action"></a>State&#x2F;Action</h2><p>This module maintains candidate actions, history keywords that selected by the policy or mentioned by user, and the message.  </p>
-<h2 id="Policy"><a href="#Policy" class="headerlink" title="Policy"></a>Policy</h2><ul>
-<li>State representation： concatenate a message representation and a history keywords representation + a graph attention mechanism and graph embedding to encode global structure information into state representation  </li>
-<li>Policy decision：  <ol>
-<li>what-policy selects a what-vertex from candidate what-vertices  </li>
-<li>how-policy selects a how-vertex from how-vertex neighbors of the selected what-vertex</li>
-</ol>
-</li>
-</ul>
-<h2 id="Rewards"><a href="#Rewards" class="headerlink" title="Rewards"></a>Rewards</h2><p>utterance-level rewards:</p>
-<ol>
-<li>Local relevance：DualEncoder in (Lowe et al., 2015)  </li>
-<li>Repetition：Repetition penalty is 1 if the generated response shares more than 60% words with any contextual utterances, otherwise 0  </li>
-<li>Target similarity：calculate cosine similarity between the chosen keyword and the target word in pretrained word embedding space as target similarity</li>
-</ol>
-<p>To leverage the global graph structure information of CG to facilitate policy learning：  </p>
-<ol>
-<li>Global coherence： the average cosine distance between the chosen what-vertex and one of history what-vertices (selected or mentioned previously) in TransE based embedding space  </li>
-<li>Sustainability： calculate a PageRank score (calculated on the full CG) for the chosen whatvertex  </li>
-<li>Shortest path distance to the target：closer 1;otherwise 0;not change -1</li>
-</ol>
-<h2 id="NLG"><a href="#NLG" class="headerlink" title="NLG"></a>NLG</h2><p>feed the keyword in the selected what-vertex and r¯ into a Seq2BF decoder (Mou et al., 2016) for response generation.  </p>
-<p><img src="/./images/dialog/12.png"> </p>
-
-        
-        
-          <blockquote id="copyright">
-              <p>Original link: <a href="http://example.com/index.html">http://example.com/index.html</a></p>
-              <p>Copyright Notice: 转载请注明出处.</p>
-          </blockquote>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <div class="article-tag-wrap">
-          
-
-          
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dialog/" rel="tag">Dialog</a></li></ul>
-
-          
-    <div class="social-share">
-      <span>Share:</span>
-    </div>
-
-
-
-        </div>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
 
     <nav id="page-nav">
 
@@ -6420,6 +6650,10 @@ Web容器：
       <ul>
         
           <li>
+            <a href="/2024/09/04/offer-%E5%BE%AE%E6%9C%8D%E5%8A%A1/">offer-微服务</a>
+          </li>
+        
+          <li>
             <a href="/2024/07/04/redis7/">redis7</a>
           </li>
         
@@ -6433,10 +6667,6 @@ Web容器：
         
           <li>
             <a href="/2024/03/11/offer-JVM/">offer-JVM</a>
-          </li>
-        
-          <li>
-            <a href="/2023/08/29/offer-SSM/">offer-SSM</a>
           </li>
         
       </ul>
@@ -6461,7 +6691,7 @@ Web容器：
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> Archive</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">17</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">17</span></li></ul>
     </div>
   </div>
 

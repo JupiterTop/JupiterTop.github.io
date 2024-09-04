@@ -83,6 +83,213 @@
 
       <div class="outer">
         <section id="main">
+  <article id="post-Dialog-Papers" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/04/27/Dialog-Papers/">Dialog Papers</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-04-27T09:05:08.000Z" itemprop="datePublished">2023年04月27日</time>
+</span>
+      
+      
+      
+<a href="/2023/04/27/Dialog-Papers/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Guestbook
+</a>
+
+
+      
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="1-Target-Guided-Open-Domain-Conversation-ACL-2019"><a href="#1-Target-Guided-Open-Domain-Conversation-ACL-2019" class="headerlink" title="1 Target-Guided Open-Domain Conversation(ACL 2019)"></a>1 Target-Guided Open-Domain Conversation(ACL 2019)</h1><blockquote>
+<p>code: <a target="_blank" rel="noopener" href="https://github.com/squareRoot3/Target-Guided-Conversation">https://github.com/squareRoot3/Target-Guided-Conversation</a>  </p>
+</blockquote>
+<ul>
+<li>motivation:  we want a conversational system to chat naturally with human and proactively guide the conversation to a designated target subject</li>
+</ul>
+<p><img src="/./images/dialog/1.png">  </p>
+<ul>
+<li>approach:   <ol>
+<li>propose a structured approach that introduces coarse-grained keywords to control the intended content of system responses.  </li>
+<li>then attain smooth conversation transition through turn-level supervised learning, and drive the conversation towards the target with<br>  discourse-level constraints. </li>
+<li>further derive a keyword-augmented conversation dataset for the study.</li>
+</ol>
+</li>
+</ul>
+<p><img src="/./images/dialog/2.png">  </p>
+<p>divide-and-conquer approach  </p>
+<h2 id="Turn-level-Keyword-Transition"><a href="#Turn-level-Keyword-Transition" class="headerlink" title="Turn-level Keyword Transition"></a>Turn-level Keyword Transition</h2><p>this module aims to predict keywords of the next response that is appropriate in the conversation context. This part is agnostic to the end target,and therefore aligns with the conventional chitchat objective. We thus can use any open-ended chat data with extracted utterance keywords to<br>learn the prediction module in a supervised manner.  </p>
+<h3 id="Pairwise-PMI-based-Transition"><a href="#Pairwise-PMI-based-Transition" class="headerlink" title="Pairwise PMI-based Transition"></a>Pairwise PMI-based Transition</h3><p>given two keywords wi and wj , computes likeliness of wj → wi:  </p>
+<blockquote>
+<p>PMI(wi, wj ) &#x3D; log p(wi|wj )&#x2F;p(wi)  </p>
+</blockquote>
+<p>where p(wi|wj ) is the ratio of transitioning to wi in the next turn given wj in the current turn, and p(wi) is the ratio of wi occurrence.  </p>
+<ul>
+<li>The approach enjoys simplicity and interpretability, yet can suffer from data sparsity and perform poorly with a priori unseen transition pairs.</li>
+</ul>
+<h3 id="Neural-based-Prediction"><a href="#Neural-based-Prediction" class="headerlink" title="Neural-based Prediction"></a>Neural-based Prediction</h3><p>first use a recurrent network to encode the conversation history, and feed the resulting features to a prediction layer to obtain a distribution over keywords for the next turn.The network is learned by maximizing the likelihood of observed keywords in the data.   </p>
+<ul>
+<li>The neural approach is straightforward, but can rely on a large amount of data for learning.</li>
+</ul>
+<h3 id="Hybrid-Kernel-based-Method"><a href="#Hybrid-Kernel-based-Method" class="headerlink" title="Hybrid Kernel-based Method*"></a>Hybrid Kernel-based Method*</h3><p>given a pair of a current keyword and a candidate next keyword, by first measuring the cosine similarity of their normalized word embeddings, and feeding the quantity to a kernel layer consisting of K RBF kernels.The output of the kernel layer is a K-dimension kernel feature vector, which is then fed to a single-unit dense layer for a candidate score.The score is finally normalized across all candidate keywords to yield the candidate probability distribution.  </p>
+<h2 id="Discourse-level-Target-Guided-Strategy"><a href="#Discourse-level-Target-Guided-Strategy" class="headerlink" title="Discourse-level Target-Guided Strategy"></a>Discourse-level Target-Guided Strategy</h2><p>This module aims to fulfill the end target by proactively driving the discussion topic forward in the course of the conversation.</p>
+<ol>
+<li>constrain that the keyword of each turn must move strictly closer to the end target compared to those of preceding turns.  </li>
+<li>use cosine similarity between normalized word embeddings as the measure of keyword closeness.  </li>
+<li>the above constraint first collects a set of valid candidates, and the turn-level transition module samples or picks the most likely one the from the set according to the keyword distribution.</li>
+</ol>
+<ul>
+<li>the predicted keyword for next response can be both a smooth transition and an effective step towards the target.</li>
+</ul>
+<h2 id="Keyword-augmented-Response-Retrieval"><a href="#Keyword-augmented-Response-Retrieval" class="headerlink" title="Keyword-augmented Response Retrieval"></a>Keyword-augmented Response Retrieval</h2><p>The final module in the system aims to produce a response conditioning on both the conversation history and the predicted keyword.  </p>
+<ul>
+<li>retrieval-based approach* or generation-based method</li>
+</ul>
+<h2 id="Dataset"><a href="#Dataset" class="headerlink" title="Dataset"></a>Dataset</h2><p>the PersonaChat corpus:  </p>
+<ul>
+<li>The conversations cover a broadrange of topics such as work, family, personal interest, etc; and the discussion topics change frequently during the course of the conversations.These properties make the conversations particularly suitable for learning smooth, natural transitions at each turn.  </li>
+<li>without end targets and do not exhibit target-guided behaviors</li>
+</ul>
+<p>*apply a rule-based keyword extractor which combines TF-IDF and Part-Of Speech features for scoring word salience  </p>
+<p><img src="/./images/dialog/3.png">   </p>
+<h2 id="Case-Study"><a href="#Case-Study" class="headerlink" title="Case Study"></a>Case Study</h2><p><img src="/./images/dialog/4.png">   </p>
+<h1 id="2-Target-Guided-Open-Domain-Conversation-Planning-COLING-2022"><a href="#2-Target-Guided-Open-Domain-Conversation-Planning-COLING-2022" class="headerlink" title="2 Target-Guided Open-Domain Conversation Planning (COLING 2022)"></a>2 Target-Guided Open-Domain Conversation Planning (COLING 2022)</h1><blockquote>
+<p>code:<a target="_blank" rel="noopener" href="https://github.com/y-kishinami/TGCP">https://github.com/y-kishinami/TGCP</a></p>
+</blockquote>
+<ul>
+<li><p>motivation: Prior studies addressing target-oriented conversational tasks lack a crucial notion that has been intensively studied in the context of goaloriented artificial intelligence agents, namely,<em><strong>planning</strong></em>  </p>
+</li>
+<li><p>contributions:</p>
+</li>
+</ul>
+<ol>
+<li>propose the TGCP task as a framework to assess the prerequisite ability of a model for goal-oriented conversation planning</li>
+</ol>
+<p><img src="/./images/dialog/5.png">  </p>
+<ol start="2">
+<li>conduct a set of experiments on the TGCP framework using<br>several existing retrieval-based neural models and recently proposed strong generative neural models of conversational agents</li>
+</ol>
+<p><img src="/./images/dialog/6.png">  </p>
+<ol start="3">
+<li>Our experimental results reveal the challenges facing current technology</li>
+</ol>
+<p><img src="/./images/dialog/7.png">   </p>
+<ul>
+<li>Using TGCP, we revealed that the dialogue models with current technology have difficulty planning conversations to achieve given goals while ensuring the naturalness of the conversation.  </li>
+<li>The experimental results also showed that refining the subgoal strategies for generative models might be an effective method to overcome this trade-off.</li>
+</ul>
+<h1 id="3-Conversational-Graph-Grounded-Policy-Learning-for-Open-Domain-Conversation-Generation-ACL-2020"><a href="#3-Conversational-Graph-Grounded-Policy-Learning-for-Open-Domain-Conversation-Generation-ACL-2020" class="headerlink" title="3 Conversational Graph Grounded Policy Learning for Open-Domain Conversation Generation(ACL 2020)"></a>3 Conversational Graph Grounded Policy Learning for Open-Domain Conversation Generation(ACL 2020)</h1><ul>
+<li>motivation:  utterance-level methods tend to produce less coherent multi-turn dialogs since it is quite challenging to learn semantic transitions in a dialog flow merely from dialog data without the help of prior information  </li>
+<li>approach：propose to represent prior information about dialog transitions as a graph and learn a graph grounded dialog policy, aimed at fostering a more coherent and controllable dialog.  <ol>
+<li>a Conversational Graph (CG) that captures both localappropriateness and global-coherence information,</li>
+<li>a reinforcement learning (RL) based policy，model that learns to leverage the CG to foster a more coherent dialog.</li>
+</ol>
+</li>
+</ul>
+<p><img src="/./images/dialog/9.png">  </p>
+<h2 id="Conversational-Graph-CG"><a href="#Conversational-Graph-CG" class="headerlink" title="Conversational Graph (CG)"></a>Conversational Graph (CG)</h2><p>use vertices to represent utterance content, and edges to represent dialog transitions between utterances：</p>
+<ol>
+<li>a what-vertex that contains a keyword  </li>
+<li>a how-vertex that contains a responding mechanism (from a multi-mapping based generator) to capture rich variability of expressions<br>also use this multi-mapping based method to build edges between two what-vertices to capture the local-appropriateness between the two keywords as a message and a response respectively</li>
+</ol>
+<p><img src="/./images/dialog/10.png">  </p>
+<ul>
+<li>Given a user message, to obtain candidate actions, the NLU module attempts to retrieve contextually relevant subgraphs from CG.   </li>
+<li>The state&#x2F;action module maintains candidate actions, history keywords that selected by policy at previous turns or mentioned by user, and the message.   </li>
+<li>The policy module learns to select a response keyword and a<br>responding mechanism from the above subgraphs.</li>
+<li>The NLG module first encodes the message into a representation using a message encoder and the selected mechanism, and then employs a Seq2BF<br>model (Mou et al., 2016) to produce a response with the above representation and the selected keyword as input.</li>
+</ul>
+<h2 id="Background-Multi-mapping-Generator-for-NLG"><a href="#Background-Multi-mapping-Generator-for-NLG" class="headerlink" title="Background: Multi-mapping Generator for NLG"></a>Background: Multi-mapping Generator for NLG</h2><p><img src="/./images/dialog/11.png">  </p>
+<h2 id="CG-Construction"><a href="#CG-Construction" class="headerlink" title="CG Construction"></a>CG Construction</h2><p>Given a dialog corpus D, we construct the CG with three steps: </p>
+<ol>
+<li>what-vertex construction:use a rule-based keyword extractor to obtain salient keywords from utterances in D</li>
+<li>how-vertex construction: a set of responding mechanisms from the generator</li>
+<li>edge construction:  <ul>
+<li>One is to join two what-vertices:selecting top five keywords decoded (decoding length is 1) by each responding mechanism</li>
+<li>the other is to join a what-vertex and a how-vertex:use the ground-truth response to select the most suitable mechanism for each keyword.select top five mechanisms that are frequently selected for vw’s keyword</li>
+</ul>
+</li>
+</ol>
+<h2 id="NLU"><a href="#NLU" class="headerlink" title="NLU"></a>NLU</h2><p>To obtain subgraphs to provide high-quality candidate actions:</p>
+<ol>
+<li>extract keywords in the last utterance of the context (message) using the same tool in CG construction  </li>
+<li>link each keyword to the CG through exact string matching, to obtain multiple hit what-vertices  </li>
+<li>retrieve a subgraph for each keyword, and use vertices (exclude hit what-vertices) in these subgraphs as candidate actions</li>
+</ol>
+<h2 id="State-x2F-Action"><a href="#State-x2F-Action" class="headerlink" title="State&#x2F;Action"></a>State&#x2F;Action</h2><p>This module maintains candidate actions, history keywords that selected by the policy or mentioned by user, and the message.  </p>
+<h2 id="Policy"><a href="#Policy" class="headerlink" title="Policy"></a>Policy</h2><ul>
+<li>State representation： concatenate a message representation and a history keywords representation + a graph attention mechanism and graph embedding to encode global structure information into state representation  </li>
+<li>Policy decision：  <ol>
+<li>what-policy selects a what-vertex from candidate what-vertices  </li>
+<li>how-policy selects a how-vertex from how-vertex neighbors of the selected what-vertex</li>
+</ol>
+</li>
+</ul>
+<h2 id="Rewards"><a href="#Rewards" class="headerlink" title="Rewards"></a>Rewards</h2><p>utterance-level rewards:</p>
+<ol>
+<li>Local relevance：DualEncoder in (Lowe et al., 2015)  </li>
+<li>Repetition：Repetition penalty is 1 if the generated response shares more than 60% words with any contextual utterances, otherwise 0  </li>
+<li>Target similarity：calculate cosine similarity between the chosen keyword and the target word in pretrained word embedding space as target similarity</li>
+</ol>
+<p>To leverage the global graph structure information of CG to facilitate policy learning：  </p>
+<ol>
+<li>Global coherence： the average cosine distance between the chosen what-vertex and one of history what-vertices (selected or mentioned previously) in TransE based embedding space  </li>
+<li>Sustainability： calculate a PageRank score (calculated on the full CG) for the chosen whatvertex  </li>
+<li>Shortest path distance to the target：closer 1;otherwise 0;not change -1</li>
+</ol>
+<h2 id="NLG"><a href="#NLG" class="headerlink" title="NLG"></a>NLG</h2><p>feed the keyword in the selected what-vertex and r¯ into a Seq2BF decoder (Mou et al., 2016) for response generation.  </p>
+<p><img src="/./images/dialog/12.png"> </p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Original link: <a href="http://example.com/page/2/index.html">http://example.com/page/2/index.html</a></p>
+              <p>Copyright Notice: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dialog/" rel="tag">Dialog</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Share:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
   <article id="post-offer-Java" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -250,7 +457,7 @@
 <p>④ 开发中，凡是可以使用条件运算符的位置，都可以改写为if-else。<br>          反之，能使用if-else结构，不一定能改写为条件运算符。</p>
 <p>  建议，在二者都能使用的情况下，推荐使用条件运算符。因为执行效率稍高。  </p>
 <h2 id="企业真题（二）"><a href="#企业真题（二）" class="headerlink" title="企业真题（二）"></a>企业真题（二）</h2><h3 id="1-高效的方式计算2-8的值-文-辉、轮-科技"><a href="#1-高效的方式计算2-8的值-文-辉、轮-科技" class="headerlink" title="1. 高效的方式计算2 * 8的值 (文**辉、轮*科技)"></a>1. 高效的方式计算2 * 8的值 (文**辉、轮*科技)</h3><p>使用 &lt;&lt; </p>
-<h3 id="2-amp-和-amp-amp-的区别？-恒-电子、-度"><a href="#2-amp-和-amp-amp-的区别？-恒-电子、-度" class="headerlink" title="2. &amp;和&amp;&amp;的区别？(恒*电子、*度)"></a>2. &amp;和&amp;&amp;的区别？(恒*电子、*度)</h3><p>略</p>
+<h3 id="2-amp-和-amp-amp-的区别？-恒-电子、-度"><a href="#2-amp-和-amp-amp-的区别？-恒-电子、-度" class="headerlink" title="2. &amp;和&amp;&amp;的区别？(恒*电子、*度)"></a>2. &amp;和&amp;&amp;的区别？(恒*电子、*度)</h3><p>1、相同点：两个符号表达的都是”且”的关系。只有当符号左右两边的类型值均为true时，结果才为true。<br>2、执行过程：<br>  1）如果符号左边是true，则&amp; 、&amp;&amp; 都会执行符号右边的操作<br>  2）如果符号左边是false，则 &amp; 会继续执行符号右边的操作，&amp;&amp; 不会执行符号右边的操作  </p>
 <h3 id="3-Java中的基本类型有哪些？String-是最基本的数据类型吗？-恒-电子"><a href="#3-Java中的基本类型有哪些？String-是最基本的数据类型吗？-恒-电子" class="headerlink" title="3. Java中的基本类型有哪些？String 是最基本的数据类型吗？(恒*电子)"></a>3. Java中的基本类型有哪些？String 是最基本的数据类型吗？(恒*电子)</h3><p>8种基本数据类型。（略）</p>
 <p>String不是，属于引用数据类型。</p>
 <h3 id="4-Java中的基本数据类型包括哪些？（-米）"><a href="#4-Java中的基本数据类型包括哪些？（-米）" class="headerlink" title="4. Java中的基本数据类型包括哪些？（*米）"></a>4. Java中的基本数据类型包括哪些？（*米）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">类似问题：</span><br><span class="line">&gt; Java的基础数据类型有哪些？String是吗？（贝壳）</span><br></pre></td></tr></table></figure>
@@ -631,7 +838,7 @@
 <ul>
 <li>只能比较引用类型，Object 类源码中 equals()的作用与“&#x3D;&#x3D;”相同：比较是否指向同一个对象。对类 File、String、Date 及包装类（Wrapper Class）来说，是比较类型及内容而不考虑引用的是否是同一个对象；在这些类中重写了 Object 类的 equals()方法。</li>
 <li>重写和不重写的区别</li>
-<li>面试题： &#x3D;&#x3D; 和 equals()  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> 	1. == 既可以比较基本类型也可以比较引用类型。对于基本类型就是比较值，对于引	用类型就是比较内存地址</span><br><span class="line">2. equals 的话，它是属于 java.lang.Object 类里面的方法，如果该方法没有被重写过默认也是==;我们可以看到 String 等类的 equals 方法是被重写过的，而且 String 类在日常开发中用的比较多，久而久之，形成了 equals 是比较值的错误观点。</span><br><span class="line">3. 具体要看自定义类里有没有重写 Object 的 equals 方法来判断。</span><br><span class="line">通常情况下，重写 equals 方法，会比较类中的相应属性是否都相等。*/</span><br></pre></td></tr></table></figure></li>
+<li>面试题： &#x3D;&#x3D; 和 equals()  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. == 既可以比较基本类型也可以比较引用类型。对于基本类型就是比较值，对于引用类型就是比较内存地址</span><br><span class="line"> 2. equals 的话，它是属于 java.lang.Object 类里面的方法，如果该方法没有被重写过默认也是==;我们可以看到 String 等类的 equals 方法是被重写过的，而且 String 类在日常开发中用的比较多，久而久之，形成了 equals 是比较值的错误观点。</span><br><span class="line"> 3. 具体要看自定义类里有没有重写 Object 的 equals 方法来判断。</span><br><span class="line"> 通常情况下，重写 equals 方法，会比较类中的相应属性是否都相等。</span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
 <li><p>toString()的使用</p>
@@ -649,7 +856,8 @@
 </ul>
 <h2 id="企业真题-七"><a href="#企业真题-七" class="headerlink" title="企业真题(七)"></a>企业真题(七)</h2><h3 id="2-1-继承性"><a href="#2-1-继承性" class="headerlink" title="2.1 继承性"></a>2.1 继承性</h3><h4 id="1-父类哪些成员可以被继承，属性可以被继承吗？可以或者不可以，请举下例子。（北京明-信）"><a href="#1-父类哪些成员可以被继承，属性可以被继承吗？可以或者不可以，请举下例子。（北京明-信）" class="headerlink" title="1. 父类哪些成员可以被继承，属性可以被继承吗？可以或者不可以，请举下例子。（北京明**信）"></a>1. 父类哪些成员可以被继承，属性可以被继承吗？可以或者不可以，请举下例子。（北京明**信）</h4><p>父类的属性、方法可以被继承。构造器可以被子类调用。</p>
 <h3 id="2-2-重写"><a href="#2-2-重写" class="headerlink" title="2.2 重写"></a>2.2 重写</h3><h4 id="1-什么是Override，与Overload的区别（顺-、软-力、明-数据、阳-科技、中-软）"><a href="#1-什么是Override，与Overload的区别（顺-、软-力、明-数据、阳-科技、中-软）" class="headerlink" title="1. 什么是Override，与Overload的区别（顺*、软**力、明*数据、阳*科技、中*软）"></a>1. 什么是Override，与Overload的区别（顺*、软**力、明*数据、阳*科技、中*软）</h4><p>略</p>
-<h4 id="2-Overload的方法是否可以改变返回值的类型-（新-陆）"><a href="#2-Overload的方法是否可以改变返回值的类型-（新-陆）" class="headerlink" title="2. Overload的方法是否可以改变返回值的类型?（新*陆）"></a>2. Overload的方法是否可以改变返回值的类型?（新*陆）</h4><p>public void method(int i){}</p>
+<h4 id="2-Overload的方法是否可以改变返回值的类型-（新-陆）"><a href="#2-Overload的方法是否可以改变返回值的类型-（新-陆）" class="headerlink" title="2. Overload的方法是否可以改变返回值的类型?（新*陆）"></a>2. Overload的方法是否可以改变返回值的类型?（新*陆）</h4><p>和返回值类型无关。</p>
+<p>public void method(int i){}</p>
 <p>public int method(int j,int k){}</p>
 <h4 id="3-构造器Constructor是否可被override-（鸿-网络、深圳德-技、航-普）"><a href="#3-构造器Constructor是否可被override-（鸿-网络、深圳德-技、航-普）" class="headerlink" title="3. 构造器Constructor是否可被override?（鸿*网络、深圳德**技、航**普）"></a>3. 构造器Constructor是否可被override?（鸿*网络、深圳德**技、航**普）</h4><p>不能！构造器可以重载</p>
 <h4 id="4-为什么要有重载，我随便命名一个别的函数名不行吗？谈谈你是怎么理解的。（腾-）"><a href="#4-为什么要有重载，我随便命名一个别的函数名不行吗？谈谈你是怎么理解的。（腾-）" class="headerlink" title="4. 为什么要有重载，我随便命名一个别的函数名不行吗？谈谈你是怎么理解的。（腾*）"></a>4. 为什么要有重载，我随便命名一个别的函数名不行吗？谈谈你是怎么理解的。（腾*）</h4><p>见名知意。</p>
@@ -657,7 +865,7 @@
 <h4 id="2-this、super关键字分别代表什么-以及他们各自的使用场景和作用。（北京楚-龙）"><a href="#2-this、super关键字分别代表什么-以及他们各自的使用场景和作用。（北京楚-龙）" class="headerlink" title="2. this、super关键字分别代表什么?以及他们各自的使用场景和作用。（北京楚*龙）"></a>2. this、super关键字分别代表什么?以及他们各自的使用场景和作用。（北京楚*龙）</h4><p>略</p>
 <h3 id="2-4-多态"><a href="#2-4-多态" class="headerlink" title="2.4 多态"></a>2.4 多态</h3><h4 id="1-谈谈你对多态的理解-三-重工、江-智能、银-数据、君-科技"><a href="#1-谈谈你对多态的理解-三-重工、江-智能、银-数据、君-科技" class="headerlink" title="1. 谈谈你对多态的理解(三*重工、江*智能、银*数据、君*科技)"></a>1. 谈谈你对多态的理解(三*重工、江*智能、银*数据、君*科技)</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">类似问法：</span><br><span class="line">&gt; Java中实现多态的机制是什么(国*电网)</span><br><span class="line">&gt; 什么是多态？（上*银行）</span><br><span class="line">&gt; Java中的多态是什么意思？（贝*）</span><br></pre></td></tr></table></figure>
 
-<p>略</p>
+<p>理解、格式、好处、弊端。</p>
 <h4 id="2-多态new出来的对象跟不多态new出来的对象区别在哪？（万-智能）"><a href="#2-多态new出来的对象跟不多态new出来的对象区别在哪？（万-智能）" class="headerlink" title="2. 多态new出来的对象跟不多态new出来的对象区别在哪？（万*智能）"></a>2. 多态new出来的对象跟不多态new出来的对象区别在哪？（万*智能）</h4><p>Person p &#x3D; new Man();  &#x2F;&#x2F;虚方法调用。屏蔽了子类Man类特有的属性和方法。</p>
 <p>Man m &#x3D; new Man(); </p>
 <h4 id="3-说说你认为多态在代码中的体现（楚-龙）"><a href="#3-说说你认为多态在代码中的体现（楚-龙）" class="headerlink" title="3. 说说你认为多态在代码中的体现（楚*龙）"></a>3. 说说你认为多态在代码中的体现（楚*龙）</h4><p>无处不在！</p>
@@ -758,8 +966,8 @@
 <li>抽象类不能创建对象，如果创建，编译无法通过而报错。只能创建其非抽象子类的对<br>象。<br>理解：假设创建了抽象类的对象，调用抽象的方法，而抽象方法没有具体的方<br>法体，没有意义。</li>
 <li>抽象类是用来被继承的，抽象类的子类必须重写父类的抽象方法，并提供方法<br>体。若没有重写全部的抽象方法，仍为抽象类。</li>
 <li>抽象类中，也有构造方法，是供子类创建对象时，初始化父类成员变量使用的。<br>理解：子类的构造方法中，有默认的 super()或手动的 super(实参列表)，需要<br>访问父类构造方法。</li>
-<li>抽象类中，不一定包含抽象方法，但是有抽象方法的类必定是抽象类。</li>
-<li>理解：未包含抽象方法的抽象类，目的就是不想让调用者创建该类对象，通常<br>用于某些特殊的类结构设计。<br>抽象类的子类，必须重写抽象父类中所有的抽象方法，否则，编译无法通过而报错。<br>除非该子类也是抽象类。<br>理解：假设不重写所有抽象方法，则类中可能包含抽象方法。那么创建对象<br>后，调用抽象的方法，没有意义。</li>
+<li>抽象类中，不一定包含抽象方法，但是有抽象方法的类必定是抽象类。<br>理解：未包含抽象方法的抽象类，目的就是不想让调用者创建该类对象，通常<br>用于某些特殊的类结构设计。  </li>
+<li>抽象类的子类，必须重写抽象父类中所有的抽象方法，否则，编译无法通过而报错。<br>除非该子类也是抽象类。<br>理解：假设不重写所有抽象方法，则类中可能包含抽象方法。那么创建对象<br>后，调用抽象的方法，没有意义。</li>
 </ol>
 </li>
 <li>注意事项：  <ul>
@@ -794,7 +1002,7 @@
 </ul>
 <ol>
 <li>默认方法冲突问题：<br>（1）类优先原则：当一个类，既继承一个父类，又实现若干个接口时，父类中的成员方法与接口中的抽象方法重名，子类就近选择执行父类的成员方法。<br>（2）接口冲突（左右为难）：当一个类同时实现了多个父接口，而多个父接口中包含方法签名相同的默认方法时，选择保留其中一个，通过“接口名.super.方法名”的方法选择保留哪个接口的默认方法；当一个子接口同时继承了多个接口，而多个父接口中包含方法签名相同的默认方法<br>时，子接口重写默认方法。（子接口重写默认方法时，default 关键字可以保留；子类重写默认方法时，default 关键字不可以保留）</li>
-<li>常量冲突问题：<br>当子类继承父类又实现父接口，而父类中存在与父接口常量同名的成员变量，并且该<br>成员变量名在子类中仍然可见。<br>当子类同时实现多个接口，而多个接口存在相同同名常量。<br>此时在子类中想要引用父类或父接口的同名的常量或成员变量时，就会有冲突<br>问题。</li>
+<li>常量冲突问题：<br>当子类继承父类又实现父接口，而父类中存在与父接口常量同名的成员变量，并且该成员变量名在子类中仍然可见。<br>当子类同时实现多个接口，而多个接口存在相同同名常量。<br>此时在子类中想要引用父类或父接口的同名的常量或成员变量时，就会有冲突问题。</li>
 </ol>
 <ul>
 <li>笔试题：抽象类、接口的对比。</li>
@@ -897,7 +1105,7 @@
 
 <h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><h3 id="异常的概述"><a href="#异常的概述" class="headerlink" title="异常的概述"></a>异常的概述</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">1. 什么是异常？</span><br><span class="line">指的是程序在执行过程中，出现的非正常情况，如果不处理最终会导致JVM的非正常停止。</span><br><span class="line"></span><br><span class="line">2. 异常的抛出机制</span><br><span class="line">Java中把不同的异常用不同的类表示，一旦发生某种异常，就`创建该异常类型的对象`，并且抛出（throw）。</span><br><span class="line">然后程序员可以捕获(catch)到这个异常对象，并处理；如果没有捕获(catch)这个异常对象，那么这个异常</span><br><span class="line">对象将会导致程序终止。</span><br><span class="line"></span><br><span class="line">3. 如何对待异常</span><br><span class="line"> 对于程序出现的异常，一般有两种解决方法：一是遇到错误就终止程序的运行。另一种方法是程序员在编写程序时，</span><br><span class="line"> 就充分考虑到各种可能发生的异常和错误，极力预防和避免。实在无法避免的，要编写相应的代码进行异常的检测、</span><br><span class="line"> 以及`异常的处理`，保证代码的`健壮性`。</span><br></pre></td></tr></table></figure>
 
-<h3 id="异常的体系结构及常见的异常"><a href="#异常的体系结构及常见的异常" class="headerlink" title="异常的体系结构及常见的异常"></a>异常的体系结构及常见的异常</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">java.lang.Throwable:异常体系的根父类</span><br><span class="line">    • public void printStackTrace()：打印异常的详细信息。</span><br><span class="line">    包含了异常的类型、异常的原因、异常出现的位置、在开发和调试阶段都得使用</span><br><span class="line">printStackTrace。</span><br><span class="line">    • public String getMessage()：获取发生异常的原因。</span><br><span class="line">    |---java.lang.Error:错误。Java虚拟机无法解决的严重问题。如：JVM系统内部错误、资源耗尽等严重情况。</span><br><span class="line">                         一般不编写针对性的代码进行处理。</span><br><span class="line">               |---- StackOverflowError（栈内存溢出）和 OutOfMemoryError（堆内存溢出，简称OOM）</span><br><span class="line"></span><br><span class="line">    |---java.lang.Exception:异常。我们可以编写针对性的代码进行处理。</span><br><span class="line">               |----编译时异常：(受检异常)在执行javac.exe命令时，出现的异常。</span><br><span class="line">                    |----- ClassNotFoundException</span><br><span class="line">                    |----- FileNotFoundException</span><br><span class="line">                    |----- IOException</span><br><span class="line">               |----运行时异常：(非受检异常)在执行java.exe命令时，出现的异常。</span><br><span class="line">                    |---- ArrayIndexOutOfBoundsException</span><br><span class="line">                    |---- NullPointerException</span><br><span class="line">                    |---- ClassCastException</span><br><span class="line">                    |---- NumberFormatException</span><br><span class="line">                    |---- InputMismatchException</span><br><span class="line">                    |---- ArithmeticException</span><br></pre></td></tr></table></figure>
+<h3 id="异常的体系结构及常见的异常"><a href="#异常的体系结构及常见的异常" class="headerlink" title="异常的体系结构及常见的异常"></a>异常的体系结构及常见的异常</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">java.lang.Throwable:异常体系的根父类</span><br><span class="line">    • public void printStackTrace()：打印异常的详细信息。</span><br><span class="line">    包含了异常的类型、异常的原因、异常出现的位置、在开发和调试阶段都得使用printStackTrace。</span><br><span class="line">    • public String getMessage()：获取发生异常的原因。</span><br><span class="line">    |---java.lang.Error:错误。Java虚拟机无法解决的严重问题。如：JVM系统内部错误、资源耗尽等严重情况。</span><br><span class="line">                         一般不编写针对性的代码进行处理。</span><br><span class="line">               |---- StackOverflowError（栈内存溢出）和 OutOfMemoryError（堆内存溢出，简称OOM）</span><br><span class="line"></span><br><span class="line">    |---java.lang.Exception:异常。我们可以编写针对性的代码进行处理。</span><br><span class="line">               |----编译时异常：(受检异常)在执行javac.exe命令时，出现的异常。</span><br><span class="line">                    |----- ClassNotFoundException</span><br><span class="line">                    |----- FileNotFoundException</span><br><span class="line">                    |----- IOException</span><br><span class="line">               |----运行时异常：(非受检异常)在执行java.exe命令时，出现的异常。</span><br><span class="line">                    |---- ArrayIndexOutOfBoundsException</span><br><span class="line">                    |---- NullPointerException</span><br><span class="line">                    |---- ClassCastException</span><br><span class="line">                    |---- NumberFormatException</span><br><span class="line">                    |---- InputMismatchException</span><br><span class="line">                    |---- ArithmeticException</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">【面试题】说说你在开发中常见的异常都有哪些？</span><br><span class="line"></span><br><span class="line">开发1-2年：</span><br><span class="line">|----编译时异常：(受检异常)在执行javac.exe命令时，出现的异常。</span><br><span class="line">    |----- ClassNotFoundException</span><br><span class="line">    |----- FileNotFoundException</span><br><span class="line">    |----- IOException</span><br><span class="line">|----运行时异常：(非受检异常)在执行java.exe命令时，出现的异常。</span><br><span class="line">    |---- ArrayIndexOutOfBoundsException</span><br><span class="line">    |---- NullPointerException</span><br><span class="line">    |---- ClassCastException</span><br><span class="line">    |---- NumberFormatException</span><br><span class="line">    |---- InputMismatchException</span><br><span class="line">    |---- ArithmeticException</span><br><span class="line"></span><br><span class="line">开发3年以上：</span><br><span class="line">OOM。</span><br></pre></td></tr></table></figure>
 
@@ -956,9 +1164,9 @@
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">线程调度策略</span><br><span class="line">分时调度：所有线程`轮流使用` CPU 的使用权，并且平均分配每个线程占用 CPU 的时间。</span><br><span class="line"></span><br><span class="line">抢占式调度：让`优先级高`的线程以`较大的概率`优先使用 CPU。如果线程的优先级相同，那么会随机选择一个(线程随机性)，Java使用的为抢占式调度。</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; 单核CPU与多核CPU</span><br><span class="line">• 单核 CPU，在一个时间单元内，只能执行一个线程的任务。</span><br><span class="line">&gt; 并行与并发</span><br><span class="line">• 并行（parallel）：指两个或多个事件在同一时刻发生（同时发生）。指在同一时刻，有多条指令在多个 CPU 上同时执行。比如：多个人同时做不同的事。  </span><br><span class="line">• 并发（concurrency）：指两个或多个事件在同一个时间段内发生。即在一段时间</span><br><span class="line">内，有多条指令在单个 CPU 上快速轮换、交替执行，使得在宏观上具有多个进程同</span><br><span class="line">时执行的效果。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; 单核CPU与多核CPU</span><br><span class="line">• 单核 CPU，在一个时间单元内，只能执行一个线程的任务。</span><br><span class="line">&gt; 并行与并发</span><br><span class="line">• 并行（parallel）：指两个或多个事件在同一时刻发生（同时发生）。指在同一时刻，有多条指令在多个 CPU 上同时执行。比如：多个人同时做不同的事。  </span><br><span class="line">• 并发（concurrency）：指两个或多个事件在同一个时间段内发生。即在一段时间</span><br><span class="line">内，有多条指令在单个 CPU 上快速轮换、交替执行，使得在宏观上具有多个进程同时执行的效果。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h3 id="2-如何创建多线程（重点）"><a href="#2-如何创建多线程（重点）" class="headerlink" title="2. 如何创建多线程（重点）"></a>2. 如何创建多线程（重点）</h3><p>Java 语言的 JVM 允许程序运行多个线程，使用 java.lang.Thread 类代表线程，所<br>有的线程对象都必须是 Thread 类或其子类的实例。  </p>
+<h3 id="2-如何创建多线程（重点）"><a href="#2-如何创建多线程（重点）" class="headerlink" title="2. 如何创建多线程（重点）"></a>2. 如何创建多线程（重点）</h3><p>Java 语言的 JVM 允许程序运行多个线程，使用 java.lang.Thread 类代表线程，所有的线程对象都必须是 Thread 类或其子类的实例。  </p>
 <ul>
 <li>方式1：继承Thread类<br>  Thread 类的特性：<ol>
 <li>每个线程都是通过某个特定 Thread 对象的 run()方法来完成操作的，因此<br>  把 run()方法体称为线程执行体。</li>
@@ -968,7 +1176,7 @@
 </li>
 <li>方式2：实现Runnable接口  <ul>
 <li>Java 有单继承的限制，当我们无法继承 Thread 类时，那么该如何做呢？在核心<br>类库中提供了 Runnable 接口，我们可以实现 Runnable 接口，重写 run()方法，<br>然后再通过 Thread 类的对象代理启动和执行我们的线程体 run()方法<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  <span class="comment">//创建自定义类对象 线程任务对象</span></span><br><span class="line"><span class="type">MyRunnable</span> <span class="variable">mr</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyRunnable</span>();</span><br><span class="line"><span class="comment">//创建线程对象</span></span><br><span class="line"><span class="type">Thread</span> <span class="variable">t</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(mr, <span class="string">&quot;长江&quot;</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-<li>使用匿名内部类对象来实现线程的创建和启动  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="string">&quot;新的线程！&quot;</span>)&#123;</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">System.out.println(getName()+<span class="string">&quot;：正在执行！&quot;</span>+i);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;.start();</span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">Runnable</span>()&#123;</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">System.out.println(Thread.currentThread().getName()+<span class="string">&quot;：&quot;</span> +</span><br><span class="line">i);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;).start();</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>使用匿名内部类对象来实现线程的创建和启动  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="string">&quot;新的线程！&quot;</span>)&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">      System.out.println(getName()+<span class="string">&quot;：正在执行！&quot;</span>+i);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;.start();</span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">Runnable</span>()&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">      System.out.println(Thread.currentThread().getName()+<span class="string">&quot;：&quot;</span> + i);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).start();</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
 <li>方式3：实现Callable接口 （jdk5.0新增）  <ul>
@@ -1070,7 +1278,7 @@
 
 <h3 id="2-3-常用方法、生命周期"><a href="#2-3-常用方法、生命周期" class="headerlink" title="2.3 常用方法、生命周期"></a>2.3 常用方法、生命周期</h3><h4 id="1-sleep-和-yield-区别？-神-泰岳"><a href="#1-sleep-和-yield-区别？-神-泰岳" class="headerlink" title="1. sleep() 和 yield()区别？(神*泰岳)"></a>1. sleep() 和 yield()区别？(神*泰岳)</h4><p>sleep()：一旦调用，就进入“阻塞”（或TIMED_WAITING状态）</p>
 <p>yield():释放cpu的执行权，处在RUNNABLE的状态</p>
-<h4 id="2-线程创建的中的方法、属性情况？-招通-、数-互融"><a href="#2-线程创建的中的方法、属性情况？-招通-、数-互融" class="headerlink" title="2. 线程创建的中的方法、属性情况？(招通**、数*互融)"></a>2. 线程创建的中的方法、属性情况？(招通**、数*互融)</h4><p>略</p>
+<h4 id="2-线程创建中的方法、属性情况？-招通-、数-互融"><a href="#2-线程创建中的方法、属性情况？-招通-、数-互融" class="headerlink" title="2. 线程创建中的方法、属性情况？(招通**、数*互融)"></a>2. 线程创建中的方法、属性情况？(招通**、数*互融)</h4><p>略</p>
 <h4 id="3-线程的生命周期？-中国-电子商务中心、-科软、慧"><a href="#3-线程的生命周期？-中国-电子商务中心、-科软、慧" class="headerlink" title="3. 线程的生命周期？(中国**电子商务中心、*科软、慧*)"></a>3. 线程的生命周期？(中国**电子商务中心、*科软、慧*)</h4><p>略</p>
 <h4 id="4-线程的基本状态以及状态之间的关系？-直-科技"><a href="#4-线程的基本状态以及状态之间的关系？-直-科技" class="headerlink" title="4. 线程的基本状态以及状态之间的关系？(直*科技)"></a>4. 线程的基本状态以及状态之间的关系？(直*科技)</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">类似问题：</span><br><span class="line">&gt; 线程有哪些状态？如何让线程进入阻塞？（华*中*，*兴）</span><br><span class="line">&gt; 线程有几个状态，就绪和阻塞有什么不同。（美*）</span><br><span class="line">&gt; Java的线程都有哪几种状态（字*跳动、*东、*手）</span><br></pre></td></tr></table></figure>
 
@@ -1461,7 +1669,7 @@
 <li>Set中的常用的方法都是Collection中声明的方法，没有新增的方法</li>
 <li>常见的实现类的对比</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">java.util.Collection:存储一个一个的数据</span><br><span class="line">    |-----子接口：Set:存储无序的、不可重复的数据(高中学习的集合)</span><br><span class="line">           |---- HashSet：主要实现类；底层使用的是HashMap，即使用数组+单向链表+红黑树结构进行存储。（jdk8中）</span><br><span class="line">                |---- LinkedHashSet：是HashSet的子类；在现有的数组+单向链表+红黑树结构的基础上，又添加了</span><br><span class="line">                                     一组双向链表，用于记录添加元素的先后顺序。即：我们可以按照添加元素的顺									序实现遍历。便于频繁的查询操作。</span><br><span class="line">           |---- TreeSet：底层使用红黑树存储。可以按照添加的元素的指定的属性的大小顺序进行遍历。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">java.util.Collection:存储一个一个的数据</span><br><span class="line">    |-----子接口：Set:存储无序的、不可重复的数据(高中学习的集合)</span><br><span class="line">           |---- HashSet：主要实现类；底层使用的是HashMap，即使用数组+单向链表+红黑树结构进行存储。（jdk8中）</span><br><span class="line">                |---- LinkedHashSet：是HashSet的子类；在现有的数组+单向链表+红黑树结构的基础上，又添加了</span><br><span class="line">                                     一组双向链表，用于记录添加元素的先后顺序。即：我们可以按照添加元素的顺序实现遍历。便于频繁的查询操作。</span><br><span class="line">           |---- TreeSet：底层使用红黑树存储。可以按照添加的元素的指定的属性的大小顺序进行遍历。</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><p>开发中的使用频率及场景：  </p>
@@ -1645,7 +1853,8 @@
 <li>常见的链表结构有如下的形式：</li>
 </ul>
 <p><img src="/images/1563448858180-1661445988506.png" alt="1563448858180"></p>
-<img src="images/数据结构-链表.png" alt="数据结构-链表" style="zoom:50%;" />  
+<p><img src="/images/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%93%BE%E8%A1%A8.png"></p>
+<!-- <img src="images/数据结构-链表.png" alt="数据结构-链表" style="zoom:50%;" />   -->
 
 <h4 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h4><ul>
 <li><p>栈（Stack）又称为堆栈或堆叠，是限制仅在表的一端进行插入和删除运算的线性表。</p>
@@ -1676,9 +1885,11 @@
 <li><p>图示：</p>
 </li>
 </ul>
-<img src="images/image-20220826010258638.png" alt="image-20220826010258638" style="zoom:80%;" />
+<p><img src="/images/image-20220826010258638.png">  </p>
+<p><img src="/images/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%88.png">  </p>
+<!-- <img src="images/image-20220826010258638.png" alt="image-20220826010258638" style="zoom:80%;" />
 
-<img src="images/数据结构-栈.png" alt="数据结构-栈" style="zoom:50%;" />  
+<img src="images/数据结构-栈.png" alt="数据结构-栈" style="zoom:50%;" />   -->
 
 <h4 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h4><ul>
 <li><p>队列（Queue）是只允许在一端进行插入，而在另一端进行删除的运算受限的线性表。</p>
@@ -1690,13 +1901,15 @@
 <li><p>图示：</p>
 </li>
 </ul>
-<p><img src="/images/image-20220826010241172.png" alt="image-20220826010241172"></p>
-<img src="images/数据结构-队列.png" alt="数据结构-队列" style="zoom:50%;" />  
+<p><img src="/images/image-20220826010241172.png" alt="image-20220826010241172">  </p>
+<p><img src="/images/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E9%98%9F%E5%88%97.png"></p>
+<!-- <img src="images/数据结构-队列.png" alt="数据结构-队列" style="zoom:50%;" />   -->
 
 <h4 id="树与二叉树"><a href="#树与二叉树" class="headerlink" title="树与二叉树"></a>树与二叉树</h4><ol>
 <li>树的理解</li>
 </ol>
-<img src="images/image-20220521111904272.png" alt="image-20220521111904272" style="zoom:67%;" />
+<p><img src="/images/image-20220521111904272.png"></p>
+<!-- <img src="images/image-20220521111904272.png" alt="image-20220521111904272" style="zoom:67%;" /> -->
 
 <p><strong>专有名词解释：</strong></p>
 <p><code>结点</code>：树中的数据元素都称之为结点</p>
@@ -1729,7 +1942,8 @@
 <p>即先后序遍历左子树，然后再后序遍历右子树，最后访问根 结点。后序遍历运算访问二叉树各结点是以左、右、根的顺序进行访问的。</p>
 </li>
 </ul>
-<img src="images/1574575739236-1661447692846.png" alt="1574575739236" style="zoom:80%;" />
+<p><img src="/images/1574575739236-1661447692846.png"></p>
+<!-- <img src="images/1574575739236-1661447692846.png" alt="1574575739236" style="zoom:80%;" /> -->
 
 <p>前序遍历：ABDHIECFG</p>
 <p>中序遍历：HDIBEAFCG</p>
@@ -1737,15 +1951,16 @@
 <ol start="4">
 <li>经典二叉树</li>
 </ol>
-<img src="images/image-20220521153016348.png" alt="image-20220521153016348" style="zoom: 67%;" />
+<p><img src="/images/image-20220521153016348.png"></p>
+<!-- <img src="images/image-20220521153016348.png" alt="image-20220521153016348" style="zoom: 67%;" /> -->
 
 <p>1、<code>满二叉树</code>： 除最后一层无任何子节点外，每一层上的所有结点都有两个子结点的二叉树。 第n层的结点数是2的n-1次方，总的结点个数是2的n次方-1</p>
 <p><img src="/images/1574575163883-1661447692846.png" alt="1574575163883"></p>
 <p>2、<code>完全二叉树</code>： 叶结点只能出现在最底层的两层，且最底层叶结点均处于次底层叶结点的左侧。</p>
 <p><img src="/images/1574575180247-1661447692846.png" alt="1574575180247"></p>
 <p>3、<code>二叉排序/查找/搜索树</code>：即为BST  (binary search&#x2F;sort tree)。满足如下性质：<br>（1）若它的左子树不为空，则左子树上所有结点的值均小于它的根节点的值；<br>（2）若它的右子树上所有结点的值均大于它的根节点的值；<br>（3）它的左、右子树也分别为二叉排序&#x2F;查找&#x2F;搜索树。</p>
-<img src="images/image-20220521145208018.png" alt="image-20220521145208018" style="zoom: 67%;" />
-
+<!-- <img src="images/image-20220521145208018.png" alt="image-20220521145208018" style="zoom: 67%;" /> -->
+<p><img src="/images/image-20220521145208018.png"></p>
 <blockquote>
 <p>对二叉查找树进行中序遍历，得到有序集合。便于检索。</p>
 </blockquote>
@@ -1753,7 +1968,8 @@
 <blockquote>
 <p>平衡二叉树的目的是为了减少二叉查找树的层次，提高查找速度。平衡二叉树的常用实现有红黑树、AVL、替罪羊树、Treap、伸展树等。</p>
 </blockquote>
-<img src="images/image-20220521150151219.png" alt="image-20220521150151219" style="zoom: 50%;" />
+<p><img src="/images/image-20220521150151219.png"></p>
+<!-- <img src="images/image-20220521150151219.png" alt="image-20220521150151219" style="zoom: 50%;" /> -->
 
 
 
@@ -1784,7 +2000,7 @@
 <ul>
 <li>层次1：</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">|-----子接口：List:存储有序的、可重复的数据 (&quot;动态&quot;数组)</span><br><span class="line">       |---- ArrayList:List的主要实现类；线程不安全的、效率高；底层使用Object[]数组存储</span><br><span class="line">                       在添加数据、查找数据时，效率较高；在插入、删除数据时，效率较低</span><br><span class="line">       |---- LinkedList:底层使用双向链表的方式进行存储；在对集合中的数据进行频繁的删除、插入操作时，建议使用此                         类在插入、删除数据时，效率较高；在添加数据、查找数据时，效率较低；</span><br><span class="line">       |---- Vector:List的古老实现类；线程安全的、效率低；底层使用Object[]数组存储</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">|-----子接口：List:存储有序的、可重复的数据 (&quot;动态&quot;数组)</span><br><span class="line">       |---- ArrayList:List的主要实现类；线程不安全的、效率高；底层使用Object[]数组存储</span><br><span class="line">                       在添加数据、查找数据时，效率较高；在插入、删除数据时，效率较低</span><br><span class="line">       |---- LinkedList:底层使用双向链表的方式进行存储；在对集合中的数据进行频繁的删除、插入操作时，建议使用此类在插入、删除数据时，效率较高；在添加数据、查找数据时，效率较低；</span><br><span class="line">       |---- Vector:List的古老实现类；线程安全的、效率低；底层使用Object[]数组存储</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>层次2：查看相关api的源码</li>
@@ -1803,7 +2019,7 @@
 <li><p>在选择了ArrayList的前提下，new ArrayList() : 底层创建长度为10的数组。new ArrayList(int capacity):底层创建指定capacity长度的数组。如果开发中，大体确认数组的长度，则推荐使用ArrayList(int capacity)这个构造器，避免了底层的扩容、复制数组的操作。</p>
 </li>
 </ol>
-<h3 id="Map接口下的实现类的源码剖析"><a href="#Map接口下的实现类的源码剖析" class="headerlink" title="Map接口下的实现类的源码剖析"></a>Map接口下的实现类的源码剖析</h3><h4 id="HashMap源码解析"><a href="#HashMap源码解析" class="headerlink" title="HashMap源码解析"></a>HashMap源码解析</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">1. jdk7中创建对象和添加数据过程(以JDK1.7.0_07为例说明)：</span><br><span class="line"></span><br><span class="line">//创建对象的过程中，底层会初始化数组Entry[] table = new Entry[16];</span><br><span class="line">HashMap&lt;String,Integer&gt; map = new HashMap&lt;&gt;();</span><br><span class="line">...</span><br><span class="line">map.put(&quot;AA&quot;,78); //&quot;AA&quot;和78封装到一个Entry对象中，考虑将此对象添加到table数组中。</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">添加/修改的过程：</span><br><span class="line">将(key1,value1)添加到当前的map中：</span><br><span class="line">首先，需要调用key1所在类的hashCode()方法，计算key1对应的哈希值1，此哈希值1经过某种算法(hash())之后，得到哈希值2。</span><br><span class="line">哈希值2再经过某种算法(indexFor())之后，就确定了(key1,value1)在数组table中的索引位置i。</span><br><span class="line">  1.1 如果此索引位置i的数组上没有元素，则(key1,value1)添加成功。  ----&gt;情况1</span><br><span class="line">  1.2 如果此索引位置i的数组上有元素(key2,value2),则需要继续比较key1和key2的哈希值2  ---&gt;哈希冲突</span><br><span class="line">         2.1 如果key1的哈希值2与key2的哈希值2不相同，则(key1,value1)添加成功。   ----&gt;情况2</span><br><span class="line">         2.2 如果key1的哈希值2与key2的哈希值2相同，则需要继续比较key1和key2的equals()。要调用key1所在类的equals(),将key2作为参数传递进去。</span><br><span class="line">               3.1 调用equals()，返回false: 则(key1,value1)添加成功。   ----&gt;情况3</span><br><span class="line">               3.2 调用equals()，返回true: 则认为key1和key2是相同的。默认情况下，value1替换原有的value2。</span><br><span class="line"></span><br><span class="line">说明：情况1：将(key1,value1)存放到数组的索引i的位置</span><br><span class="line">     情况2,情况3：(key1,value1)元素与现有的(key2,value2)构成单向链表结构，(key1,value1)指向(key2,value2)</span><br><span class="line"></span><br><span class="line">随着不断的添加元素，在满足如下的条件的情况下，会考虑扩容：</span><br><span class="line">(size &gt;= threshold) &amp;&amp; (null != table[i])</span><br><span class="line">当元素的个数达到临界值(-&gt; 数组的长度 * 加载因子)时，就考虑扩容。默认的临界值 = 16 * 0.75 --&gt; 12.</span><br><span class="line">默认扩容为原来的2倍。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2. jdk8与jdk7的不同之处(以jdk1.8.0_271为例)：</span><br><span class="line">① 在jdk8中，当我们创建了HashMap实例以后，底层并没有初始化table数组。当首次添加(key,value)时，进行判断，</span><br><span class="line">如果发现table尚未初始化，则对数组进行初始化。</span><br><span class="line">② 在jdk8中，HashMap底层定义了Node内部类，替换jdk7中的Entry内部类。意味着，我们创建的数组是Node[]</span><br><span class="line">③ 在jdk8中，如果当前的(key,value)经过一系列判断之后，可以添加到当前的数组角标i中。如果此时角标i位置上有</span><br><span class="line">   元素。在jdk7中是将新的(key,value)指向已有的旧的元素（头插法），而在jdk8中是旧的元素指向新的</span><br><span class="line">   (key,value)元素（尾插法）。 &quot;七上八下&quot;</span><br><span class="line">④ jdk7:数组+单向链表</span><br><span class="line">   jk8:数组+单向链表 + 红黑树</span><br><span class="line">   什么时候会使用单向链表变为红黑树：如果数组索引i位置上的元素的个数达到8，并且数组的长度达到64时，我们就将此索引i位置上</span><br><span class="line">                               的多个元素改为使用红黑树的结构进行存储。（为什么修改呢？红黑树进行put()/get()/remove()</span><br><span class="line">                               操作的时间复杂度为O(logn)，比单向链表的时间复杂度O(n)的好。性能更高。</span><br><span class="line">   什么时候会使用红黑树变为单向链表：当使用红黑树的索引i位置上的元素的个数低于6的时候，就会将红黑树结构退化为单向链表。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">3. 属性/字段：</span><br><span class="line">static final int DEFAULT_INITIAL_CAPACITY = 1 &lt;&lt; 4; // 默认的初始容量 16</span><br><span class="line">static final int MAXIMUM_CAPACITY = 1 &lt;&lt; 30; //最大容量  1 &lt;&lt; 30</span><br><span class="line">static final float DEFAULT_LOAD_FACTOR = 0.75f;  //默认加载因子</span><br><span class="line">static final int TREEIFY_THRESHOLD = 8; //默认树化阈值8，当链表的长度达到这个值后，要考虑树化</span><br><span class="line">static final int UNTREEIFY_THRESHOLD = 6;//默认反树化阈值6，当树中结点的个数达到此阈值后，要考虑变为链表</span><br><span class="line"></span><br><span class="line">//当单个的链表的结点个数达到8，并且table的长度达到64，才会树化。</span><br><span class="line">//当单个的链表的结点个数达到8，但是table的长度未达到64，会先扩容</span><br><span class="line">static final int MIN_TREEIFY_CAPACITY = 64; //最小树化容量64</span><br><span class="line"></span><br><span class="line">transient Node&lt;K,V&gt;[] table; //数组</span><br><span class="line">transient int size;  //记录有效映射关系的对数，也是Entry对象的个数</span><br><span class="line">int threshold; //阈值，当size达到阈值时，考虑扩容</span><br><span class="line">final float loadFactor; //加载因子，影响扩容的频率</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="Map接口下的实现类的源码剖析"><a href="#Map接口下的实现类的源码剖析" class="headerlink" title="Map接口下的实现类的源码剖析"></a>Map接口下的实现类的源码剖析</h3><h4 id="HashMap源码解析"><a href="#HashMap源码解析" class="headerlink" title="HashMap源码解析"></a>HashMap源码解析</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">1. jdk7中创建对象和添加数据过程(以JDK1.7.0_07为例说明)：</span><br><span class="line"></span><br><span class="line">//创建对象的过程中，底层会初始化数组Entry[] table = new Entry[16];</span><br><span class="line">HashMap&lt;String,Integer&gt; map = new HashMap&lt;&gt;();</span><br><span class="line">...</span><br><span class="line">map.put(&quot;AA&quot;,78); //&quot;AA&quot;和78封装到一个Entry对象中，考虑将此对象添加到table数组中。</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">添加/修改的过程：</span><br><span class="line">将(key1,value1)添加到当前的map中：</span><br><span class="line">首先，需要调用key1所在类的hashCode()方法，计算key1对应的哈希值1，此哈希值1经过某种算法(hash())之后，得到哈希值2。</span><br><span class="line">哈希值2再经过某种算法(indexFor())之后，就确定了(key1,value1)在数组table中的索引位置i。</span><br><span class="line">  1.1 如果此索引位置i的数组上没有元素，则(key1,value1)添加成功。  ----&gt;情况1</span><br><span class="line">  1.2 如果此索引位置i的数组上有元素(key2,value2),则需要继续比较key1和key2的哈希值2  ---&gt;哈希冲突</span><br><span class="line">         2.1 如果key1的哈希值2与key2的哈希值2不相同，则(key1,value1)添加成功。   ----&gt;情况2</span><br><span class="line">         2.2 如果key1的哈希值2与key2的哈希值2相同，则需要继续比较key1和key2的equals()。要调用key1所在类的equals(),将key2作为参数传递进去。</span><br><span class="line">               3.1 调用equals()，返回false: 则(key1,value1)添加成功。   ----&gt;情况3</span><br><span class="line">               3.2 调用equals()，返回true: 则认为key1和key2是相同的。默认情况下，value1替换原有的value2。</span><br><span class="line"></span><br><span class="line">说明：情况1：将(key1,value1)存放到数组的索引i的位置</span><br><span class="line">     情况2,情况3：(key1,value1)元素与现有的(key2,value2)构成单向链表结构，(key1,value1)指向(key2,value2)</span><br><span class="line"></span><br><span class="line">随着不断的添加元素，在满足如下的条件的情况下，会考虑扩容：</span><br><span class="line">(size &gt;= threshold) &amp;&amp; (null != table[i])</span><br><span class="line">当元素的个数达到临界值(-&gt; 数组的长度 * 加载因子)时，就考虑扩容。默认的临界值 = 16 * 0.75 --&gt; 12.</span><br><span class="line">默认扩容为原来的2倍。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2. jdk8与jdk7的不同之处(以jdk1.8.0_271为例)：</span><br><span class="line">① 在jdk8中，当我们创建了HashMap实例以后，底层并没有初始化table数组。当首次添加(key,value)时，进行判断，如果发现table尚未初始化，则对数组进行初始化。</span><br><span class="line">② 在jdk8中，HashMap底层定义了Node内部类，替换jdk7中的Entry内部类。意味着，我们创建的数组是Node[]</span><br><span class="line">③ 在jdk8中，如果当前的(key,value)经过一系列判断之后，可以添加到当前的数组角标i中。如果此时角标i位置上有</span><br><span class="line">   元素。在jdk7中是将新的(key,value)指向已有的旧的元素（头插法），而在jdk8中是旧的元素指向新的</span><br><span class="line">   (key,value)元素（尾插法）。 &quot;七上八下&quot;</span><br><span class="line">④ jdk7:数组+单向链表</span><br><span class="line">   jk8:数组+单向链表 + 红黑树</span><br><span class="line">   什么时候会使用单向链表变为红黑树：如果数组索引i位置上的元素的个数达到8，并且数组的长度达到64时，我们就将此索引i位置上</span><br><span class="line">                               的多个元素改为使用红黑树的结构进行存储。（为什么修改呢？红黑树进行put()/get()/remove()</span><br><span class="line">                               操作的时间复杂度为O(logn)，比单向链表的时间复杂度O(n)的好。性能更高。</span><br><span class="line">   什么时候会使用红黑树变为单向链表：当使用红黑树的索引i位置上的元素的个数低于6的时候，就会将红黑树结构退化为单向链表。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">3. 属性/字段：</span><br><span class="line">static final int DEFAULT_INITIAL_CAPACITY = 1 &lt;&lt; 4; // 默认的初始容量 16</span><br><span class="line">static final int MAXIMUM_CAPACITY = 1 &lt;&lt; 30; //最大容量  1 &lt;&lt; 30</span><br><span class="line">static final float DEFAULT_LOAD_FACTOR = 0.75f;  //默认加载因子</span><br><span class="line">static final int TREEIFY_THRESHOLD = 8; //默认树化阈值8，当链表的长度达到这个值后，要考虑树化</span><br><span class="line">static final int UNTREEIFY_THRESHOLD = 6;//默认反树化阈值6，当树中结点的个数达到此阈值后，要考虑变为链表</span><br><span class="line"></span><br><span class="line">//当单个的链表的结点个数达到8，并且table的长度达到64，才会树化。</span><br><span class="line">//当单个的链表的结点个数达到8，但是table的长度未达到64，会先扩容</span><br><span class="line">static final int MIN_TREEIFY_CAPACITY = 64; //最小树化容量64</span><br><span class="line"></span><br><span class="line">transient Node&lt;K,V&gt;[] table; //数组</span><br><span class="line">transient int size;  //记录有效映射关系的对数，也是Entry对象的个数</span><br><span class="line">int threshold; //阈值，当size达到阈值时，考虑扩容</span><br><span class="line">final float loadFactor; //加载因子，影响扩容的频率</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h4 id="LinkedHashMap"><a href="#LinkedHashMap" class="headerlink" title="LinkedHashMap"></a>LinkedHashMap</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">1. LinkedHashMap 与 HashMap 的关系:</span><br><span class="line">&gt; LinkedHashMap 是 HashMap的子类。</span><br><span class="line">&gt; LinkedHashMap在HashMap使用的数组+单向链表+红黑树的基础上，又增加了一对双向链表，记录添加的(key,value)的</span><br><span class="line">先后顺序。便于我们遍历所有的key-value。</span><br><span class="line"></span><br><span class="line">LinkedHashMap重写了HashMap的如下方法：</span><br><span class="line">Node&lt;K,V&gt; newNode(int hash, K key, V value, Node&lt;K,V&gt; e) &#123;</span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; p = new LinkedHashMap.Entry&lt;K,V&gt;(hash, key, value, e);</span><br><span class="line">    linkNodeLast(p);</span><br><span class="line">    return p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2. 底层结构：LinkedHashMap内部定义了一个Entry</span><br><span class="line">static class Entry&lt;K,V&gt; extends HashMap.Node&lt;K,V&gt; &#123;</span><br><span class="line">    Entry&lt;K,V&gt; before, after; //增加的一对双向链表</span><br><span class="line">    Entry(int hash, K key, V value, Node&lt;K,V&gt; next) &#123;</span><br><span class="line">        super(hash, key, value, next);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="HashSet和LinkedHashSet的源码分析"><a href="#HashSet和LinkedHashSet的源码分析" class="headerlink" title="HashSet和LinkedHashSet的源码分析"></a>HashSet和LinkedHashSet的源码分析</h4><blockquote>
@@ -1936,7 +2152,7 @@
 <h3 id="缓冲流"><a href="#缓冲流" class="headerlink" title="缓冲流"></a>缓冲流</h3><h4 id="1-BufferedReader属于哪种流？他主要是用来做什么的？-国-电网"><a href="#1-BufferedReader属于哪种流？他主要是用来做什么的？-国-电网" class="headerlink" title="1. BufferedReader属于哪种流？他主要是用来做什么的？(国*电网)"></a>1. BufferedReader属于哪种流？他主要是用来做什么的？(国*电网)</h4><p>略</p>
 <h4 id="2-什么是缓冲区？有什么作用？-北京中油"><a href="#2-什么是缓冲区？有什么作用？-北京中油" class="headerlink" title="2. 什么是缓冲区？有什么作用？(北京中油**)"></a>2. 什么是缓冲区？有什么作用？(北京中油**)</h4><p>内部提供了一个数组，将读取或要写出的数据，现在此数组中缓存。达到一定程度时，集中性的写出。</p>
 <p>作用：减少与磁盘的交互，进而提升读写效率。</p>
-<h3 id="转换流"><a href="#转换流" class="headerlink" title="转换流"></a>转换流</h3><h4 id="1-字节流和字符流是什么？怎么转换？-北京蓝-、-海-供应链管理）"><a href="#1-字节流和字符流是什么？怎么转换？-北京蓝-、-海-供应链管理）" class="headerlink" title="1. 字节流和字符流是什么？怎么转换？(北京蓝*、*海*供应链管理）"></a>1. 字节流和字符流是什么？怎么转换？(北京蓝*、*海*供应链管理）</h4><p><img src="/images/image-20221212161251100.png" alt="image-20221212161251100"></p>
+<h3 id="转换流"><a href="#转换流" class="headerlink" title="转换流"></a>转换流</h3><h4 id="1-字节流和字符流是什么？怎么转换？-北京蓝-、-海-供应链管理）"><a href="#1-字节流和字符流是什么？怎么转换？-北京蓝-、-海-供应链管理）" class="headerlink" title="1. 字节流和字符流是什么？怎么转换？(北京蓝*、*海*供应链管理）"></a>1. 字节流和字符流是什么？怎么转换？(北京蓝*、*海*供应链管理）</h4><p><img src="/images/20240827220242.png"></p>
 <h3 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h3><h4 id="1-什么是Java序列化，如何实现-君-科技、上海-厦物联网"><a href="#1-什么是Java序列化，如何实现-君-科技、上海-厦物联网" class="headerlink" title="1. 什么是Java序列化，如何实现(君*科技、上海*厦物联网)"></a>1. 什么是Java序列化，如何实现(君*科技、上海*厦物联网)</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">对象序列化机制允许把内存中的Java对象转换成平台无关的二进制流，从而允许把这种二进制流持久地保存在磁盘上，</span><br><span class="line">或通过网络将这种二进制流传输到另一个网络节点。//当其它程序获取了这种二进制流，就可以恢复成原来的Java对象。</span><br></pre></td></tr></table></figure>
 
 <h4 id="2-Java有些类中为什么需要实现Serializable接口？（阿-校招）"><a href="#2-Java有些类中为什么需要实现Serializable接口？（阿-校招）" class="headerlink" title="2. Java有些类中为什么需要实现Serializable接口？（阿*校招）"></a>2. Java有些类中为什么需要实现Serializable接口？（阿*校招）</h4><p>便于此类的对象实现序列化操作。</p>
@@ -1982,8 +2198,8 @@
 </ul>
 </li>
 <li>TCP的三次握手、四次挥手<ul>
-<li>TCP 协议中，在发送数据的准备阶段，客户端与服务器之间的三次交互，以保<br>证连接的可靠。第一次握手，客户端向服务器端发起 TCP 连接的请求；第二次握手，服务器端发送针对客户端 TCP 连接请求的确认；第三次握手，客户端发送确认的确认。</li>
-<li>TCP 协议中，在发送数据结束后，释放连接时需要经过四次挥手。第一次挥手：客户端向服务器端提出结束连接，让服务器做最后的准备工作。此时，客户端处于半关闭状态，即表示不再向服务器发送数据了，但是还可以接受数据；第二次挥手：服务器接收到客户端释放连接的请求后，会将最后的数据发给客户端。并告知上层的应用进程不再接收数据；第三次挥手：服务器发送完数据后，会给客户端发送一个释放连接的报文。那么客户端接收后就知道可以正式释放连接了；第四次挥手：客户端接收到服务器最后的释放连接报文后，要回复一个彻底断开的报文。这样服务器收到后才会彻底释放连接。这里客户端，发送完最后的报文后，会等待 2MSL，因为有可能服务器没有收到最后的报文，那么服务器迟迟没收到，就会再次给客户端发送释放连接的报文，此时客户端在等待时间范围内接收到，会重新发送最后的报文，并重新计时。如果等待 2MSL 后，没有收到，那么彻底断开。</li>
+<li>TCP 协议中，在发送数据的准备阶段，客户端与服务器之间的三次交互，以保证连接的可靠。第一次握手，客户端向服务器端发起 TCP 连接的请求；第二次握手，服务器端发送针对客户端 TCP 连接请求的确认；第三次握手，客户端发送确认的确认。</li>
+<li>TCP 协议中，在发送数据结束后，释放连接时需要经过四次挥手。第一次挥手：客户端向服务器端提出结束连接，让服务器做最后的准备工作。此时，客户端处于半关闭状态，即表示不再向服务器发送数据了，但是还可以接受数据；第二次挥手：服务器接收到客户端释放连接的请求后，会将最后的数据发给客户端。并告知上层的应用进程不再接收数据；第三次挥手：服务器发送完数据后，会给客户端发送一个释放连接的报文。那么客户端接收后就知道可以正式释放连接了；第四次挥手：客户端接收到服务器最后的释放连接报文后，要回复一个彻底断开的报文。这样服务器收到后才会彻底释放连接。这里客户端，发送完最后的报文后，会等待 2MSL(Maximum Segment Lifetime)，因为有可能服务器没有收到最后的报文，那么服务器迟迟没收到，就会再次给客户端发送释放连接的报文，此时客户端在等待时间范围内接收到，会重新发送最后的报文，并重新计时。如果等待 2MSL 后，没有收到，那么彻底断开。</li>
 </ul>
 </li>
 </ul>
@@ -2247,8 +2463,7 @@
 <p>针对企业客户的需求，Oracle 将以<code>三年</code>为周期发布长期支持版本（long term support）。</p>
 <p>Oracle 的官方观点认为：<strong>与 Java 7-&gt;8-&gt;9 相比，Java 9-&gt;10-&gt;11的升级和 8-&gt;8u20-&gt;8u40 更相似。</strong></p>
 <p>新模式下的 Java 版本发布都会包含许多变更，包括<code>语言变更</code>和 <code>JVM 变更</code>，这两者都会对 IDE、字节码库和框架产生重大影响。此外，不仅会新增其他 API，还会有 <code>API被删除</code>（这在 Java 8 之前没有发生过）。</p>
-<h3 id="各版本介绍"><a href="#各版本介绍" class="headerlink" title="各版本介绍"></a>各版本介绍</h3><p><img src="/images/jdkxintexing.jpg" alt="jdkxintexing"></p>
-<h4 id="jdk-9"><a href="#jdk-9" class="headerlink" title="jdk 9"></a>jdk 9</h4><p>Java 9 提供了<code>超过150项</code>新功能特性，包括备受期待的模块化系统、可交互的 REPL 工具：jshell，JDK 编译工具，Java 公共 API 和私有代码，以及安全增强、扩展提升、性能管理改善等。</p>
+<h3 id="各版本介绍"><a href="#各版本介绍" class="headerlink" title="各版本介绍"></a>各版本介绍</h3><h4 id="jdk-9"><a href="#jdk-9" class="headerlink" title="jdk 9"></a>jdk 9</h4><p>Java 9 提供了<code>超过150项</code>新功能特性，包括备受期待的模块化系统、可交互的 REPL 工具：jshell，JDK 编译工具，Java 公共 API 和私有代码，以及安全增强、扩展提升、性能管理改善等。</p>
 <p>特性太多，查看链接：</p>
 <p><a target="_blank" rel="noopener" href="https://openjdk.java.net/projects/jdk9/">https://openjdk.java.net/projects/jdk9/</a></p>
 <h4 id="jdk-10"><a href="#jdk-10" class="headerlink" title="jdk 10"></a>jdk 10</h4><p><a target="_blank" rel="noopener" href="https://openjdk.java.net/projects/jdk/10/">https://openjdk.java.net/projects/jdk/10/</a></p>
@@ -3976,7 +4191,7 @@
 <td>Ctrl+F4</td>
 </tr>
 </tbody></table>
-
+<h1 id="面试题整理"><a href="#面试题整理" class="headerlink" title="面试题整理"></a>面试题整理</h1><h2 id=""><a href="#" class="headerlink" title=""></a></h2>
         
         
           <blockquote id="copyright">
@@ -5895,94 +6110,6 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 </article>
 
 
-  <article id="post-Is-ChatGPT-A-Good-Translator" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2023/02/21/Is-ChatGPT-A-Good-Translator/">Is ChatGPT A Good Translator?</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2023-02-21T08:13:49.000Z" itemprop="datePublished">2023年02月21日</time>
-</span>
-      
-      
-      
-<a href="/2023/02/21/Is-ChatGPT-A-Good-Translator/#comments" class="article-comment-link">
-  
-  <i class="fa fa-commt"></i>
-  Guestbook
-</a>
-
-
-      
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="Is-ChatGPT-A-Good-Translator-A-Preliminary-Study"><a href="#Is-ChatGPT-A-Good-Translator-A-Preliminary-Study" class="headerlink" title="Is ChatGPT A Good Translator? A Preliminary Study"></a>Is ChatGPT A Good Translator? A Preliminary Study</h1><h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><ul>
-<li>提供了ChatGPT对机器翻译的初步评估，包括翻译提示性、多语言翻译和翻译的鲁棒性。我们采用ChatGPT建议的提示来触发其翻译能力，并发现候选提示通常效果很好，并表现出微小的性能差异。  </li>
-<li>ChatGPT在高资源的欧洲语言上与商业翻译产品（例如谷歌翻译）具有竞争能力，但在低资源或遥远的语言上明显落后。</li>
-<li>For distant languages, we explore an interesting strategy<br>named <b>pivot</b> prompting that asks ChatGPT to translate the source sentence into a high-resource pivot language before into the target language, which improves the translation performance significantly.  </li>
-<li>至于翻译的健壮性，ChatGPT在生物医学摘要或Reddit注释上的性能不如商业系统，但它可能是一个很好的口语翻译器。</li>
-</ul>
-<h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><p> We are particularly interested in how ChatGPT performs for machine translation tasks, especially the gap between ChatGPT and commercial translation products.  </p>
-<ol>
-<li>Translation Prompt 翻译提示</li>
-<li>Multilingual Translation 多语种翻译</li>
-<li>Translation Robustness 翻译的鲁棒性</li>
-</ol>
-<h2 id="实验和结果"><a href="#实验和结果" class="headerlink" title="实验和结果"></a>实验和结果</h2><h3 id="Translation-Prompt"><a href="#Translation-Prompt" class="headerlink" title="Translation Prompt"></a>Translation Prompt</h3><p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230221171417.png"><br>To design the prompts for triggering the machine translation ability of ChatGPT, we seek inspiration from ChatGPT by asking it for advice.<br>Thus, we summarize them into three candidate prompts,where<br>[SRC] and [TGT] represent the source and target languages of translation.<br><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230221171521.png"><br>TP3 performs the best in terms of all the three metrics. Thus, we use TP3 throughout this report by default.<br><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230221172354.png"></p>
-<h3 id="Multilingual-Translation"><a href="#Multilingual-Translation" class="headerlink" title="Multilingual Translation"></a>Multilingual Translation</h3><p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230221172514.png"></p>
-<ul>
-<li>Specifically, we ask ChatGPT to translate the source sentence into a high-resource pivot language (i.e., English by default) first and then into the target language.<br><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230221173244.png"><br><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230221173037.png"></li>
-</ul>
-<h3 id="Translation-Robustness"><a href="#Translation-Robustness" class="headerlink" title="Translation Robustness"></a>Translation Robustness</h3><p><img src="https://dt-files.oss-cn-beijing.aliyuncs.com/hexo/20230221173813.png"></p>
-<h2 id="总结与启发"><a href="#总结与启发" class="headerlink" title="总结与启发"></a>总结与启发</h2><p>可以在对chatGPT解决某一任务做实验的过程中发现chatGPT的缺点，并提出一定的解决方案，作出改进，比如本文中的pivot策略。</p>
-
-        
-        
-          <blockquote id="copyright">
-              <p>Original link: <a href="http://example.com/page/2/index.html">http://example.com/page/2/index.html</a></p>
-              <p>Copyright Notice: 转载请注明出处.</p>
-          </blockquote>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <div class="article-tag-wrap">
-          
-
-          
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ChatGPT/" rel="tag">ChatGPT</a></li></ul>
-
-          
-    <div class="social-share">
-      <span>Share:</span>
-    </div>
-
-
-
-        </div>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
 
     <nav id="page-nav">
 
@@ -6001,6 +6128,10 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
       <ul>
         
           <li>
+            <a href="/2024/09/04/offer-%E5%BE%AE%E6%9C%8D%E5%8A%A1/">offer-微服务</a>
+          </li>
+        
+          <li>
             <a href="/2024/07/04/redis7/">redis7</a>
           </li>
         
@@ -6014,10 +6145,6 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
         
           <li>
             <a href="/2024/03/11/offer-JVM/">offer-JVM</a>
-          </li>
-        
-          <li>
-            <a href="/2023/08/29/offer-SSM/">offer-SSM</a>
           </li>
         
       </ul>
@@ -6042,7 +6169,7 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> Archive</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">17</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年</a><span class="archive-list-count">17</span></li></ul>
     </div>
   </div>
 
